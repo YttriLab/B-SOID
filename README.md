@@ -1,0 +1,2 @@
+# B-SOID
+Behavioral-Segmentation of Open-field in DeepLabCut (B-SOID) is an unsupervised learning algorithm (Gaussian Mixture Model-based) written in MATLAB. The algorithm automatically detects statistically different sub-second rodent behaviors from data using a single camera from the bottom-up perspective. This is very powerful as in Neuroscience research as many procedures occlude the top view.
