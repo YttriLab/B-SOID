@@ -1,4 +1,4 @@
-![Mouse Action Cluster Demo 0.75x](Demo/Ms2ActGMMClustVid_s.gif)
+![Mouse Action Cluster Demo 1x](Demo/Ms2ActGMMClustVidK.gif)
 
 # B-SOID: Behavioral-Segmentation of Open-Field in DeepLabCut
 
