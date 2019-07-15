@@ -19,7 +19,7 @@ git clone https://github.com/YttriLab/B-SOID.git
 ### Step I 
 Import .csv file, and convert it to a matrix
 ```matlab
-data_struct = import(Ms2OpenField);
+data_struct = import(Ms2OpenField.csv);
 rawdata = data_struct.data
 ```
 ### Step II
