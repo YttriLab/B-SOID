@@ -21,27 +21,32 @@ Change MATLAB current folder to `B-SOID/bsoid`
 
 ### Step I 
 Import .csv file, and convert it to a matrix
+Using the demo mouse navigating the open-field from the Yttri-Lab
 ```matlab
 data_struct = import(Ms2OpenField.csv);
 rawdata = data_struct.data
 ```
 ### Step II
-Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them.
+Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [DLC_PREPROCESS.md](docs/DLC_PREPROCESS.md).
+Based on our pixel-error, the Yttri-Lab decided to go with 0.5 as the likelihood threshold.
 ```matlab
 data = dlc_preprocess(rawdata,0.5);
 ```
 ### Step III
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right)
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [BSOID_MT.md](docs/BSOID_MT.md)
+Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri-Lab has set criteria for the 7 states of action. This fast algorithm was able to pull out proof-of-concept Parkisonian mouse in the Yttri-Lab. This can also be a first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior.
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
 ```
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of action space, more refined and reliable output (This can uncover behaviors, *not just the 7 listed above*, and perhaps coincide better with latent variables) 
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of action space, more refined and reliable output (This can uncover behaviors, *not just the 7 listed above*, and perhaps coincide better with latent variables).
 
 * The following steps are only valid if you go with `Option 2`
 ### Step IV
-#### Unsupervised grouping of the purely data-driven action space
+#### Unsupervised grouping of the purely data-driven action space. Refer to [BSOID_GMM.md](docs/BSOID_GMM.md)
+Based on the comparable results benchmarked against human observers for the Yttri-Lab dataset, we also tested the generalizability with a dataset from the Ahmari Lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
+
 ```matlab
-[f,tsne_f,g_ls,g_hs,llh,bsoid_fig] = bsoid_us(data,60); % data, sampling-rate
+[f,tsne_f,grp,llh,bsoid_fig] = bsoid_gmm(data,60); % data, sampling-rate
 ```
 ### Step V (Back to the 7 states of interest)
 #### Based on feature distribution of the clusters
