@@ -1,5 +1,4 @@
-![Mouse Action Cluster Demo 1x](demo/Ms2ActGMMClustVidK.gif)
-![Another Mouse Action Cluster Demo 1x](demo/AhmariMsActGMMClustVidK.gif)
+![Mouse Action Cluster Demo 1x](demo/2x2grid.gif)
 
 
 
