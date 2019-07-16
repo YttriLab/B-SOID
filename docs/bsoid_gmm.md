@@ -6,7 +6,7 @@ function [feats,tsne_feats,grp,grp_fill,llh,bsoid_fig] = bsoid_gmm(data,fps,comp
 
 ### Prior to Usage
 
-*Run [dlc_preprocess.md](docs/dlc_preprocess.md). first*
+*Run [dlc_preprocess.md](dlc_preprocess.md). first*
 
 #### Inputs to BSOID_US.m
 
