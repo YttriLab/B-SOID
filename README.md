@@ -27,13 +27,13 @@ data_struct = import(Ms2OpenField.csv);
 rawdata = data_struct.data
 ```
 ### Step II
-Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [DLC_PREPROCESS.md](docs/DLC_PREPROCESS.md).
+Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [dlc_preprocess.md](docs/dlc_preprocess.md).
 Based on our pixel-error, the Yttri-Lab decided to go with 0.5 as the likelihood threshold.
 ```matlab
 data = dlc_preprocess(rawdata,0.5);
 ```
 ### Step III
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [BSOID_MT.md](docs/BSOID_MT.md)
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
 Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri-Lab has set criteria for the 7 states of action. This fast algorithm was able to pull out proof-of-concept Parkisonian mouse in the Yttri-Lab. This can also be a first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior.
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
@@ -42,7 +42,7 @@ Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera reso
 
 * The following steps are only valid if you go with `Option 2`
 ### Step IV
-#### Unsupervised grouping of the purely data-driven action space. Refer to [BSOID_GMM.md](docs/BSOID_GMM.md)
+#### Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
 Based on the comparable results benchmarked against human observers for the Yttri-Lab dataset, we also tested the generalizability with a dataset from the Ahmari Lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
 
 ```matlab
