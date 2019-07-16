@@ -6,7 +6,7 @@ function [feats,tsne_feats,grp,grp_fill,llh,bsoid_fig] = bsoid_gmm(data,fps,comp
 
 ### Prior to Usage
 
-*Make sure you run the following to remove headers and/or convert from table into a matrix containing just the x and y positions. Also, organize the data structure corresponding to the columns and rows following the `DATA` description below.*
+*Run [dlc_preprocess](docs/dlc_preprocess.md) first*
 
 #### Inputs to BSOID_US.m
 
