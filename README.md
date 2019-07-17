@@ -20,7 +20,7 @@ git clone https://github.com/YttriLab/B-SOID.git
 Change MATLAB current folder to `B-SOID/bsoid` 
 
 ### Step I 
-Import .csv file, and convert it to a matrix
+Import .csv file, and convert it to a matrix.
 Using the demo mouse navigating the open-field from the Yttri-Lab
 ```matlab
 data_struct = import(Ms2OpenField.csv);
@@ -34,7 +34,7 @@ data = dlc_preprocess(rawdata,0.5);
 ```
 ### Step III
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
-Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri-Lab has set criteria for the 7 states of action. This fast algorithm was able to pull out proof-of-concept Parkisonian mouse in the Yttri-Lab. This can also be a first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior.
+Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri-Lab has set criteria for the 7 states of action. This fast algorithm was able to automatically detect the gross behavioral changes in Parkisonian mouse from the Yttri-Lab. This can serve as a quick first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior (`Option2`).
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
 ```
