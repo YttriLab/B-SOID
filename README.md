@@ -48,11 +48,12 @@ Based on the comparable results benchmarked against human observers for the Yttr
 ```matlab
 [f,tsne_f,grp,llh,bsoid_fig] = bsoid_gmm(data,60); % data, sampling-rate
 ```
-### Step V (Back to the 7 states of interest)
-#### Based on feature distribution of the clusters
+### Step V Supervised learning with Support Vector Machine algorithm based on GMM clustered groups.
+#### With the labeled groups, we can extract the distribution of the 7 features and train a simple linear classifier to segment all future experimental data. Refer to [bsoid_svm.md](docs/bsoid_svm.md)
 
-#### Define threshold for the 7 actions (i.e. if majority of data in that unsupervised grouping has a angular change, it is turning)
-
+```matlab
+[Mdl,err] = bsoid_svm(f,grp); % features and GMM groups from bsoid_gmm
+```
 
 ### *(OPTIONAL) Step VI (If you are interested in creating short videos (.avi) of the groups). This is not recommended if it has more than 100,000 frames at 720*1280p.*
 #### Read the video and create a handle for it.
