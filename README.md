@@ -2,9 +2,13 @@
 
 
 
-# B-SOID: Behavioral-Segmentation of Open-Field in DeepLabCut
+# B-SOID: Behavioral segmentation of open field in DeepLabCut
 
-B-SOID ("B-side") is an unsupervised learning algorithm written in MATLAB that analyzes sub-second rodent behavior from a single bottom-up recording video-camera. Upon [DeepLabCut](https://github.com/AlexEMG/DeepLabCut)<sup>1,2</sup> extraction of the 6 body parts positions (snout, the 4 paws, and the base of the tial) of a rodent navigating an open environment, this algorithm performs t-Distributed Stochastic Neighbor Embedding (t-SNE<sup>4</sup>, MATLAB&copy;) of the 7 different time-varying signals to fit Gaussian Mixture Models<sup>5</sup>. The output agnostically separates statistically significant distributions in the 3-dimensional action space and are found to be correlated with different observable rodent behaviors. This approach can either allow users to build a behavioral classifier for automatically quantify changes in animal behavior, or allow users to build a different classifier that identifies interesting behaviors in experimental conditions. Although the Yttri lab has designed this algorithm for the primary purpose of automated detection of sub-second behaviors that control for between observer biases, the idea behind this is extremely flexible and expandable to multiple perspectives and other fields of study.  
+[DeepLabCut](https://github.com/AlexEMG/DeepLabCut)<sup>1,2</sup> has revolutionized the way behavioral scientists analyze data. The algorithm utilizes recent advances in computer vision and deep learning to automatically estimate 3D-poses. Interpreting the positions of an animal can be useful in studying behavior; however, it does not encompass the whole dynamic range of naturalistic behaviors.   
+
+Behavioral segmentation of open field in DeepLabCut, or B-SOID ("B-side"), is an unsupervised learning algorithm written in MATLAB that serves to discover behaviors that are not pre-defined by users. Our algorithm can segregate statistically different sub-second rodent behaviors with a single bottom-up perspective video-camera. Upon DeepLabCut extraction of the 6 body parts positions (snout, the 4 paws, and the base of the tial) outlining a rodent navigating an open environment, this algorithm performs t-Distributed Stochastic Neighbor Embedding (t-SNE<sup>4</sup>, MATLAB&copy;) of the 7 different time-varying signals to fit Gaussian Mixture Models<sup>5</sup>. The output agnostically separates statistically significant distributions in the 3-dimensional action space and are found to be correlated with different observable rodent behaviors.
+
+This usage of this algorithm has been outlined below, and is extremely flexible in adapting to what the user wants. With the ever-blooming advances in ways to study an animal behavior, our algorithm builds on what has already been robustly tested, and integrates them to help advance scientific research, not to mention the flexibility behind this idea in aritificial intelligence.  
 
 ## Installation
 
@@ -28,13 +32,13 @@ rawdata = data_struct.data
 ```
 ### Step II
 Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [dlc_preprocess.md](docs/dlc_preprocess.md).
-Based on our pixel-error, the Yttri-Lab decided to go with 0.5 as the likelihood threshold.
+Based on our pixel-error, the Yttri lab decided to go with 0.5 as the likelihood threshold.
 ```matlab
 data = dlc_preprocess(rawdata,0.5);
 ```
 ### Step III
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
-Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri-Lab has set criteria for the 7 states of action. This fast algorithm was able to automatically detect the gross behavioral changes in Parkisonian mouse from the Yttri-Lab. This can serve as a quick first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior (`Option2`).
+Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri lab has set criteria for the 7 states of action. This fast algorithm was able to automatically detect the gross behavioral changes in Parkisonian mouse from the Yttri lab. This can serve as a quick first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior (`Option2`).
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
 ```
@@ -43,7 +47,7 @@ Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera reso
 * The following steps are only valid if you go with `Option 2`
 ### Step IV
 #### Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
-Based on the comparable results benchmarked against human observers for the Yttri-Lab dataset, we also tested the generalizability with a dataset from the Ahmari Lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
+Based on the comparable results benchmarked against human observers for the Yttri lab dataset, we also tested the generalizability with a dataset from the Ahmari lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
 
 ```matlab
 [f,tsne_f,grp,llh,bsoid_fig] = bsoid_gmm(data,60); % data, sampling-rate
