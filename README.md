@@ -42,22 +42,29 @@ Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera reso
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
 ```
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of action space, more refined and reliable output (This can uncover behaviors, *not just the 7 listed above*, and perhaps coincide better with latent variables).
-
-* The following steps are only valid if you go with `Option 2`
-### Step IV
-#### Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
 Based on the comparable results benchmarked against human observers for the Yttri lab dataset, we also tested the generalizability with a dataset from the Ahmari lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
 
 ```matlab
 [f,tsne_f,grp,llh,bsoid_fig] = bsoid_gmm(data,60); % data, sampling-rate
 ```
-### Step V Supervised learning with Support Vector Machine algorithm based on GMM clustered groups.
-#### With the labeled groups, we can extract the distribution of the 7 features and train a simple linear classifier to segment all future experimental data. Refer to [bsoid_svm.md](docs/bsoid_svm.md)
+
+## The following steps are only valid if you go with `Option 2`
+### Step IV 
+#### Build your own Support Vector Machine classifier based on feature distribution of the individual GMM groups!
+```matlab
+[OF_mdl,err] = bsoid_mdl(f,grp); % features and GMM groups from bsoid_gmm
+```
+
+![Model performance](demo/Accuracy_BoxPlot.png)
+
+### Step V
+#### With the model built, we can accurately and quickly predict future mouse datasets by just looking at their feature. This is essentially `Option 1` with a *computer brain* looking at all the data you have fed it. Refer to [bsoid_svm.md](docs/bsoid_svm.md)
 
 ```matlab
-[Mdl,err] = bsoid_svm(f,grp); % features and GMM groups from bsoid_gmm
+[labels,f_10fps_test] = bsoid_svm(data_test,OF_mdl); % features and GMM groups from bsoid_gmm
 ```
+
 
 ### *(OPTIONAL) Step VI (If you are interested in creating short videos (.avi) of the groups). This is not recommended if it has more than 100,000 frames at 720*1280p.*
 #### Read the video and create a handle for it.
