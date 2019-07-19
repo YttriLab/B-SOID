@@ -10,7 +10,7 @@ This usage of this algorithm has been outlined below, and is extremely flexible 
 
 ## Installation
 
-Use Git using the web URL or download ZIP. 
+Git clone the web URL or download ZIP. 
 
 Change your current working directory to the location where you want the cloned directory to be made.
 
@@ -19,11 +19,11 @@ git clone https://github.com/YttriLab/B-SOID.git
 ```
 
 ## Usage
-Change MATLAB current folder to `B-SOID/bsoid` 
+Change the MATLAB current folder to the folder containing `B-SOID/bsoid` 
 
 ### Step I 
 Import .csv file, and convert it to a matrix.
-Using the demo mouse navigating the open-field from the Yttri-Lab
+Using the demo mouse navigating the open-field from the Yttri lab.
 ```matlab
 data_struct = import(Ms2OpenField.csv);
 rawdata = data_struct.data
@@ -35,12 +35,12 @@ Based on our pixel-error, the default has been set to 0.1.
 data = dlc_preprocess(rawdata,0.1);
 ```
 ### Step III
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analysis (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
 Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri lab has set criteria for the 7 states of action. This fast algorithm was able to automatically detect the gross behavioral changes in a Parkisonian mouse. This can serve as a quick first pass at analyzing biases in transition matrices and overarching behavioral changes before digging further into the behavior (`Option2`).
 ```matlab
 [g_label,g_num,perc_unk] = bsoid_mt(data,pix_cm); % data, pixel/cm
 ```
-#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
+#### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of the purely data-driven action space based on Gaussian Mixture Models (GMM). Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
 Based on the comparable results benchmarked against human observers for the Yttri lab dataset, we also tested the generalizability with a dataset from the Ahmari lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
 
 ```matlab
@@ -49,12 +49,12 @@ Based on the comparable results benchmarked against human observers for the Yttr
 
 ## The following steps are only applicable if you go with `Option 2`
 ### Step IV 
-#### Build a personalized Support Vector Machine classifier based on feature distribution of the individual GMM groups. Refer to [bsoid_mdl.md](docs/bsoid_mdl.md).
+#### Build a personalized Support Vector Machine (SVM) classifier based on feature distribution of the individual GMM groups. Refer to [bsoid_mdl.md](docs/bsoid_mdl.md).
 
 ```matlab
 [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp); % features and GMM groups from bsoid_gmm
 ```
-This example below shows model performance on 20% of the data that was held out from training. Each dot represents 200 randomly sampled actions, and there are 100 total run-throughs, without replacement, for showing the robust accuracy.
+The figure below shows SVM model performance on 20% of the data that was held out from training. Each dot represents 200 randomly sampled actions, and there are 100 total run-throughs, without replacement, for showing the robust accuracy.
 ![Model performance](demo/Accuracy_BoxPlot.png)
 
 ### Step V
