@@ -36,7 +36,7 @@ function [data,perc_rect] = dlc_preprocess(rawdata,llh)
         data(1,(2*x-1):2*x) = [datax(1,x),datay(1,x)];
         for i = 2:length(data_lh)
             if  data_lh(i,x) < llh
-                data(i,(2*x-1):2*x) = [datax(i-1,x),datay(i-1,x)];
+                data(i,(2*x-1):2*x) = data(i-1,(2*x-1):2*x);
             else
                 data(i,(2*x-1):2*x) = [datax(i,x),datay(i,x)];
             end
