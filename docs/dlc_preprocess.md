@@ -32,3 +32,10 @@ deeplabcut.analyze_videos(config_path, video_path, save_as_csv = True)
 
 - `DATA`    Data matrix rectified after low-pass filter replacing the value with the most recent confident x,y.
 - `PERC_RECT`    Percent rectified for each body part.  This is just to inform the user how much data is below the threshold. Consider retraining/refining the network if this value is above 15%. 
+
+### Upon obtaining the outputs
+`Option 1`
+*Run [bsoid_mt.md](bsoid_mt.md). next*
+`Option 2`
+*Run [bsoid_gmm.md](bsoid_gmm.md). next*
+
