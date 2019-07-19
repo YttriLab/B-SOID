@@ -9,7 +9,7 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
 
 *Run [dlc_preprocess.md](dlc_preprocess.md). first*
 
-#### Inputs to BSOID_US.m
+#### Inputs to BSOID_GMM.m
 
 - `DATA`    6-body parts (x,y) matrix outlining the mouse viewed from bottom-up. Rows represents frame numbers. Columns 1 & 2: Snout; Columns 3, 4, 5 & 6: two front paws (Left-Right order does not matter); Columns 7, 8, 9 & 10: two hind paws (Left-Right order does not matter); Columns 11 & 12: base of tail (Place it where the tail extends out from the butt). 
 
@@ -37,7 +37,7 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
 
 - `IT`  The number of random initialization for Gaussian Mixture Models. This attempts to find global optimum, instead of local optimum. Default is 20.
 
-#### Outputs of BSOID_US.m
+#### Outputs of BSOID_GMM.m
 
 - `F_10FPS`    Compiled features that were used to cluster, 10fps temporal resolution.
 - `TSNE_FEATS`    An N x 3 matrix that represents action space. Based on the 7 informative features collected, we utilized a type of dimensionality reduction algorithm: **t-Distributed Stochastic Neighbor Embedding, or t-SNE**, of which emphasizes on preservation of local distances. 
