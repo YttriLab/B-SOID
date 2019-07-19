@@ -7,7 +7,7 @@ function [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,hldout,cv_it,
 
 ### Prior to Usage
 
-*Run [bsoid_gmm.md](bsoid_gmm.md). first*
+*Run [bsoid_gmm.md](bsoid_gmm.md) first*
 
 #### Inputs to BSOID_MDL.m
 
@@ -34,4 +34,4 @@ function [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,hldout,cv_it,
 - `ACC_FIG`    Box plot showing classifier performance with individual data points representing a randomly subsampled test set from the hold out portion.
 
 ### Upon obtaining the outputs
-*Run [bsoid_svm.md](bsoid_svm.md). next*
+*Run [bsoid_svm.md](bsoid_svm.md) next*
