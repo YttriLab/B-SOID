@@ -32,26 +32,26 @@ rawdata = data_struct.data
 Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [dlc_preprocess.md](docs/dlc_preprocess.md).
 Based on our pixel-error, the Yttri lab decided to go with 0.5 as the likelihood threshold.
 ```matlab
-data = dlc_preprocess(rawdata,0.5);
+data = dlc_preprocess(rawdata,0.1);
 ```
 ### Step III
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Manual criteria for a rough but fast analyses (If you are interested in considering the rough estimate of the 7 behaviors: 1 = Pause, 2 = Rear, 3 = Groom, 4 = Sniff, 5 = Locomote, 6 = Orient Left, 7 = Orient Right). Refer to [bsoid_mt.md](docs/bsoid_mt.md)
 Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera resolution of 1280p x 720p, the Yttri lab has set criteria for the 7 states of action. This fast algorithm was able to automatically detect the gross behavioral changes in Parkisonian mouse from the Yttri lab. This can serve as a quick first pass at analyzing biases in transition matrices, as well as overarching behavioral changes before digging further into the behavior (`Option2`).
 ```matlab
-[g_label,g_num,perc_unk] = bsoid_fast(data,pix_cm); % data, pixel/cm
+[g_label,g_num,perc_unk] = bsoid_mt(data,pix_cm); % data, pixel/cm
 ```
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of the purely data-driven action space. Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
 Based on the comparable results benchmarked against human observers for the Yttri lab dataset, we also tested the generalizability with a dataset from the Ahmari lab and found that the agnostic data-driven approach allowed for scaling to the zoom as well as animal-animal variability. It will also sub-divide what seems to be the same action groups into different categories, of which may or may not be important depending on the study.
 
 ```matlab
-[f,tsne_f,grp,llh,bsoid_fig] = bsoid_gmm(data,60); % data, sampling-rate
+[feats,f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,60,1); % data, frame rate, 1 classifier for all.
 ```
 
 ## The following steps are only valid if you go with `Option 2`
 ### Step IV 
 #### Build your own Support Vector Machine classifier based on feature distribution of the individual GMM groups!
 ```matlab
-[OF_mdl,err] = bsoid_mdl(f,grp); % features and GMM groups from bsoid_gmm
+[OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp); % features and GMM groups from bsoid_gmm
 ```
 
 ![Model performance](demo/Accuracy_BoxPlot.png)
@@ -60,7 +60,9 @@ Based on the comparable results benchmarked against human observers for the Yttr
 #### With the model built, we can accurately and quickly predict future mouse datasets by just looking at their feature. This is essentially `Option 1` with a *computer brain* looking at all the data you have fed it. Refer to [bsoid_svm.md](docs/bsoid_svm.md)
 
 ```matlab
-[labels,f_10fps_test] = bsoid_svm(data_test,OF_mdl); % features and GMM groups from bsoid_gmm
+data_test_struct = import(new_mouse.csv);
+rawdata_test = data_test_struct.data
+[labels,f_10fps_test] = bsoid_svm(rawdata_test,OF_mdl); % features and GMM groups from bsoid_gmm
 ```
 
 
