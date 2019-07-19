@@ -6,12 +6,12 @@ function [labels,f_10fps_test] = bsoid_svm(data_test,fps,OF_mdl,smth_hstry,smth_
 ```
 
 ### Prior to Usage
-Run *[bsoid_mdl.md](bsoid_mdl.md).* to build a behavioral model, or load up our demo model.
+Run *[bsoid_mdl.md](bsoid_mdl.md)* to build a behavioral model, or load up our demo model.
 ```matlab
 load OF_mdl
 ```
 Then, 
-Run *[dlc_preprocess.md](dlc_preprocess.md).* on test dataset.
+Run *[dlc_preprocess.md](dlc_preprocess.md)* on test dataset.
 
 ```matlab
 fprintf('Please select DeepLabCut generated .csv file. \n'); 
