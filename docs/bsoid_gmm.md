@@ -45,3 +45,5 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
 - `LLH`    Log-likelihood to see for yourself that the expectation-maximization indeed converged at an local/global optimum.
 - `BSOID_FIG`    An 3-dimensional scatter plot showing the user how the different groups are located in t-SNEaction space.
 
+### Upon obtaining the outputs
+*Run [bsoid_mdl.md](bsoid_mdl.md). next*
