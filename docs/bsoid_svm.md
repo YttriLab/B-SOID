@@ -49,4 +49,4 @@ function [data_test,perc_rect] = dlc_preprocess(rawdata_test,llh)
 
 
 ### Upon obtaining the outputs
-** REAL SCIENCE STARTS! **
+**REAL SCIENCE STARTS!**
