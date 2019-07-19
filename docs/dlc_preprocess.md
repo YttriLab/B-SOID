@@ -35,7 +35,8 @@ deeplabcut.analyze_videos(config_path, video_path, save_as_csv = True)
 
 ### Upon obtaining the outputs
 `Option 1`
-*Run [bsoid_mt.md](bsoid_mt.md). next*
+*Run [bsoid_mt.md](bsoid_mt.md). next*.
+
 `Option 2`
-*Run [bsoid_gmm.md](bsoid_gmm.md). next*
+*Run [bsoid_gmm.md](bsoid_gmm.md). next*.
 
