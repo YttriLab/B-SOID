@@ -54,7 +54,7 @@ Based on the comparable results benchmarked against human observers for the Yttr
 ```matlab
 [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp); % features and GMM groups from bsoid_gmm
 ```
-
+This example below shows model performance on 20% of the data that was held out from training. Each dot represents 200 randomly sampled actions, and there are 100 total run-throughs, without replacement, for showing the robust accuracy.
 ![Model performance](demo/Accuracy_BoxPlot.png)
 
 ### Step V
