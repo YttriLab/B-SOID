@@ -1,5 +1,5 @@
 ## BSOID_GMM.m
-**Purpose**: Behavioral analyses requires users to pre-define what they are looking for in an animal. Unlike BSOID_MT.m, this algorithm takes an unsupervised, purely data-driven approach to segment statistically different behaviors. This core concept of finding trends based on only the data has been utilized in many artificial intelligence designs, including, but not limited to, speaker identification, hand-writing analyses, brain-computer interfaces, and identification of stages in certain biological diseases, and has been proven effective in uncovering latent variables.
+**Purpose**: Behavioral analyses require users to pre-define what they are looking for in an animal. Unlike BSOID_MT.m, this algorithm takes an unsupervised, purely data-driven approach to segment statistically different behaviors. This core concept of finding trends based on only the data has been utilized in many artificial intelligence designs, including, but not limited to, speaker identification, hand-writing analyses, brain-computer interfaces, and identification of stages in certain biological diseases, and has been proven effective in uncovering latent variables.
 
 ```matlab
 function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_hstry,smth_futr,gmmclass,it)
@@ -7,7 +7,7 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
 
 ### Prior to Usage
 
-*Run [dlc_preprocess.md](dlc_preprocess.md). first*
+*Run [dlc_preprocess.md](dlc_preprocess.md) first.*
 
 #### Inputs to BSOID_GMM.m
 
@@ -35,15 +35,15 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
 
 - `GMMCLASS`    Maximum number of randomly-initialized Gaussian Mixture Models to fit. Default is 30. For naturalistic open field behavior, sub-sampling action groups may overfit the animal.
 
-- `IT`  The number of random initialization for Gaussian Mixture Models. This attempts to find global optimum, instead of local optimum. Default is 20.
+- `IT`  The number of random initialization for Gaussian Mixture Models. This attempts to find a global optimum, instead of local optimum. Default is 20.
 
 #### Outputs of BSOID_GMM.m
 
 - `F_10FPS`    Compiled features that were used to cluster, 10fps temporal resolution.
-- `TSNE_FEATS`    An N x 3 matrix that represents action space. Based on the 7 informative features collected, we utilized a type of dimensionality reduction algorithm: **t-Distributed Stochastic Neighbor Embedding, or t-SNE**, of which emphasizes on preservation of local distances. 
+- `TSNE_FEATS`    An N x 3 matrix that represents action space. Based on the 7 informative features collected, we utilized a type of dimensionality reduction algorithm: **t-Distributed Stochastic Neighbor Embedding, or t-SNE**, which emphasizes on preservation of local distances. 
 - `GRP`    Statistically different groups of actions based on unsupervised Gaussian Mixture Models. If you are sampling above 10 frames-per-second (~100ms/frame), this will reduce the samples to assist with the efficiency of clustering.
-- `LLH`    Log-likelihood to see for yourself that the expectation-maximization indeed converged at an local/global optimum.
-- `BSOID_FIG`    An 3-dimensional scatter plot showing the user how the different groups are located in t-SNEaction space.
+- `LLH`    Log-likelihood to see for yourself that the expectation-maximization indeed converged at a local/global optimum.
+- `BSOID_FIG`    A 3-dimensional scatter plot showing the user how the different groups are located in t-SNEaction space.
 
 ### Upon obtaining the outputs
-*Run [bsoid_mdl.md](bsoid_mdl.md). next*
+*Run [bsoid_mdl.md](bsoid_mdl.md) next.*
