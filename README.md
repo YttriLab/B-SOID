@@ -49,7 +49,8 @@ Based on the comparable results benchmarked against human observers for the Yttr
 
 ## The following steps are only valid if you go with `Option 2`
 ### Step IV 
-#### Build your own Support Vector Machine classifier based on feature distribution of the individual GMM groups!
+#### Build your own Support Vector Machine classifier based on feature distribution of the individual GMM groups! Refer to [bsoid_mdl.md](docs/bsoid_mdl.md)
+
 ```matlab
 [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp); % features and GMM groups from bsoid_gmm
 ```
