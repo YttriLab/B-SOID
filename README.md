@@ -30,7 +30,7 @@ rawdata = data_struct.data
 ```
 ### Step II
 Apply a low-pass filter for data likelihood. `dlc_preprocess` finds the most recent x,y that are above the threshold and replaces with them. Refer to [dlc_preprocess.md](docs/dlc_preprocess.md).
-Based on our pixel-error, the Yttri lab decided to go with 0.5 as the likelihood threshold.
+Based on our pixel-error, the Yttri lab decided to go with 0.1 as the likelihood threshold.
 ```matlab
 data = dlc_preprocess(rawdata,0.1);
 ```
