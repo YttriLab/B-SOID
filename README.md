@@ -8,7 +8,7 @@ This usage of this algorithm has been outlined below, and is extremely flexible 
 
 ![Mouse Action Cluster Demo 1x](demo/2x2grid.gif)
 
-The Yttri lab dataset [Alexander Hsu, main contributor] (left) has been tested against multiple human observers and showed similar inter-grader variability. We also tested the generalizability with the dataset from Ahamri lab [Jared Kopelman, Shirley Jiang, & Sean Piantadosi] dataset (right).
+The **Yttri lab, *Alexander Hsu, main contributor*** dataset (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from **Ahamri lab , *Jared Kopelman, Shirley Jiang, & Sean Piantadosi*** (right), and was predictive of actual behavior.
 
 ## Installation
 
@@ -47,7 +47,8 @@ Based on our zoom from the 15 inch x 12 inch open field set-up, at a camera reso
 ```
 If you are using our demo dataset
 ```matlab
-[g_label,g_num,perc_unk] = bsoid_mt(data,24); % data, pixel/cm
+load MsTestingData.mat
+[g_label,g_num,perc_unk] = bsoid_mt(MsTestingData,24); % data, pixel/cm
 ```
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 2`: Unsupervised grouping of the purely data-driven action space based on Gaussian Mixture Models (GMM). Refer to [bsoid_gmm.md](docs/bsoid_gmm.md)
 ```matlab
