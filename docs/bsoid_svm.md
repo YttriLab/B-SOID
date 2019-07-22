@@ -23,7 +23,7 @@ function [data_test,perc_rect] = dlc_preprocess(rawdata_test,llh)
 
 #### Inputs to BSOID_SVM.m
 
-- `DATA_TEST`    6-body parts (x,y) matrix outlining the mouse viewed from bottom-up. Rows represents frame numbers. Columns 1 & 2: Snout; Columns 3, 4, 5 & 6: two front paws (Left-Right order does not matter); Columns 7, 8, 9 & 10: two hind paws (Left-Right order does not matter); Columns 11 & 12: base of tail (Place it where the tail extends out from the butt). 
+- `DATA_TEST`    - `DATA`    A cell-array containing either one or multiple rodents' estimated positions of the 6-body parts (snout, 4 paws, and base of tail) over time recorded from the bottom-up perspective. Rows represents frame numbers. Columns 1 & 2: Snout; Columns 3, 4, 5 & 6: two front paws (Left-Right order does not matter); Columns 7, 8, 9 & 10: two hind paws (Left-Right order does not matter); Columns 11 & 12: base of tail (Place it where the tail extends out from the butt). 
 
 - `FPS`    Rounded video sampling frame rate. Use *VideoReader* in MATLAB or *ffmpeg* bash command to detect. 
 
