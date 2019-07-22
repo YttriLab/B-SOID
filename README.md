@@ -8,7 +8,7 @@ This usage of this algorithm has been outlined below, and is extremely flexible 
 
 ![Mouse Action Cluster Demo 1x](demo/2x2grid.gif)
 
-The **Yttri lab, *Alexander Hsu, main contributor*** dataset (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from **Ahamri lab , *Jared Kopelman, Shirley Jiang, & Sean Piantadosi*** (right), and was predictive of actual behavior.
+The dataset from **Yttri lab, *Alexander Hsu,*** (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from **Ahamri lab , *Jared Kopelman, Shirley Jiang, & Sean Piantadosi*** (right), and was predictive of actual behavior.
 
 ## Installation
 
