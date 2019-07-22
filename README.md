@@ -8,7 +8,7 @@ This usage of this algorithm has been outlined below, and is extremely flexible 
 
 ![Mouse Action Cluster Demo 1x](demo/2x2grid.gif)
 
-The dataset from **Yttri lab, *Alexander Hsu,*** (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from **Ahamri lab , *Jared Kopelman, Shirley Jiang, & Sean Piantadosi*** (right), and was predictive of actual behavior.
+The dataset from *Yttri lab, Alexander Hsu,* (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from *Ahamri lab , Jared Kopelman, Shirley Jiang, & Sean Piantadosi* (right), and was predictive of actual behavior.
 
 ## Installation
 
@@ -71,7 +71,7 @@ If you are interested in using our model,
 ```matlab
 load OF_mdl
 ```
-![Model performance](demo/Accuracy_BoxPlot.png)
+![Model performance](demo/MsTrainingSVM_Accuracy.png)
 The figure above shows SVM model performance on 20% of the data that was held out from training. Each dot represents 200 randomly sampled actions, and there are 70 different iterations, without replacement, for showing the robust cross-validation accuracy.
 
 
