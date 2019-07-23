@@ -82,7 +82,7 @@ The figure above shows SVM model performance on 20% of the data that was held ou
 ```matlab
 data_test_struct = import(new_mouse.csv);
 rawdata_test = data_test_struct.data
-data_test = dlc_preprocess(rawdata_test,0.1);
+data_test = dlc_preprocess(rawdata_test,0.2);
 [labels,f_10fps_test] = bsoid_svm(data_test,OF_mdl); % features and GMM groups from bsoid_gmm
 ```
 You can attempt to test this on our demo test dataset
