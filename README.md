@@ -92,9 +92,9 @@ load MsTestingData.mat
 ```
 
 ### *(OPTIONAL) Step VI (If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions).*
-#### Read the video and create a handle for it.
+#### Read the video and create a handle for it (Windows).
 ```matlab
-vidObj = VideoReader(filenamevid); % video used to generate DLC
+vidObj = VideoReader(filenamevid); % video file used to generate DLC
 ```
 #### Assuming all behaviors can be sampled from the first 10 minutes (600 seconds), have MATLAB store only every 10 frames per second.
 ```matlab
