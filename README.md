@@ -122,7 +122,7 @@ We are a neuroscience lab and welcome all contributions to improve this algorith
 ## License
 
 This software package provided without warranty of any kind and is licensed under the GNU Lesser General Public License v3.0. 
-Cite us if you use the code and/or data! (https://choosealicense.com/licenses/mit/)
+As we are in the beginning stage of development, co-authorship is required from us if you use our algorithm and/or model/data! (https://choosealicense.com/licenses/agpl-3.0/)
 
 ## References
 1. [Mathis A, Mamidanna P, Cury KM, Abe T, Murthy VN, Mathis MW, Bethge M. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci. 2018 Sep;21(9):1281-1289. doi: 10.1038/s41593-018-0209-y. Epub 2018 Aug 20. PubMed PMID: 30127430.](https://www.nature.com/articles/s41593-018-0209-y)
