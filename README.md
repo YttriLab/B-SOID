@@ -58,7 +58,7 @@ Alternatively, you can load the demo f_10fps and groupings.
 ```matlab
 load MsTrainingFeats.mat MsActionGrps.mat
 ```
-![3D Action Space Groups Demo 1x](demo/3DActionSpaceGrps.gif).
+![3D Action Space Groups Demo 1x](demo/3DActionSpaceGrps1.gif).
 
 The 3-dimensional figure above shows the agnostic groupings of our demo training dataset undergoing unsupervised learning classification. 
 
