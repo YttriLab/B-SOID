@@ -45,9 +45,9 @@ function [g_num,perc_unk,trans_p] = bsoid_mt(data,fps,pix_cm,smth_hstry,smth_fut
             cfp_pt_norm(i) = norm(cfp_pt(i,:)); % Center of front paws to proximal tail euclidean distance
             sn_pt_norm(i) = norm(sn_pt(i,:)); % Snout to proximal tail euclidean distance, i.e. body length
         end
-        fpd_norm_smth(m,:) = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_cfp_norm_smth(m,:) = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_pt_norm_smth(m,:) = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        fpd_norm_smth{m} = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_cfp_norm_smth{m} = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_pt_norm_smth{m} = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
         for k = 1:length(data{m})-1 % Velocity and angle over time
             b_3d = [sn_pt(k+1,:),0]; a_3d = [sn_pt(k,:),0]; c = cross(b_3d,a_3d);
             sn_pt_ang(k) = sign(c(3))*180/pi*atan2(norm(c),dot(sn_pt(k,:),sn_pt(k+1,:))); % Body angle, arctan between body  
@@ -58,41 +58,41 @@ function [g_num,perc_unk,trans_p] = bsoid_mt(data,fps,pix_cm,smth_hstry,smth_fut
             fpR_disp(k) = norm(data{m}(k+1,3:4)-data{m}(k,3:4)); % Right forepaw displacement over time
             fpL_disp(k) = norm(data{m}(k+1,5:6)-data{m}(k,5:6)); % Left forepaw displacement over time
         end 
-        sn_pt_ang_smth(m,:) = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_disp_smth(m,:) = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        pt_disp_smth(m,:) = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        hpR_disp_smth(m,:) = movmean(hpR_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        hpL_disp_smth(m,:) = movmean(hpL_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        fpR_disp_smth(m,:) = movmean(fpR_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        fpL_disp_smth(m,:) = movmean(fpL_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_pt_ang_smth{m} = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_disp_smth{m} = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        pt_disp_smth{m} = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        hpR_disp_smth{m} = movmean(hpR_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        hpL_disp_smth{m} = movmean(hpL_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        fpR_disp_smth{m} = movmean(fpR_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        fpL_disp_smth{m} = movmean(fpL_disp,[smth_hstry,smth_futr]); % Reduce label noise
         %% Classify action based on parameters specified above
         %%% Rest/Pause is defined as minimal change in body angle, and minimal displacement of all labels.
-        idx_rest{m} = find(abs(sn_pt_ang_smth(m,:)) < 1 & sn_disp_smth(m,:) > 0 & sn_disp_smth(m,:) < 2 & pt_disp_smth(m,:) < 2 & ...
-            fpR_disp_smth(m,:) < 2 & fpL_disp_smth(m,:) < 2 & sn_cfp_norm_smth(m,2:end) > 0);
+        idx_rest{m} = find(abs(sn_pt_ang_smth{m}) < 1 & sn_disp_smth{m} > 0 & sn_disp_smth{m} < 2 & pt_disp_smth{m} < 2 & ...
+            fpR_disp_smth{m} < 2 & fpL_disp_smth{m} < 2 & sn_cfp_norm_smth{m}(:,2:end) > 0);
         %%% Rear is defined as either snout is gone, front paws are gone (reared up), or front paws coming together (rearing up).
-        idx_rear{m} = find(sn_disp_smth(m,:) == 0 & abs(sn_pt_ang_smth(m,:)) < 1 | ... 
-            fpR_disp_smth(m,:) == 0 & abs(sn_pt_ang_smth(m,:)) < 1 | ... 
-            fpL_disp_smth(m,:) == 0 & abs(sn_pt_ang_smth(m,:)) < 1 | ...
-            sn_disp_smth(m,:) > 2 & abs(fpR_disp_smth(m,:)-fpL_disp_smth(m,:)) < 5 & sn_cfp_norm_smth(m,2:end) > 0 & ... 
-            fpd_norm_smth(m,2:end) < 20 & pt_disp_smth(m,:) >= 2 & fpR_disp_smth(m,:) >= 2 & fpL_disp_smth(m,:) >= 2);
+        idx_rear{m} = find(sn_disp_smth{m} == 0 & abs(sn_pt_ang_smth{m}) < 1 | ... 
+            fpR_disp_smth{m} == 0 & abs(sn_pt_ang_smth{m}) < 1 | ... 
+            fpL_disp_smth{m} == 0 & abs(sn_pt_ang_smth{m}) < 1 | ...
+            sn_disp_smth{m} > 2 & abs(fpR_disp_smth{m}-fpL_disp_smth{m}) < 5 & sn_cfp_norm_smth{m}(:,2:end) > 0 & ... 
+            fpd_norm_smth{m}(:,2:end) < 20 & pt_disp_smth{m} >= 2 & fpR_disp_smth{m} >= 2 & fpL_disp_smth{m} >= 2);
         %%% Groom is defined as either snout invisible, front paws visible and close, and no change in angle or tail position
         %%%% snout is visible, front paws in/visible and far, hands are in front of snout, and no change in angle or tail position
         %%%% or snout visibly moving, both front paws visible, one of which moves, and no change in angle or tail position
-        idx_groom{m} = find(sn_disp_smth(m,:) == 0 & fpd_norm_smth(m,2:end) < 10 & fpR_disp_smth(m,:) >= 2 & abs(sn_pt_ang_smth(m,:)) < 1 & ...
-            pt_disp_smth(m,:) < 2 | sn_disp_smth(m,:) == 0 & fpd_norm_smth(m,2:end) < 10 & fpL_disp_smth(m,:) >= 2 & ...
-            abs(sn_pt_ang_smth(m,:)) < 1 & pt_disp_smth(m,:) < 2 | ...
-            sn_disp_smth(m,:) > 0 & fpR_disp_smth(m,:) >= 2 & abs(sn_pt_ang_smth(m,:)) < 1 & hpR_disp_smth(m,:) < 2 & hpL_disp_smth(m,:) < 2 & pt_disp_smth(m,:) < 2 | ...
-            sn_disp_smth(m,:) > 0 & fpL_disp_smth(m,:) >= 2 & abs(sn_pt_ang_smth(m,:)) < 1 & hpR_disp_smth(m,:) < 2 & hpL_disp_smth(m,:) < 2 & pt_disp_smth(m,:) < 2 | ...
-            sn_disp_smth(m,:) > 0 & abs(sn_pt_ang_smth(m,:)) < 1 & sn_cfp_norm_smth(m,2:end) < 0 & pt_disp_smth(m,:) < 2 | ...
-            sn_disp_smth(m,:) >= 2 & fpR_disp_smth(m,:) > 0 & fpL_disp_smth(m,:) > 0 & abs(sn_pt_ang_smth(m,:)) < 1 & pt_disp_smth(m,:) < 2);
+        idx_groom{m} = find(sn_disp_smth{m} == 0 & fpd_norm_smth{m}(:,2:end) < 10 & fpR_disp_smth{m} >= 2 & abs(sn_pt_ang_smth{m}) < 1 & ...
+            pt_disp_smth{m} < 2 | sn_disp_smth{m} == 0 & fpd_norm_smth{m}(:,2:end) < 10 & fpL_disp_smth{m} >= 2 & ...
+            abs(sn_pt_ang_smth{m}) < 1 & pt_disp_smth{m} < 2 | ...
+            sn_disp_smth{m} > 0 & fpR_disp_smth{m} >= 2 & abs(sn_pt_ang_smth{m}) < 1 & hpR_disp_smth{m} < 2 & hpL_disp_smth{m} < 2 & pt_disp_smth{m} < 2 | ...
+            sn_disp_smth{m} > 0 & fpL_disp_smth{m} >= 2 & abs(sn_pt_ang_smth{m}) < 1 & hpR_disp_smth{m} < 2 & hpL_disp_smth{m} < 2 & pt_disp_smth{m} < 2 | ...
+            sn_disp_smth{m} > 0 & abs(sn_pt_ang_smth{m}) < 1 & sn_cfp_norm_smth{m}(:,2:end) < 0 & pt_disp_smth{m} < 2 | ...
+            sn_disp_smth{m} >= 2 & fpR_disp_smth{m} > 0 & fpL_disp_smth{m} > 0 & abs(sn_pt_ang_smth{m}) < 1 & pt_disp_smth{m} < 2);
         %%% Orientation of body is defined as non-locomoting body angle change
-        idx_ori_right{m} = find(pt_disp_smth(m,:) < 2 & sn_pt_ang_smth(m,:) >= 1);
-        idx_ori_left{m} = find(pt_disp_smth(m,:) < 2 & sn_pt_ang_smth(m,:) <= -1);
+        idx_ori_right{m} = find(pt_disp_smth{m} < 2 & sn_pt_ang_smth{m} >= 1);
+        idx_ori_left{m} = find(pt_disp_smth{m} < 2 & sn_pt_ang_smth{m} <= -1);
         %%% Locomotion is defined as body displacement with either front paw
-        idx_loc{m} = find(pt_disp_smth(m,:) >= 2 & fpR_disp_smth(m,:) >= 2 | pt_disp_smth(m,:) >= 2 & fpL_disp_smth(m,:) >= 2 | ...
-            pt_disp_smth(m,:) >= 2 & hpR_disp_smth(m,:) >= 2 | pt_disp_smth(m,:) >= 2 & hpL_disp_smth(m,:) >= 2);
+        idx_loc{m} = find(pt_disp_smth{m} >= 2 & fpR_disp_smth{m} >= 2 | pt_disp_smth{m} >= 2 & fpL_disp_smth{m} >= 2 | ...
+            pt_disp_smth{m} >= 2 & hpR_disp_smth{m} >= 2 | pt_disp_smth{m} >= 2 & hpL_disp_smth{m} >= 2);
         %%% Head movement is defined as only snout movement with stationary body, and no change in angle or tail position
-        idx_headmov{m} = find(abs(sn_pt_ang_smth(m,:)) < 1 & sn_disp_smth(m,:) >= 2 & hpR_disp_smth(m,:) < 2 & hpL_disp_smth(m,:) < 2);  
+        idx_headmov{m} = find(abs(sn_pt_ang_smth{m}) < 1 & sn_disp_smth{m} >= 2 & hpR_disp_smth{m} < 2 & hpL_disp_smth{m} < 2);  
         %% Low pass filter of unreasonable fast state changes
         MC = []; MC(:) = 0; MC(idx_rest{m},1) = 1; MC(idx_loc{m},1) = 5; MC(idx_ori_left{m},1) = 6; MC(idx_ori_right{m},1) = 7; 
         MC(idx_rear{m},1) = 2; MC(idx_groom{m},1) = 3; MC(idx_headmov{m},1) = 4; 
