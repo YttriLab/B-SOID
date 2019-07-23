@@ -80,22 +80,22 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
             chp_pt_norm(i) = norm(chp_pt(i,:)); % Center of hind paws to proximal tail euclidean distance
             sn_pt_norm(i) = norm(sn_pt(i,:)); % Snout to proximal tail euclidean distance, i.e. body length
         end
-        fpd_norm_smth(m,:) = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_cfp_norm_smth(m,:) = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_chp_norm_smth(m,:) = movmean(sn_pt_norm-chp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_pt_norm_smth(m,:) = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        fpd_norm_smth{m} = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_cfp_norm_smth{m} = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_chp_norm_smth{m} = movmean(sn_pt_norm-chp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_pt_norm_smth{m} = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
         for k = 1:length(data{m})-1 % Velocity and angle over time
             b_3d = [sn_pt(k+1,:),0]; a_3d = [sn_pt(k,:),0]; c = cross(b_3d,a_3d);
             sn_pt_ang(k) = sign(c(3))*180/pi*atan2(norm(c),dot(sn_pt(k,:),sn_pt(k+1,:))); % Body angle, arctan between body  
             sn_disp(k) = norm(data{m}(k+1,1:2)-data{m}(k,1:2)); % Snout displacement over time
             pt_disp(k) = norm(data{m}(k+1,11:12)-data{m}(k,11:12)); % Proximal tail displacement over time
         end 
-        sn_pt_ang_smth(m,:) = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_disp_smth(m,:) = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        pt_disp_smth(m,:) = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_pt_ang_smth{m} = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_disp_smth{m} = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        pt_disp_smth{m} = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
         %% Collate 7 features. We will reduce the dimensions using the KL-distance in a stochastic process.
-        feats{m} = [sn_cfp_norm_smth(m,2:end); sn_chp_norm_smth(m,2:end); fpd_norm_smth(m,2:end); sn_pt_norm_smth(m,2:end); ...
-            sn_pt_ang_smth(m,1:end); sn_disp_smth(m,1:end); pt_disp_smth(m,1:end)];
+        feats{m} = [sn_cfp_norm_smth{m}(:,2:end); sn_chp_norm_smth{m}(:,2:end); fpd_norm_smth{m}(:,2:end); sn_pt_norm_smth{m}(:,2:end); ...
+            sn_pt_ang_smth{m}(:,1:end); sn_disp_smth{m}(:,1:end); pt_disp_smth{m}(:,1:end)];
     end
     if comp == 1
         f_10fps = [];
