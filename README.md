@@ -115,7 +115,7 @@ filepathout = uigetdir;
 
 ## Contributing
 
-Pull requests are welcome. For recommended changes that you would like to see, open an issue.
+Pull requests are welcome. For recommended changes that you would like to see, open an issue. Or join our [slack group](https://b-soidb-side.slack.com/)
 
 We are a neuroscience lab and welcome all contributions to improve this algorithm. Please do not hesitate to contact us for any question/suggestion.
 
