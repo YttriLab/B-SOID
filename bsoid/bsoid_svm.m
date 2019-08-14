@@ -72,7 +72,7 @@ function [labels,f_10fps_test] = bsoid_svm(data_test,fps,OF_mdl,smth_hstry,smth_
             feats1(:,end+1) = [mean(feats_test{n}(1:4,k-fps/10+1:k),2);sum(feats_test{n}(5:7,k-fps/10+1:k),2)];
         end
         f_10fps_test{n} = feats1; % Store individual animal features so you can see what the machine grouping is focusing on.
-        labels = predict(OF_mdl,f_10fps_test{n}'); % Predict the labels based on your model.
+        labels{n} = predict(OF_mdl,f_10fps_test{n}'); % Predict the labels based on your model.
     end
     
 return
