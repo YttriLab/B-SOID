@@ -122,7 +122,10 @@ We are a neuroscience lab and welcome all contributions to improve this algorith
 ## License
 
 This software package provided without warranty of any kind and is licensed under the GNU Lesser General Public License v3.0. 
-As we are in the beginning stage of development, co-authorship is required from us if you use our algorithm and/or model/data! (https://choosealicense.com/licenses/agpl-3.0/)
+If you use our algorithm and/or model/data, please cite us! Preprint/peer-review will be announced in the following section. (https://choosealicense.com/licenses/agpl-3.0/)
+
+## News
+September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/content/10.1101/770271v1) 
 
 ## References
 1. [Mathis A, Mamidanna P, Cury KM, Abe T, Murthy VN, Mathis MW, Bethge M. DeepLabCut: markerless pose estimation of user-defined body parts with deep learning. Nat Neurosci. 2018 Sep;21(9):1281-1289. doi: 10.1038/s41593-018-0209-y. Epub 2018 Aug 20. PubMed PMID: 30127430.](https://www.nature.com/articles/s41593-018-0209-y)
