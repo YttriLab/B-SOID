@@ -92,24 +92,26 @@ load MsTestingData.mat
 ```
 
 ### *(OPTIONAL) Step VI (If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions).*
-#### Read the video and create a handle for it (Windows).
-```matlab
-vidObj = VideoReader(filenamevid); % video file used to generate DLC
+#### Install [FFmpeg](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) or other software that can achieve the same thing, I will provide the FFmpeg command lines below
+
+Go to your video directory.
+
+#### Use FFmpeg to create 10fps frames from your videos to match grp
+```C
+ffmpeg -i your_highspeedvideo.mp4 -filter:v fps=fps=10 your_10fpsvideo.mp4
+mkdir your_10fpsPNG
+ffmpeg -i "your_10fpsvideo.mp4" your_10fpsPNG/out-%01d.png
 ```
-#### Assuming all behaviors can be sampled from the first 10 minutes (600 seconds), have MATLAB store only every 10 frames per second.
+
+#### Create short videos in the desired output folder (default = current directory) of different groups of action clusters that at least lasted for ~300ms, and slow the video down to 0.5X for better understanding.
 ```matlab
-k = 1; kk = 1;
-while vidObj.CurrentTime < 599.9
-    vidObj.CurrentTime = k/60;
-    video{i}(kk).cdata = readFrame(vidObj); % save only every 10fps
-    kk = kk+1; % save only every 10fps
-    k = k+round(vidObj.FrameRate)/10; % reduce down to 10fps (100ms/frm)
-end
-```
-#### Create short videos in the desired output folder (default = current directory) of different groups of action clusters that at least lasted for ~300ms, and slow the video down to 0.75X for better understanding.
-```matlab
-filepathout = uigetdir;
-[t,b,b_ex] = action_gif(video,grp_fill,1,5,6,0.75,filepathout);
+fprintf('Please select the folder containing FFmpeg generated frames from your 10fps video. \n');
+PNGpath = uigetdir; PNGpath = sprintf('%s%s',PNGpath,'/');
+fprintf('Please select output folder for GIF. \n');
+GIFpath = uigetdir; GIFpath = sprintf('%s%s',GIFpath,'/');
+% Assuming you trained on multiple sessions, select the session number corresponding to your video/frames
+s_no = 3;
+[t,B,b_ex] = action_gif2(PNGpath,grp(length(MsTrainingData{s_no})/(fps/10)*(s_no-1)-(s_no-1)+1:length(MsTrainingData{s_no})/(fps/10)*(s_no)-s_no),3,6,0.5,GIFpath);
 ```
 
 
