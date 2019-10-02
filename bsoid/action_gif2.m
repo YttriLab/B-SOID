@@ -1,31 +1,18 @@
 function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
-%ACTION_GIF     Create a short, randomly sampled video from BSOID grouping. BSOID learns from data, and this is a way for you to subjectively 
+%ACTION_GIF2     Create a short, randomly sampled video from BSOID grouping. BSOID learns from data, and this is a way for you to subjectively 
 %               name the individual groups that were apparently statistically different. 
 %   
-%   [T,B,B_EX] = ACTION_GIF(VIDEO,GRP,N,N_LEN,FILEPATHOUT) outputs classified behaviors based on DeepLabCut analysis
-%   VIDEO.FRAMES.CDATA    The video frame-by-frame output from mmread or videoread.
-%   FPS    detect video frame-rate to down sample to 20fps(~50ms) videos snippets
-%   GRP_FILL    Statistically different gropus based on unsupervised GMM model fitting of action space data. This is the output from BSOID.
-%   COMP If combined for same animal, comp = 1. Default 0;
+%   [T,B,B_EX] = ACTION_GIF2(PNGPATH,GRP,N,N_LEN,FILEPATHOUTRESULTS) outputs classified behaviors based on DeepLabCut analysis
+%   PNGPATH    The path to frame-by-frame video from FFmpeg.
+%   GRP    Statistically different gropus based on unsupervised GMM model fitting of action space data. This is the output from BSOID.
 %   N    Number of sampled video you desire. Default 3. 
 %   N_LEN    Lower bound for consecutive frames (10fps, 50ms each) for which the video will be generated from. Default 6 (300ms).
 %   X    X times speed. Default 0.5.
-%   FILEPATHOUT    Output path to store video. Default current directory.
+%   FILEPATHOUTRESULTS    Output path to store video. Default current directory.
 %
 %   T    Compiled features that were used to cluster.
 %   B    All behaviors that happened more or equal to the lower bound for consecutive frames.
 %   B_EX    N random samples from B. 
-%
-%   Examples:
-%   vidObj = VideoReader('xylophone.mp4'); filepathout = pwd;
-%   k = 1;
-%   while hasFrame(vidObj)
-%       video{1}(k).cdata = readFrame(vidObj);
-%       k = k+1;
-%   end
-%   grp = [ones(1,20),2*ones(1,3),ones(1,17),2*ones(1,20),3*ones(1,5),2*ones(1,35),3*ones(1,15),ones(1,5),3*ones(1,20)];
-%   [t,b,b_ex] = action_gif(video,grp,2,10,0.5,filepathout);
-%
 %
 %   Created by Alexander Hsu, Date: 100219
 %   Contact ahsu2@andrew.cmu.edu
