@@ -100,7 +100,7 @@ Go to your video directory.
 ```C
 ffmpeg -i your_highspeedvideo.mp4 -filter:v fps=fps=10 your_10fpsvideo.mp4
 mkdir your_10fpsPNG
-ffmpeg -i "your_10fpsvideo.mp4" your_10fpsPNG/out-%01d.png
+ffmpeg -i "your_10fpsvideo.mp4" your_10fpsPNG/img%01d.png
 ```
 
 #### Create short videos in the desired output folder (default = current directory) of different groups of action clusters that at least lasted for ~300ms, and slow the video down to 0.5X for better understanding.
