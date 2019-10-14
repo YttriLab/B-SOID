@@ -8,7 +8,7 @@ close all; clear all;
 n = 6; % How many .csv files do you want to build your model on?
 for i = 1:n
     %% Import data
-    fprintf(sprintf('%s%s%s','Please select ',num2str(j),' DeepLabCut generated .csv file for training data. \n'));  [filecsv,pathcsv] = uigetfile; 
+    fprintf(sprintf('%s%s%s','Please select ',num2str(i),' DeepLabCut generated .csv file for training data. \n'));  [filecsv,pathcsv] = uigetfile; 
     filenamecsv = sprintf('%s%s',pathcsv,filecsv); data_struct = importdata(filenamecsv); rawdata{i} = data_struct.data;
     %% Low-pass filter based on user-defined likelihood threshold
     [MsTrainingData{i},perc_rect] = dlc_preprocess(rawdata{i},0.2); % Change 0.2 to your desired likelihood threshold
