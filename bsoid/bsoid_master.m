@@ -16,7 +16,7 @@ end
 %% Run unsupervised learning algorithm (Gaussian Mixture Models) to identify different behaviors.
 [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(MsTrainingData,60,1); % Change 60 to your frame rate. Set 1 for 1 classifier for all .csv.
 %% Build a Support Vector Machine (SVM) classifier based on your data
-[OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,0.2,100,200); % Change 40 and 200 to <= (training data size *0.2). 
+[OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,0.2,100,200); % Change 100 and 200 to <= (training data size *0.2). 
 % Save your model as a .mat file if it looks good.
 
 %% Do this after you run the FFmpeg command
