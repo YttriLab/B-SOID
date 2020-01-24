@@ -22,4 +22,4 @@
 ![Mouse Action Groups 13-16](../examples/group13_16.gif)
 #### Group 15 (bottom left): Orient left (+); Group 16 (bottom right): Orient left (-).
 
-More example videos are in the subdirectory videos (.avi).
+More example videos are in [this](../examples) directory .
