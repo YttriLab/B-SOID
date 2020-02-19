@@ -25,10 +25,13 @@ Change the MATLAB current folder to the folder containing `B-SOID/bsoid`
 
 ### Step 0
 Setting up parameters for the master script.
-If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions).
+If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions.
 #### Install [FFmpeg](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) or other software that can achieve the same thing, I will provide the FFmpeg command lines below
 
 Go to your video directory.
+```C
+cd your/video/directory/mouse.mp4
+```
 
 #### Use FFmpeg to create 10fps frames from your videos to match grp
 ```C
@@ -66,7 +69,7 @@ Note that it will pop up user interfaces for you to select the files. Make sure 
 `Please select output folder for GIF.` is asking you to select/create an output folder for snippets of extracted behaviors (.avi) 
 `Please select 1 DeepLabCut generated .csv file for testing data.` is asking you to select testing .csv files.
 
-Alternatively, you can learn more about the algorithm and only adopt one or few with the following steps. 
+Alternatively, you can learn more about the algorithm and only adopt one or few of the following steps. 
 
 ### Step I 
 Import your .csv file from DeepLabCut, and convert it to a matrix. We can run a for loop to get all of the .csv loaded into your matlab environment. After each individual raw .csv files are imported as a matrix, we evaluate the likelihoods of all points and apply a high-pass filter for estimated data likelihood `adp_filt`.
