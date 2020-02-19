@@ -64,10 +64,10 @@ m = 3; % How many .csv do you want to test on?
 Once this is all done, run the `bsoid_master_v1p2.m` script. 
 
 Note that it will pop up user interfaces for you to select the files. Make sure you follow the printed statements for what to be selected.
-`Please select 2 DeepLabCut generated .csv file for training data.` is asking you to select training .csv files.
+`Please select 2 DeepLabCut generated .csv file for training data.` is asking you to select the second training .csv files.
 `Please select the folder containing FFmpeg generated frames from your 10fps video.` is asking you to select the folder containing extracted frames.
 `Please select output folder for GIF.` is asking you to select/create an output folder for snippets of extracted behaviors (.avi) 
-`Please select 1 DeepLabCut generated .csv file for testing data.` is asking you to select testing .csv files.
+`Please select 1 DeepLabCut generated .csv file for testing data.` is asking you to select the first testing .csv files.
 
 Alternatively, you can learn more about the algorithm and only adopt one or few of the following steps. 
 
