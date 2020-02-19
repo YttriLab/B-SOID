@@ -6,9 +6,12 @@ Behavioral segmentation of open field in DeepLabCut, or B-SOID ("B-side"), is an
 
 This usage of this algorithm has been outlined below, and is extremely flexible in adapting to what the user wants. With the ever-blooming advances in ways to study an animal behavior, our algorithm builds on and integrates what has already been robustly tested to help advance scientific research.
 
-![Mouse Action Cluster Demo 1x](demo/2x2grid.gif)
 
-The dataset from *Yttri lab, Alexander Hsu,* (left) has been tested against multiple human observers and showed comparable inter-grader variability as another observer. We also tested the generalizability with the dataset from *Ahmari lab , Jared Kopelman, Shirley Jiang, & Sean Piantadosi* (right), and was predictive of actual behavior.
+The dataset from *Yttri lab, Alexander Hsu,* has been tested against multiple human observers and showed comparable inter-grader variability as another observer. 
+![Mouse Action Cluster Demo 1x](demo/bsoidv1p2_mouse15sec.gif)
+
+We also tested the generalizability with the dataset from *Ahmari lab , Jared Kopelman, Shirley Jiang, & Sean Piantadosi*, and was predictive of actual behavior.
+![Mouse Action Cluster Demo 1x](demo/bsoidv1_OCDmouse15sec.gif)
 
 ## Installation
 
