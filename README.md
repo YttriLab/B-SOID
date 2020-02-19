@@ -23,7 +23,9 @@ git clone https://github.com/YttriLab/B-SOID.git
 ## Usage
 Change the MATLAB current folder to the folder containing `B-SOID/bsoid` 
 
-### *(OPTIONAL) Step 0 (If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions).*
+### Step 0
+Setting up parameters for the master script.
+If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions).
 #### Install [FFmpeg](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) or other software that can achieve the same thing, I will provide the FFmpeg command lines below
 
 Go to your video directory.
