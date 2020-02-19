@@ -23,7 +23,7 @@ git clone https://github.com/YttriLab/B-SOID.git
 ## Usage
 Change the MATLAB current folder to the folder containing `B-SOID/bsoid` 
 
-### Step I
+### Step I, the only step you need!
 Setting up parameters for the master script.
 If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions.
 #### Install [FFmpeg](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) or other software that can achieve the same thing, I will provide the FFmpeg command lines below
@@ -109,7 +109,6 @@ load MsTrainingFeats.mat MsActionGrps.mat
 
 The 3-dimensional figure above shows the agnostic groupings of our demo training dataset undergoing unsupervised learning classification. 
 
-## The following steps are only applicable if you go with `Option 2`
 ### Step I.3 
 #### Build a personalized multi-class Support Vector Machine (SVM) classifier based on feature distribution of the individual GMM groups. Refer to [bsoid_mdl.md](docs/bsoid_mdl.md). With version 1.2, bsoid_mdl2.m computes the size of each group to run cross-validation for a given iteration and train/test ratio. For example, if you desire a 80/20 = train/test, and that your dataset is 1000 behavioral data points, with 10 cross-validated iterations, the size of each test group will be 20 behavioral data points, `1000*0.2/10 = 20`. 
 ```matlab
