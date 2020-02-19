@@ -46,7 +46,7 @@ In addition, let's set the number of .csv files you have to build a classifier o
 
 ```matlab
 %%% bsoid_master_v1p2 line 8
-n = 2; % How many .csv files do you want to build your model on?
+n = 3; % How many .csv files do you want to build your model on?
 ```
 
 Lastly, before we run the master script, let's set the number of .csv files you want to predict behaviors based on pose using your own SVM model that you just trained. If you want to predict the same .csv files with the machine learning model, set `m = 3` or `m = 1` in line 36 of the master script.
@@ -54,7 +54,7 @@ Lastly, before we run the master script, let's set the number of .csv files you 
 ```matlab
 %%% bsoid_master_v1p2 line 35-36
 %% Once you trained your action model
-m = 1; % How many .csv do you want to test on?
+m = 3; % How many .csv do you want to test on?
 ```
 Once this is all done, run the `bsoid_master_v1p2.m` script. 
 
