@@ -23,7 +23,7 @@ git clone https://github.com/YttriLab/B-SOID.git
 ## Usage
 Change the MATLAB current folder to the folder containing `B-SOID/bsoid` 
 
-### Step 0
+### Step I
 Setting up parameters for the master script.
 If you are interested in creating short videos (.avi) of the groups to help users subjectively define the various actions.
 #### Install [FFmpeg](https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg) or other software that can achieve the same thing, I will provide the FFmpeg command lines below
@@ -71,7 +71,7 @@ Note that it will pop up user interfaces for you to select the files. Make sure 
 
 Alternatively, you can learn more about the algorithm and only adopt one or few of the following steps. 
 
-### Step I 
+### Step I.1
 Import your .csv file from DeepLabCut, and convert it to a matrix. We can run a for loop to get all of the .csv loaded into your matlab environment. After each individual raw .csv files are imported as a matrix, we evaluate the likelihoods of all points and apply a high-pass filter for estimated data likelihood `adp_filt`.
 ```matlab
 n = 2; % How many .csv files do you want to build your model on?
@@ -93,7 +93,7 @@ Alternatively, load the Yttri lab's demo training dataset.
 load MsTrainingData.mat
 ```
 
-### Step II
+### Step I.2
 #### &nbsp;&nbsp;&nbsp;&nbsp; `Option 1`: Unsupervised grouping of the purely data-driven t-SNE space based on Gaussian Mixture Models (GMM). Refer to [bsoid_gmm.md](docs/bsoid_gmm.md). With version 1.2, try bsoid_assign.m for better separation of clusters, especially for larger datasets.
 
 ```matlab
@@ -110,7 +110,7 @@ load MsTrainingFeats.mat MsActionGrps.mat
 The 3-dimensional figure above shows the agnostic groupings of our demo training dataset undergoing unsupervised learning classification. 
 
 ## The following steps are only applicable if you go with `Option 2`
-### Step III 
+### Step I.3 
 #### Build a personalized multi-class Support Vector Machine (SVM) classifier based on feature distribution of the individual GMM groups. Refer to [bsoid_mdl.md](docs/bsoid_mdl.md). With version 1.2, bsoid_mdl2.m computes the size of each group to run cross-validation for a given iteration and train/test ratio. For example, if you desire a 80/20 = train/test, and that your dataset is 1000 behavioral data points, with 10 cross-validated iterations, the size of each test group will be 20 behavioral data points, `1000*0.2/10 = 20`. 
 ```matlab
 %% Build a Support Vector Machine (SVM) classifier based on your data
@@ -124,7 +124,7 @@ load OF_mdl
 ![Model performance](demo/MsTrainingSVM_Accuracy.png)
 The figure above shows SVM model performance on 20% of the data that was held out from training. Each dot represents 200 randomly sampled actions, and there are 70 different iterations, without replacement, for showing the robust cross-validation accuracy.
 
-### Step IV
+### Step I.4
 #### With the model built, we can accurately and quickly predict future mouse datasets based on DeepLabCut predicted pose. Refer to [bsoid_svm.md](docs/bsoid_svm.md). 
 
 ```matlab
@@ -152,7 +152,7 @@ load MsTestingData.mat
 [labels,f_10fps_test] = bsoid_svm(MsTestingData,OF_mdl);
 ```
 
-### Step V
+### Step I.5
 #### Using the classifier, we can utilize frame-shift paradigm to extract behaviors for every single frame based on DeepLabCut predicted pose.
 ```matlab
 %% In addition, you can play with frame-shifted machine learning prediction for detection of behavioral start up to camera frame rate
