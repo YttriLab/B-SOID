@@ -17,7 +17,7 @@ for i = 1:n
 end
 
 %% Segment the groups based on natural statistics of input features, refer to our paper for feature list
-[feats,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(MsTrainingData1,60,1); % Change 60 to your frame rate. Set 1 for a compiled space for all .csv.
+[feats,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(MsTrainingData,60,1); % Change 60 to your frame rate. Set 1 for a compiled space for all .csv.
 
 %% Build a Support Vector Machine (SVM) classifier based on your data
 [behv_mdl,cv_amean] = bsoid_mdl2(feats,grp,0.2); % Change 0.2 to desired ratio of held out data to test the classifier on. 
@@ -37,8 +37,7 @@ m = 1; % How many .csv do you want to test on?
 for j = 1:m
     %% Import data
     fprintf(sprintf('%s%s%s','Please select ',num2str(j),' DeepLabCut generated .csv file for testing data. \n'));  
-%     cd /your/dlc/output/folder/ % make sure you change this to the folder you have saved the .csv files for pose estimation
-    cd /media/alex/Elements/deeplabcut_yttri/
+    cd /your/dlc/output/folder/ % make sure you change this to the folder you have saved the .csv files for pose estimation
     [filecsv,pathcsv] = uigetfile('*.csv'); % show you only .csv files for user-friendliness
     filenamecsv = sprintf('%s%s',pathcsv,filecsv); data_test_struct = importdata(filenamecsv); rawdata_test{j} = data_test_struct.data;
     %% Adaptive high-pass filter based on data for parts that are easily occluded
