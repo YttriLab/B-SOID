@@ -101,7 +101,7 @@ load MsTrainingData.mat
 
 ```matlab
 %% Segment the groups based on natural statistics of input features, refer to our paper for feature list
-[feats,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(MsTrainingData1,60,1); % Change 60 to your frame rate. Set 1 for a compiled space for all .csv.
+[feats,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(MsTrainingData,60,1); % Change 60 to your frame rate. Set 1 for a compiled space for all .csv.
 ```
 
 Alternatively, you can load the demo f_10fps and groupings.
