@@ -1,4 +1,4 @@
-function [behv_mdl,CV_amean,CV_amean_idv,CV_asem,CV_asem_idv,acc_fig] = bsoid_mdl2(f_10fps,grp,hldout,cv_it)
+function [behv_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl2(f_10fps,grp,hldout,cv_it)
 %BSOID_MDL     Build a SVM classifier for open field behavior based on users own dataset and show the model prediction on held out data.
 %   
 %   [BEHV_MDL,CV_AMEAN,CV_ASEM] = BSOID_MDL2(F_10FPS,GRP,HLDOUT,CV_IT) outputs the open field model based on the features and the grouping labels from bsoid_gmm.
