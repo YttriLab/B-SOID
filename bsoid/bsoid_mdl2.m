@@ -44,7 +44,7 @@ function [behv_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl2(f_10fps,grp,hldout,cv_
     feat_test = feats_T(testInds,:);
     label_test = grp_T(testInds,:);
     labels = predict(behv_mdl,feat_test);
-    batch_sz = round(length(grp)*hldout/cv_it);
+    batch_sz = floor(length(grp)*hldout/cv_it);
     idx_samp = randsample(sum(testInds),cv_it*batch_sz);
     for it = 1:cv_it
         ACC(it) = length(find((label_test(idx_samp((it-1)*batch_sz+1:it*batch_sz))-labels(idx_samp((it-1)*batch_sz+1:it*batch_sz)))==0))...
