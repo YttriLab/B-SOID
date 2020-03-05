@@ -180,8 +180,8 @@ We are a neuroscience lab and welcome all contributions to improve this algorith
 
 ## License
 
-This software package provided without warranty of any kind and is licensed under the GNU Lesser General Public License v3.0. 
-If you use our algorithm and/or model/data, please cite us! Preprint/peer-review will be announced in the following section. (https://choosealicense.com/licenses/agpl-3.0/)
+This software package provided without warranty of any kind and is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). 
+If you use our algorithm and/or model/data, please cite us! Preprint/peer-review will be announced in the following section. 
 
 ## News
 September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/content/10.1101/770271v1) 
