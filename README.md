@@ -197,4 +197,4 @@ September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/conte
 
 5. [Chen M. EM Algorithm for Gaussian Mixture Model (EM GMM). MATLAB Central File Exchange. Retrieved July 15, 2019.](https://www.mathworks.com/matlabcentral/fileexchange/26184-em-algorithm-for-gaussian-mixture-model-em-gmm)
 
-6. [Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.](chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/http://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
+6. [Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.](http://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
