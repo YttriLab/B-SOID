@@ -196,3 +196,5 @@ September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/conte
 4. [L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms. Journal of Machine Learning Research 15(Oct):3221-3245, 2014.](https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf)
 
 5. [Chen M. EM Algorithm for Gaussian Mixture Model (EM GMM). MATLAB Central File Exchange. Retrieved July 15, 2019.](https://www.mathworks.com/matlabcentral/fileexchange/26184-em-algorithm-for-gaussian-mixture-model-em-gmm)
+
+6. [Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.](chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/http://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
