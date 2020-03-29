@@ -1,6 +1,3 @@
-# B-SOID: Behavioral segmentation of open field in DeepLabCut
-
-
 ![B-SOiD flowchart](demo/B-SOiD_flowchart.png)
 
 [DeepLabCut](https://github.com/AlexEMG/DeepLabCut)<sup>1,2,3</sup> has revolutionized the way behavioral scientists analyze data. The algorithm utilizes recent advances in computer vision and deep learning to automatically estimate 3D-poses. Interpreting the positions of an animal can be useful in studying behavior; however, it does not encompass the whole dynamic range of naturalistic behaviors. 
