@@ -36,7 +36,7 @@ Use the vim commands as follows:
     * ":wq" for writing your changes and quit vim.
     * ":q!" disregarding any changes and quit.
 
-The things to change here are:
+#### The things to change here are:
 * BASE_PATH = '/Users/ahsu/B-SOID/datasets'
     * Change this to your directory to the project folder that all experimental folders nests within.
 * TRAIN_FOLDERS = ['/Train1', '/Train2']
@@ -86,7 +86,6 @@ Within the same B-SOID/bsoid_py/config/ directory
 ```
 vim GLOBAL_CONFIG.py
 ```
-![Step4_1](../demo/py3_step4_1.gif)
 * PLOT_TRAINING = True
     * Change to False if you don't want plots. It'll still save the output .csvs.
 * GEN_VIDEOS = True
