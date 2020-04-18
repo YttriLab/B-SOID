@@ -22,21 +22,17 @@ function [data,perc_rect] = adp_filt(rawdata)
         error('Input data has to be a matrix');
     end
     fprintf('Replacing data-driven low likelihood positions with the most recent highly probable position... \n');
-    datax = rawdata(:,[2:3:17]);
-    datay = rawdata(:,[3:3:18]);
-    data_lh = rawdata(:,[4:3:19]);
+    datax = rawdata(:,[2:3:end]);
+    datay = rawdata(:,[3:3:end]);
+    data_lh = rawdata(:,[4:3:end]);
     % filter out likelihood below rise phase
     for x = 1:length(data_lh(1,:))
-        if x <= 3 % we don't really worry about planted body parts, i.e. hind paws and proximal tail, which we will set to 0.2 for threshold
-            [a,b] = hist(data_lh(:,x));
-            rise_a = find(diff(a)>=0);
-            if rise_a(1) > 1
-                llh = b(rise_a(1)-1);
-            else
-                llh = b(rise_a(2)-1);
-            end
+        [a,b] = hist(data_lh(:,x));
+        rise_a = find(diff(a)>=0);
+        if rise_a(1) > 1
+            llh = b(rise_a(1));
         else
-            llh = 0.2;
+            llh = b(rise_a(2));
         end
         perc_rect(x) = length(find(data_lh(:,x) < llh))/length(data_lh); % find the percentage of filtered data
         data(1,(2*x-1):2*x) = [datax(1,x),datay(1,x)]; % compile the array
