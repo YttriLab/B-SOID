@@ -1,4 +1,4 @@
-![B-SOiD flowchart](demo/B-SOiD_flowchart.png)
+![B-SOiD flowchart](demo/BSOID.png)
 
 The dataset from *Yttri lab, Alexander Hsu,* has been tested against multiple human observers and showed comparable inter-grader variability as another observer. 
 ![Mouse Action Cluster Demo 1x](demo/bsoidv1p2_mouse15sec.gif)
