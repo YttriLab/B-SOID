@@ -1,10 +1,11 @@
 ![B-SOiD flowchart](demo/BSOID.png)
 
-The dataset from *Yttri lab, Alexander Hsu,* has been tested against multiple human observers and showed comparable inter-grader variability as another observer. 
-![Mouse Action Cluster Demo 1x](demo/bsoidv1p2_mouse15sec.gif)
 
-We also tested the generalizability with the dataset from *Ahmari lab , Jared Kopelman, Shirley Jiang, & Sean Piantadosi*, and was predictive of actual behavior.
+![Mouse Action Cluster Demo 1x](demo/bsoidv1p2_mouse15sec.gif)
+The dataset from *Yttri lab, Alexander Hsu,* has been tested against multiple human observers and showed comparable inter-grader variability as another observer. 
+
 ![Mouse Action Cluster Demo 1x](demo/bsoidv1_OCDmouse15sec.gif)
+We also tested the generalizability with the dataset from *Ahmari lab , Jared Kopelman, Shirley Jiang, & Sean Piantadosi*, and was predictive of actual behavior.
 
 ## Why B-SOiD ("B-side")?
 [DeepLabCut](https://github.com/AlexEMG/DeepLabCut)<sup>1,2,3</sup> has revolutionized the way behavioral scientists analyze data. The algorithm utilizes recent advances in computer vision and deep learning to automatically estimate 3D-poses. Interpreting the positions of an animal can be useful in studying behavior; however, it does not encompass the whole dynamic range of naturalistic behaviors. 
@@ -25,10 +26,10 @@ git clone https://github.com/YttriLab/B-SOID.git
 
 ## Usage
 ### MATLAB
-Follow these [steps](docs/matlab_tutorial.md)
+####Follow these [steps](docs/matlab_tutorial.md)
 
-## Python3
-Follow these [steps](docs/python3_tutorial.md)
+### Python3
+####Follow these [steps](docs/python3_tutorial.md)
 
 ## Contributing
 
