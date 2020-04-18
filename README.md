@@ -26,10 +26,10 @@ git clone https://github.com/YttriLab/B-SOID.git
 
 ## Usage
 ### MATLAB
-####Follow these [steps](docs/matlab_tutorial.md)
+#### Follow these [steps](docs/matlab_tutorial.md)
 
 ### Python3
-####Follow these [steps](docs/python3_tutorial.md)
+#### Follow these [steps](docs/python3_tutorial.md)
 
 ## Contributing
 
