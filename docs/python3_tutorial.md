@@ -4,13 +4,13 @@
 ### Step 1: Install Anaconda/Python3
 [Anaconda](https://www.anaconda.com/) is a free and open source distribution of the Python programming language. 
 Make sure you select python3.
-![Step1](demo/py3_step1.gif)
+![Step1](../demo/py3_step1.gif)
 ### Step 2: Create virtual environment for your B-SOiD project
 ```
 conda create -n bsoid_env
 conda activate bsoid_env
 ```
-![Step2](demo/py3_step2.gif)
+![Step2](../demo/py3_step2.gif)
 You should now see (bsoid_env) $yourusername@yourmachine ~ %
 
 ### Step 3: install dependencies
@@ -18,7 +18,7 @@ You should now see (bsoid_env) $yourusername@yourmachine ~ %
 conda install ipython  
 pip install pandas tqdm matplotlib opencv-python seaborn scikit-learn
 ```
-![Step3](demo/py3_step3.gif)
+![Step3](../demo/py3_step3.gif)
 
 ### Step 4: Clone B-SOID and change your current directory to B-SOID/bsoid_py/config to edit your configuration path
 ```
@@ -26,7 +26,7 @@ git clone https://github.com/YttriLab/B-SOID.git
 cd B-SOID/bsoid_py/config/
 vim LOCAL_CONFIG.py
 ```
-![Step4](demo/py3_step4.gif)
+![Step4](../demo/py3_step4.gif)
 
 Use the vim commands as follows:
 * vim commands are:
@@ -86,7 +86,7 @@ Within the same B-SOID/bsoid_py/config/ directory
 ```
 vim GLOBAL_CONFIG.py
 ```
-![Step4_1](demo/py3_step4_1.gif)
+![Step4_1](../demo/py3_step4_1.gif)
 * PLOT_TRAINING = True
     * Change to False if you don't want plots. It'll still save the output .csvs.
 * GEN_VIDEOS = True
@@ -110,7 +110,7 @@ Build your behavioral model using your training csv files within your train fold
 ```
 bsoid_py.main.build(TRAIN_FOLDERS)
 ```
-![Step5](demo/py3_step5.gif)
+![Step5](../demo/py3_step5.gif)
 Note that this process takes some time depending on how big your dataset is. 
 Generally, I would consider training with at least 3 animals, with sufficient behavioral data.
 
@@ -121,7 +121,7 @@ Still inside iPython, see above.
 ```
 bsoid_py.main.run(PREDICT_FOLDERS)
 ```
-![Step6](demo/py3_step6.gif)
+![Step6](../demo/py3_step6.gif)
 The output results will be stored automatically in the OUTPUT_PATH (LOCAL_CONFIG.py).
 Video results will be stored as well (LOCAL_CONFIG.py).
 
