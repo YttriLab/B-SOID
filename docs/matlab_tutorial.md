@@ -61,4 +61,4 @@ Note that it will pop up user interfaces for you to select the files. Make sure 
 `Please select 1 DeepLabCut generated .csv file for testing data.` is asking you to select the first testing .csv files.
 
 
-Alternatively, you can learn more about the [algorithm](docs/bsoid_master.md) and only adopt one or few of the following steps. 
+Alternatively, you can learn more about the [algorithm](bsoid_master.md) and only adopt one or few of the following steps. 
