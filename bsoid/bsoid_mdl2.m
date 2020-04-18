@@ -29,7 +29,7 @@ function [behv_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl2(f_10fps,grp,hldout,cv_
         hldout = 0.2;
     end
     if nargin < 4
-        cv_it = 30;
+        cv_it = 20;
     end
     
     fprintf('Training an SVM classifier (kernel trick: Gaussian kernel function)... \n');
