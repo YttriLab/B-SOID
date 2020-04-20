@@ -2,12 +2,15 @@
 likelihood processing utilities
 Forward fill low likelihood (x,y)
 """
-from bsoid_py.config import *
-from bsoid_py.utils.visuals import *
+
 import glob
-import pandas as pd
 import re
+
+import numpy as np
 from tqdm import tqdm
+
+from bsoid_py.utils.visuals import *
+
 
 def boxcar_center(a, n):
     a1 = pd.Series(a)
@@ -52,8 +55,10 @@ def get_filenames(folder):
 def import_folders(folders: list):
     """
     Import multiple folders containing .csv files and process them
-    :param folders: list of folder paths
-    :return: dict, keys=filenames, values=processed image arrays (bw)
+    :param folders: list, data folders
+    :return filenames: list, data filenames
+    :return data: list, filtered csv data
+    :return perc_rect_li: list, percent filtered
     """
     filenames = []
     rawdata_li = []
@@ -63,12 +68,12 @@ def import_folders(folders: list):
         f = get_filenames(fd)
         for j, filename in enumerate(f):
             logging.info('Importing CSV file {} from folder {}'.format(j + 1, i + 1))
-            currDf = pd.read_csv(filename, low_memory=False)
-            currDf_filt, perc_rect = adp_filt(currDf)
+            curr_df = pd.read_csv(filename, low_memory=False)
+            curr_df_filt, perc_rect = adp_filt(curr_df)
             logging.info('Done preprocessing (x,y) from file {}, folder {}.'.format(j + 1, i + 1))
-            rawdata_li.append(currDf)
+            rawdata_li.append(curr_df)
             perc_rect_li.append(perc_rect)
-            data_li.append(currDf_filt)
+            data_li.append(curr_df_filt)
         filenames.append(f)
         logging.info('Processed {} CSV files from folder: {}'.format(len(f), fd))
     data = np.array(data_li)
@@ -77,25 +82,30 @@ def import_folders(folders: list):
     return filenames, data, perc_rect_li
 
 
-def adp_filt(currDf):
+def adp_filt(currdf: object):
+    """
+    :param currdf: object, csv data frame
+    :return currdf_filt: 2D array, filtered data
+    :return perc_rect: 1D array, percent filtered per BODYPART
+    """
     lIndex = []
     xIndex = []
     yIndex = []
-    currDf = np.array(currDf[1:])
-    for header in range(len(currDf[0])):
-        if currDf[0][header] == "likelihood":
+    currdf = np.array(currdf[1:])
+    for header in range(len(currdf[0])):
+        if currdf[0][header] == "likelihood":
             lIndex.append(header)
-        elif currDf[0][header] == "x":
+        elif currdf[0][header] == "x":
             xIndex.append(header)
-        elif currDf[0][header] == "y":
+        elif currdf[0][header] == "y":
             yIndex.append(header)
     logging.info('Extracting likelihood value...')
-    currDf = np.array(currDf)
-    currDf1 = currDf[:, 1:]
-    datax = currDf1[:, np.array(xIndex) - 1]
-    datay = currDf1[:, np.array(yIndex) - 1]
-    data_lh = currDf1[:, np.array(lIndex) - 1]
-    currDf_filt = np.zeros((datax.shape[0] - 1, (datax.shape[1]) * 2))
+    currdf = np.array(currdf)
+    curr_df1 = currdf[:, 1:]
+    datax = curr_df1[:, np.array(xIndex) - 1]
+    datay = curr_df1[:, np.array(yIndex) - 1]
+    data_lh = curr_df1[:, np.array(lIndex) - 1]
+    currdf_filt = np.zeros((datax.shape[0] - 1, (datax.shape[1]) * 2))
     perc_rect = []
     logging.info('Computing data threshold to forward fill any sub-threshold (x,y)...')
     for i in range(data_lh.shape[1]):
@@ -111,15 +121,21 @@ def adp_filt(currDf):
         perc_rect[x] = np.sum(data_lh_float < llh) / data_lh.shape[0]
         for i in range(1, data_lh.shape[0] - 1):
             if data_lh_float[i] < llh:
-                currDf_filt[i, (2 * x):(2 * x + 2)] = currDf_filt[i - 1, (2 * x):(2 * x + 2)]
+                currdf_filt[i, (2 * x):(2 * x + 2)] = currdf_filt[i - 1, (2 * x):(2 * x + 2)]
             else:
-                currDf_filt[i, (2 * x):(2 * x + 2)] = np.hstack([datax[i, x], datay[i, x]])
-    currDf_filt = np.array(currDf_filt[1:])
-    currDf_filt = currDf_filt.astype(np.float)
-    return currDf_filt, perc_rect
+                currdf_filt[i, (2 * x):(2 * x + 2)] = np.hstack([datax[i, x], datay[i, x]])
+    currdf_filt = np.array(currdf_filt[1:])
+    currdf_filt = currdf_filt.astype(np.float)
+    return currdf_filt, perc_rect
 
 
-def main(folders):
+def main(folders: list):
+    """
+    :param folders: list, data folders
+    :return filenames: list, data filenames
+    :return data: list, filtered data list
+    :retrun perc_rect: 1D array, percent filtered per BODYPART
+    """
     filenames, data, perc_rect = import_folders(folders)
     return filenames, data, perc_rect
 

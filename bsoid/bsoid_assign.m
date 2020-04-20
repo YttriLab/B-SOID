@@ -109,18 +109,17 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(data,fps,comp,smt
             f_10fps = cat(2,f_10fps,feats1);
         else
             f_10fps{n} = feats1;
-            if length(f_10fps{n}) <= 3000
+            if length(f_10fps{n}) <= 10000
                 msg = 'Insufficient data, exiting...';
                 error(msg)
             else
-                p = round(length(f_10fps{n})/60);
-                lr = round(length(f_10fps{n})/12);
+                p = round(length(f_10fps{n})/300);
             end
             %% For reproducibility
             rng default; tsne_feats = [];
             %% Run t-Distributed Stochastic Neighbor Embedding (t-SNE)
             fprintf('Running individual datasets through t-SNE collapsing the 7 features onto 3 action space coordinates... \n');
-            tsne_feats = tsne(f_10fps{n}(:,1:end)','Standardize',true,'Exaggeration',12,'LearnRate',lr,...
+            tsne_feats = tsne(f_10fps{n}(:,1:end)','Standardize',true,'Exaggeration',12,'LearnRate',1000,...
             'Perplexity',p,'NumDimensions',3); % Refer to MATLAB tsne function for arguments
             %% Run a Gaussian Mixture Model Expectation Maximization to group the t-SNE clusters
             X = tsne_feats'; k = kclass; 
@@ -136,18 +135,17 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_assign(data,fps,comp,smt
         end
     end 
     if comp == 1
-        if length(f_10fps) <= 3000
+        if length(f_10fps) <= 10000
             msg = 'Insufficient data, exiting...';
             error(msg)
         else
-            p = round(length(f_10fps)/60);
-            lr = round(length(f_10fps)/12);
+            p = round(length(f_10fps)/300);
         end
         %% For reproducibility
         rng default; tsne_feats = [];
         fprintf('Running the compiled data through t-SNE collapsing the 7 features onto 3 action space coordinates... \n');
         %% Run t-Distributed Stochastic Neighbor Embedding (t-SNE)
-        tsne_feats = tsne(f_10fps(:,1:end)','Standardize',true,'Exaggeration',12,'LearnRate',lr,...
+        tsne_feats = tsne(f_10fps(:,1:end)','Standardize',true,'Exaggeration',12,'LearnRate',1000,...
             'Perplexity',p,'NumDimensions',3); % Refer to MATLAB tsne function for arguments
         X = tsne_feats'; k = kclass;
         [grp,~,llh,~] = em_gmm(X,k,it); % EM GMM

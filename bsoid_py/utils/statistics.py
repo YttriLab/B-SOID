@@ -2,25 +2,29 @@
 Summary statistics
 """
 
-from bsoid_py.config import *
-from bsoid_py.utils.visuals import plot_tmat
-import numpy as np
-import time
-import pandas as pd
 import os
-import matplotlib.pyplot as plt
+import time
+
+import numpy as np
+import pandas as pd
+
+from bsoid_py.config import *
 
 
 def transition_matrix(labels):
+    """
+    :param labels: 1D array, predicted labels
+    :return df_tm: object, transition matrix data frame
+    """
     n = 1 + max(labels)
-    TM = [[0] * n for _ in range(n)]
+    tm = [[0] * n for _ in range(n)]
     for (i, j) in zip(labels, labels[1:]):
-        TM[i][j] += 1
-    for row in TM:
+        tm[i][j] += 1
+    for row in tm:
         s = sum(row)
         if s > 0:
             row[:] = [f / s for f in row]
-    df_tm = pd.DataFrame(TM)
+    df_tm = pd.DataFrame(tm)
     return df_tm
 
 
@@ -41,6 +45,10 @@ def rle(inarray):
 
 
 def behv_time(labels):
+    """
+    :param labels: 1D array, predicted labels
+    :return beh_t: 1D array, percent time for each label
+    """
     beh_t = []
     for i in range(0, len(np.unique(labels))):
         t = np.sum(labels == i) / labels.shape[0]
@@ -49,6 +57,11 @@ def behv_time(labels):
 
 
 def behv_dur(labels, output_path=OUTPUT_PATH):
+    """
+    :param labels: 1D array, predicted labels
+    :param output_path: string, output directory
+    :return dur_stats: object, behavioral duration statistics data frame
+    """
     lengths, pos, grp = rle(labels)
     df_lengths = pd.DataFrame(lengths, columns={'Run lengths'})
     df_grp = pd.DataFrame(grp, columns={'B-SOiD labels'})
@@ -66,12 +79,21 @@ def behv_dur(labels, output_path=OUTPUT_PATH):
     dur_quant3 = []
     dur_quant4 = []
     for i in range(0, len(np.unique(grp))):
-        dur_means.append(np.mean(lengths[np.where(grp == i)]))
-        dur_quant0.append(np.quantile(lengths[np.where(grp == i)], 0.1))
-        dur_quant1.append(np.quantile(lengths[np.where(grp == i)], 0.25))
-        dur_quant2.append(np.quantile(lengths[np.where(grp == i)], 0.5))
-        dur_quant3.append(np.quantile(lengths[np.where(grp == i)], 0.75))
-        dur_quant4.append(np.quantile(lengths[np.where(grp == i)], 0.9))
+        print(i)
+        try:
+            dur_means.append(np.mean(lengths[np.where(grp == i)]))
+            dur_quant0.append(np.quantile(lengths[np.where(grp == i)], 0.1))
+            dur_quant1.append(np.quantile(lengths[np.where(grp == i)], 0.25))
+            dur_quant2.append(np.quantile(lengths[np.where(grp == i)], 0.5))
+            dur_quant3.append(np.quantile(lengths[np.where(grp == i)], 0.75))
+            dur_quant4.append(np.quantile(lengths[np.where(grp == i)], 0.9))
+        except:
+            # dur_means.append(0)
+            dur_quant0.append(0)
+            dur_quant1.append(0)
+            dur_quant2.append(0)
+            dur_quant3.append(0)
+            dur_quant4.append(0)
     alldata = np.concatenate([np.array(beh_t).reshape(len(np.array(beh_t)), 1),
                               np.array(dur_means).reshape(len(np.array(dur_means)), 1),
                               np.array(dur_quant0).reshape(len(np.array(dur_quant0)), 1),
@@ -89,7 +111,12 @@ def behv_dur(labels, output_path=OUTPUT_PATH):
 
 
 def main(labels, output_path=OUTPUT_PATH):
+    """
+    :param labels: 1D array: predicted labels
+    :param output_path: string, output directory
+    :return dur_stats: object, behavioral duration statistics data frame
+    :return tm: object, transition matrix data frame
+    """
     dur_stats = behv_dur(labels, output_path)
-    TM = transition_matrix(labels)
-    plot_tmat(TM)
-    return dur_stats, TM
+    tm = transition_matrix(labels)
+    return dur_stats, tm

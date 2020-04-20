@@ -3,17 +3,20 @@ Classify behaviors based on (x,y) using trained B-SOiD behavioral model.
 B-SOiD behavioral model has been developed using bsoid_py.main.build()
 """
 
-from bsoid_py.config import *
-from bsoid_py.utils.visuals import *
+import math
+
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+
 from bsoid_py.utils import videoprocessing
 from bsoid_py.utils.likelihoodprocessing import boxcar_center
-from sklearn.preprocessing import StandardScaler
+from bsoid_py.utils.visuals import *
 
 
 def bsoid_extract(data, bodyparts=BODYPARTS, fps=FPS):
     """
     Extracts features based on (x,y) positions
-    :param data: list, 3D array of (x,y) data
+    :param data: list, csv data
     :param bodyparts: dict, body parts with their orders
     :param fps: scalar, input for camera frame-rate
     :return f_10fps: 2D array, extracted features
@@ -100,11 +103,11 @@ def bsoid_predict(feats, model):
     labels_fslow = []
     for i in range(0, len(feats)):
         logging.info('Predicting file {} with {} instances '
-                     'using learned SVM classifier: {}...'.format(i+1, feats[i].shape[1], FINALMODEL_NAME))
+                     'using learned classifier: {}{}...'.format(i+1, feats[i].shape[1], 'bsoid_', MODEL_NAME))
         scaler = StandardScaler()
         scaler.fit(feats[i].T)
-        feats_stnd = scaler.transform(feats[i].T)
-        labels = model.predict(feats_stnd)
+        feats_sc = scaler.transform(feats[i].T).T
+        labels = model.predict(feats_sc.T)
         logging.info('Done predicting file {} with {} instances in {} D space.'.format(i+1, feats[i].shape[1],
                                                                                        feats[i].shape[0]))
         labels_fslow.append(labels)
@@ -136,7 +139,7 @@ def bsoid_frameshift(feats, fps, model):
             labels_pad[n] = labels_pad[n][::-1]
             if n > 0:
                 labels_pad[n][0:n] = labels_pad[n-1][0:n]
-        labels_fs.append(labels_pad)
+        labels_fs.append(labels_pad.astype(int))
     for k in range(0, len(labels_fs)):
         labels_fs2 = []
         for l in range(math.floor(fps / 10)):
@@ -148,26 +151,22 @@ def bsoid_frameshift(feats, fps, model):
 
 def main(predict_folders, fps, behv_model):
     """
-    Import training data, preprocess low likelihood
+    :param predict_folders: list, data folders
+    :param fps: scalar, camera frame-rate
+    :behv_model: object, svm classifier
+    :return data_new: list, csv data
+    :return feats_new: 2D array, extracted features
+    :return labels_fslow, 1D array, label/100ms
+    :return labels_fshigh, 1D array, label/frame
     """
     import bsoid_py.utils.likelihoodprocessing
-    data_new = bsoid_py.utils.likelihoodprocessing.main(predict_folders)
-
-    """
-    Extract features, EM-GMM, and SVM on training set
-    """
+    filenames, data_new, perc_rect = bsoid_py.utils.likelihoodprocessing.main(predict_folders)
     feats_new = bsoid_extract(data_new)
     labels_fslow = bsoid_predict(feats_new, behv_model)
     labels_fshigh = bsoid_frameshift(feats_new, fps, behv_model)
-
-    """
-    Plotting (True/False in LOCAL_CONFIG) some visuals and generating short videos for each group
-    and automatically saving .svg in the OUTPUTPATH and .mp4 in the SHORTVID_DIR in LOCAL_CONFIG
-    """
     if PLOT_TRAINING:
         plot_feats(feats_new, labels_fslow)
     if GEN_VIDEOS:
-        videoprocessing.main(VID_NAME, labels_fslow[ID], FRAME_DIR)
-
+        videoprocessing.main(VID_NAME, labels_fslow[ID], FPS, FRAME_DIR)
     return data_new, feats_new, labels_fslow, labels_fshigh
 

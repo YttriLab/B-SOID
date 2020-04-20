@@ -1,5 +1,5 @@
-import numpy as np
-import math
+################### THINGS YOU PROBABLY DONT'T WANT TO CHANGE ###################
+
 import logging
 import sys
 
@@ -9,35 +9,27 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S',
     stream=sys.stdout)
 
+# TSNE parameters, can tweak if you are getting undersplit/oversplit behaviors
+# the missing perplexity is scaled with data size (1% of data for nearest neighbors)
+TSNE_PARAMS = {
+    'n_components': 3, # 3 is good, 2 will not create unique pockets, 4 will screw GMM up (curse of dimensionality)
+    'learning_rate': 1000,
+    'n_jobs': -1, # all cores being used
+    'verbose': 2 # check points being told for users to see convergence, and total error/50iterations
+}
+
 # EM_GMM parameters
 EMGMM_PARAMS = {
     'n_components': 30,
-    'covariance_type': 'full',
+    'covariance_type': 'full', # t-SNE shape means nothing, so full covariance.
     'tol': 0.001,
     'reg_covar': 1e-06,
     'max_iter': 100,
-    'n_init': 20, # 30 iterations to escape poor initialization
+    'n_init': 10, # 30 iterations to escape poor initialization
     'init_params': 'random', # random initialization
     'random_state': 23,
     'verbose': 1 # set this to 0 if you don't want to show progress for em-gmm.
 }
-
-#TODO figure out why Bayesian inference isn't converging for bsoid
-
-# EMGMM_PARAMS = {
-#     'n_components': 50,  # initialize k classes
-#     'covariance_type': 'full',
-#     'tol': 0.001,
-#     'reg_covar': 1e-06,
-#     'max_iter': 100,
-#     'n_init': 30, # 30 iterations to escape poor initialization
-#     'init_params': 'random', # random initialization
-#     'weight_concentration_prior_type': 'dirichlet_process',
-#     'random_state': 23,
-#     'verbose': 1, # set this to 0 if you don't want to show progress for em-gmm.
-#     'verbose_interval': 50
-# }
-
 
 # SVM parameters
 SVM_PARAMS = {
@@ -49,8 +41,4 @@ SVM_PARAMS = {
 }
 
 HLDOUT = 0.2  # Test partition ratio to validate clustering separation.
-CV_IT = 20  # Number of iterations for cross-validation to show it's not over-fitting.
-
-# IF YOU'D LIKE TO SKIP PLOTTING/CREATION OF VIDEOS, change below plot settings to False
-PLOT_TRAINING = True
-GEN_VIDEOS = True
+CV_IT = 10  # Number of iterations for cross-validation to show it's not over-fitting.

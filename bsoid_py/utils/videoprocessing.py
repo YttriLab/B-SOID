@@ -2,14 +2,15 @@
 Extracting frames from videos
 """
 
-import cv2
-import os
-from bsoid_py.config import *
-from bsoid_py.utils.visuals import *
-from bsoid_py.utils.likelihoodprocessing import sort_nicely
 import glob
-from tqdm import tqdm
 import random
+
+import numpy as np
+import cv2
+from tqdm import tqdm
+
+from bsoid_py.utils.likelihoodprocessing import sort_nicely
+from bsoid_py.utils.visuals import *
 
 
 def get_vidnames(folder):
@@ -23,7 +24,7 @@ def get_vidnames(folder):
     return vidnames
 
 
-def vid2frame(vidname, labels, fps=FPS, output_path=FRAME_DIR):
+def vid2frame(vidname, labels, fps, output_path=FRAME_DIR):
     """
     Extracts frames every 100ms to match the labels for visualizations
     :param vidname: string, path to video
@@ -35,6 +36,7 @@ def vid2frame(vidname, labels, fps=FPS, output_path=FRAME_DIR):
     pbar = tqdm(total=int(vidobj.get(cv2.CAP_PROP_FRAME_COUNT)))
     width = vidobj.get(3)
     height = vidobj.get(4)
+    labels = np.hstack((labels[0],labels)) # fill the first frame
     count = 0
     count1 = 0
     font_scale = 1
@@ -53,7 +55,7 @@ def vid2frame(vidname, labels, fps=FPS, output_path=FRAME_DIR):
             cv2.putText(frame, text, (text_offset_x, text_offset_y), font,
                         fontScale=font_scale, color=(255, 255, 255), thickness=1)
             cv2.imwrite(os.path.join(output_path, 'frame{:d}.png'.format(count1)), frame)
-            count += round(fps / 10)  # i.e. at 60fps, this skips every 6
+            count += round(fps / 10)  # i.e. at 60fps, this skips every 5
             count1 += 1
             vidobj.set(1, count)
             pbar.update(round(fps / 10))
@@ -64,7 +66,7 @@ def vid2frame(vidname, labels, fps=FPS, output_path=FRAME_DIR):
     return
 
 
-def import_vidfolders(folders, output_path):
+def import_vidfolders(folders: list, output_path: list):
     """
     Import multiple folders containing .mp4 files and extract frames from them
     :param folders: list of folder paths
@@ -82,17 +84,23 @@ def import_vidfolders(folders, output_path):
     return
 
 
-def repeatingNumbers(numList):
+def repeatingNumbers(labels):
+    """
+    :param labels: 1D array, predicted labels
+    :return n_list: 1D array, the label number
+    :return idx: 1D array, label start index
+    :return lengths: 1D array, how long each bout lasted for
+    """
     i = 0
     n_list = []
     idx = []
     lengths = []
-    while i < len(numList) - 1:
-        n = numList[i]
+    while i < len(labels) - 1:
+        n = labels[i]
         n_list.append(n)
         startIndex = i
         idx.append(i)
-        while i < len(numList) - 1 and numList[i] == numList[i + 1]:
+        while i < len(labels) - 1 and labels[i] == labels[i + 1]:
             i = i + 1
         endIndex = i
         length = endIndex - startIndex
@@ -129,7 +137,7 @@ def create_labeled_vid(labels, crit=3, counts=5, frame_dir=FRAME_DIR, output_pat
         try:
             rand_rnges = random.sample(a, counts)
             for k in range(0, len(rand_rnges)):
-                video_name = 'Group_{}_example_{}.mp4'.format(i, k)
+                video_name = 'group_{}_example_{}.mp4'.format(i, k)
                 grpimages = []
                 for l in rand_rnges[k]:
                     grpimages.append(images[l])
@@ -143,8 +151,8 @@ def create_labeled_vid(labels, crit=3, counts=5, frame_dir=FRAME_DIR, output_pat
     return
 
 
-def main(vidname, labels, output_path):
-    vid2frame(vidname, labels, output_path)
+def main(vidname, labels, fps, output_path):
+    vid2frame(vidname, labels, fps, output_path)
     create_labeled_vid(labels, crit=3, counts=5, frame_dir=output_path, output_path=SHORTVID_DIR)
     return
 
