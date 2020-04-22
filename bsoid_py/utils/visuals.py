@@ -6,6 +6,7 @@ import os
 import time
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.axes._axes import _log as matplotlib_axes_logger
 import numpy as np
 import pandas as pd
@@ -61,7 +62,7 @@ def plot_classes(data, assignments):
 
 def plot_accuracy(scores):
     """
-    :param scores: 1D array, cross-validated accuracies for SVM classifier.
+    :param scores: 1D array, cross-validated accuracies for MLP classifier.
     """
     fig = plt.figure(facecolor='w', edgecolor='k')
     fig.suptitle("Performance on {} % data".format(HLDOUT * 100))
@@ -69,11 +70,11 @@ def plot_accuracy(scores):
     ax.boxplot(scores, notch=None)
     x = np.random.normal(1, 0.04, size=len(scores))
     plt.scatter(x, scores, s=40, c='r', alpha=0.5)
-    ax.set_xlabel('SVM RBF classifier')
+    ax.set_xlabel('MLP classifier')
     ax.set_ylabel('Accuracy')
     plt.show()
     timestr = time.strftime("_%Y%m%d_%H%M")
-    my_file = 'clf_scores_'
+    my_file = 'clf_scores'
     fig.savefig(os.path.join(OUTPUT_PATH, str.join('', (my_file, timestr, '.svg'))))
 
 
@@ -92,7 +93,7 @@ def plot_durhist(lengths, grp):
         ax.hist(x, density=True, color=cmap[i], alpha=0.3, label='Group {}'.format(i))
     plt.legend(loc='upper right')
     plt.show()
-    my_file = 'duration_hist_100msbins_'
+    my_file = 'duration_hist_100msbins'
     fig.savefig(os.path.join(OUTPUT_PATH, str.join('', (my_file, timestr, '.svg'))))
     return
 
@@ -155,7 +156,7 @@ def plot_feats(feats: list, labels: list):
                         fig.suptitle("{} pixels".format(feat_ls[j]))
                         if i < len(np.unique(labels_k)) - 1:
                             plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-                my_file = 'sess{}_feat{}_hist_'.format(k + 1, j + 1)
+                my_file = 'sess{}_feat{}_hist'.format(k + 1, j + 1)
                 fig.savefig(os.path.join(OUTPUT_PATH, str.join('', (my_file, timestr, '.svg'))))
             plt.show()
     else:
@@ -189,7 +190,7 @@ def plot_feats(feats: list, labels: list):
                     fig.suptitle("{} pixels".format(feat_ls[j]))
                     if i < len(np.unique(labels)) - 1:
                         plt.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-            my_file = 'feat{}_hist_'.format(j + 1)
+            my_file = 'feat{}_hist'.format(j + 1)
             fig.savefig(os.path.join(OUTPUT_PATH, str.join('', (my_file, timestr, '.svg'))))
         plt.show()
 

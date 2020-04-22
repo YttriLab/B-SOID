@@ -7,8 +7,9 @@ Then, we utilize these output and original feature space to train a B-SOiD behav
 import math
 
 import numpy as np
-from sklearn import mixture, svm
+from sklearn import mixture
 from sklearn.manifold import TSNE
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
@@ -121,6 +122,8 @@ def bsoid_tsne(data: list, bodyparts=BODYPARTS, fps=FPS, comp=COMP, tsne_params=
                          'into 3 D from CSV file {}...'.format(f_10fps_sc[n].shape[1], f_10fps_sc[n].shape[0],
                                                                n + 1))
             trained_tsne_i = TSNE(perplexity=(f_10fps_sc[n].shape[1] / 300),
+                                  early_exaggeration=(f_10fps_sc[n].shape[1] / 2500),
+                                  learning_rate=2500,
                                   **tsne_params).fit_transform(f_10fps_sc[n].T)
             trained_tsne.append(trained_tsne_i)
             logging.info('Done embedding into 3 D.')
@@ -135,7 +138,9 @@ def bsoid_tsne(data: list, bodyparts=BODYPARTS, fps=FPS, comp=COMP, tsne_params=
         logging.info('Training t-SNE to embed {} instances from {} D '
                      'into 3 D from a total of {} CSV files...'.format(f_10fps_sc.shape[1], f_10fps_sc.shape[0],
                                                                        len(data)))
-        trained_tsne = TSNE(perplexity=(f_10fps.shape[1] / 300),
+        trained_tsne = TSNE(perplexity=(f_10fps_sc.shape[1] / 300),  # 1% data
+                            early_exaggeration=(f_10fps_sc.shape[1] / 2500),  # scale exag by data
+                            learning_rate=2500,  # n/exag
                             **tsne_params).fit_transform(f_10fps_sc.T)
         logging.info('Done embedding into 3 D.')
     return f_10fps, f_10fps_sc, trained_tsne
@@ -172,26 +177,27 @@ def bsoid_gmm(trained_tsne, comp=COMP, emgmm_params=EMGMM_PARAMS):
     return assignments
 
 
-def bsoid_svm(feats, labels, comp=COMP, hldout=HLDOUT, cv_it=CV_IT, svm_params=SVM_PARAMS):
+def bsoid_nn(feats, labels, comp=COMP, hldout=HLDOUT, cv_it=CV_IT, mlp_params=MLP_PARAMS):
     """
-    Trains multiclass SVM classifier
+    Trains MLP classifier
     :param feats: 2D array, original feature space, standardized
     :param labels: 1D array, GMM output assignments
-    :param hldout: scalar, test partition ratio for validating SVM performance in GLOBAL_CONFIG
+    :param hldout: scalar, test partition ratio for validating MLP performance in GLOBAL_CONFIG
     :param cv_it: scalar, iterations for cross-validation in GLOBAL_CONFIG
-    :param svm_params: dict, SVM parameters in GLOBAL_CONFIG
-    :return classifier: obj, SVM.sklearn.svm._classes.SVC classifier
+    :param mlp_params: dict, MLP parameters in GLOBAL_CONFIG
+    :return classifier: obj, MLP classifier
     :return scores: 1D array, cross-validated accuracy
     """
     if comp == 1:
         feats_train, feats_test, labels_train, labels_test = train_test_split(feats.T, labels.T, test_size=hldout,
                                                                               random_state=23)
         logging.info(
-            'Training SVM classifier on randomly partitioned {}% of training data...'.format((1 - hldout) * 100))
-        classifier = svm.SVC(**svm_params)
+            'Training feedforward neural network on randomly partitioned {}% of training data...'.format(
+                (1 - hldout) * 100))
+        classifier = MLPClassifier(**mlp_params)
         classifier.fit(feats_train, labels_train)
-        logging.info('Done training SVM classifier mapping {} features to {} assignments.'.format(feats_train.shape,
-                                                                                                  labels_train.shape))
+        logging.info('Done training feedforward neural network mapping {} features to {} assignments.'.format(
+            feats_train.shape, labels_train.shape))
         logging.info('Predicting randomly sampled (non-overlapped) assignments '
                      'using the remaining {}%...'.format(HLDOUT * 100))
         scores = cross_val_score(classifier, feats_test, labels_test, cv=cv_it, n_jobs=-1)
@@ -221,12 +227,14 @@ def bsoid_svm(feats, labels, comp=COMP, hldout=HLDOUT, cv_it=CV_IT, svm_params=S
                                                                                   test_size=hldout,
                                                                                   random_state=23)
             logging.info(
-                'Training SVM classifier on randomly partitioned {}% of training data...'.format((1 - hldout) * 100))
-            clf = svm.SVC(**svm_params)
+                'Training feedforward neural network on randomly partitioned {}% of training data...'.format(
+                    (1 - hldout) * 100))
+            clf = MLPClassifier(**mlp_params)
             clf.fit(feats_train, labels_train)
             classifier.append(clf)
-            logging.info('Done training SVM classifier mapping {} features to {} assignments.'.format(feats_train.shape,
-                                                                                                      labels_train.shape))
+            logging.info(
+                'Done training feedforward neural network mapping {} features to {} assignments.'.format(
+                    feats_train.shape, labels_train.shape))
             logging.info('Predicting randomly sampled (non-overlapped) assignments '
                          'using the remaining {}%...'.format(HLDOUT * 100))
             sc = cross_val_score(classifier, feats_test, labels_test, cv=cv_it, n_jobs=-1)
@@ -248,7 +256,8 @@ def bsoid_svm(feats, labels, comp=COMP, hldout=HLDOUT, cv_it=CV_IT, svm_params=S
                     disp.figure_.savefig(os.path.join(OUTPUT_PATH, str.join('', (my_file, timestr, '.svg'))))
                     j += 1
                 plt.show()
-    logging.info('Done cross-validating the learned SVM classifier.'.format(feats_train.shape, labels_train.shape))
+    logging.info(
+        'Scored cross-validated feedforward neural network performance.'.format(feats_train.shape, labels_train.shape))
     return classifier, scores
 
 
@@ -258,14 +267,14 @@ def main(train_folders: list):
     :return f_10fps: 2D array, features
     :return trained_tsne: 2D array, trained t-SNE space
     :return gmm_assignments: Converged EM-GMM group assignments
-    :return classifier: obj, SVM.sklearn.svm._classes.SVC classifier
+    :return classifier: obj, MLP classifier
     :return scores: 1D array, cross-validated accuracy
     """
     import bsoid_py.utils.likelihoodprocessing
     filenames, training_data, perc_rect = bsoid_py.utils.likelihoodprocessing.main(train_folders)
     f_10fps, f_10fps_sc, trained_tsne = bsoid_tsne(training_data)
     gmm_assignments = bsoid_gmm(trained_tsne)
-    classifier, scores = bsoid_svm(f_10fps_sc, gmm_assignments)
+    classifier, scores = bsoid_nn(f_10fps, gmm_assignments)
     if PLOT_TRAINING:
         plot_classes(trained_tsne, gmm_assignments)
         plot_accuracy(scores)

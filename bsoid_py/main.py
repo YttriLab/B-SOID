@@ -37,7 +37,7 @@ def build(train_folders):
                                           names=['Type', 'Frame@10Hz'])
     training_data = pd.DataFrame(alldata, columns=micolumns)
     timestr = time.strftime("_%Y%m%d_%H%M")
-    training_data.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_train10Hz', timestr, '.csv')))),
+    training_data.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_trainlabels_10Hz', timestr, '.csv')))),
                          index=True, chunksize=10000, encoding='utf-8')
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'wb') as f:
         joblib.dump(classifier, f)
@@ -52,7 +52,7 @@ def run(predict_folders):
     Automatically loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing new outputs (1 in 10Hz, 1 in FPS, both with same format):
     1. original features (number of training data points by 7 dimensions, columns 1-7)
-    2. SVM predicted labels (number of training data points by 1, columns 8)
+    2. Neural net predicted labels (number of training data points by 1, columns 8)
     """
     import bsoid_py.classify
     from bsoid_py.utils.likelihoodprocessing import get_filenames
@@ -63,14 +63,14 @@ def run(predict_folders):
         behv_model = joblib.load(fr)
     data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.classify.main(predict_folders, FPS, behv_model)
     filenames = []
-    allDf = []
+    all_df = []
     for i, fd in enumerate(predict_folders):  # Loop through folders
         f = get_filenames(fd)
         for j, filename in enumerate(f):
             logging.info('Importing CSV file {} from folder {}'.format(j + 1, i + 1))
             curr_df = pd.read_csv(filename, low_memory=False)
             filenames.append(filename)
-            allDf.append(curr_df)
+            all_df.append(curr_df)
     for i in range(0, len(feats_new)):
         alldata = np.concatenate([feats_new[i].T, labels_fslow[i].reshape(len(labels_fslow[i]), 1)], axis=1)
         micolumns = pd.MultiIndex.from_tuples([('Features', 'Relative snout to forepaws placement'),
@@ -78,19 +78,21 @@ def run(predict_folders):
                                                ('', 'Inter-forepaw distance'),
                                                ('', 'Body length'), ('', 'Body angle'), ('', 'Snout displacement'),
                                                ('', 'Tail-base displacement'),
-                                               ('SVM classifier', 'B-SOiD labels')],
+                                               ('Neural net classifier', 'B-SOiD labels')],
                                               names=['Type', 'Frame@10Hz'])
         predictions = pd.DataFrame(alldata, columns=micolumns)
         timestr = time.strftime("_%Y%m%d_%H%M")
         csvname = os.path.basename(filenames[i]).rpartition('.')[0]
-        predictions.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_10Hz_', csvname, timestr, '.csv')))),
+        predictions.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_10Hz', timestr, csvname,  '.csv')))),
                            index=True, chunksize=10000, encoding='utf-8')
-        dur_stats1, df_tm1 = bsoid_py.utils.statistics.main(labels_fslow[i], OUTPUT_PATH)
+        runlen_df1, dur_stats1, df_tm1 = bsoid_py.utils.statistics.main(labels_fslow[i], OUTPUT_PATH)
         if PLOT_TRAINING:
-            plot_tmat(dt_tm1)
-        dur_stats1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_10Hz', csvname, timestr, '.csv')))),
+            plot_tmat(df_tm1, FPS)
+        runlen_df1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_10Hz', timestr, csvname, '.csv')))),
+                         index=True, chunksize=10000, encoding='utf-8')
+        dur_stats1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_10Hz', timestr, csvname, '.csv')))),
                           index=True, chunksize=10000, encoding='utf-8')
-        df_tm1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_10Hz', csvname, timestr, '.csv')))),
+        df_tm1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_10Hz', timestr, csvname, '.csv')))),
                       index=True, chunksize=10000, encoding='utf-8')
         labels_fshigh_pad = np.pad(labels_fshigh[i], (6, 0), 'edge')
         df2 = pd.DataFrame(labels_fshigh_pad, columns={'B-SOiD labels'})
@@ -100,16 +102,20 @@ def run(predict_folders):
         df2.loc[0] = ''
         df2 = df2.shift()
         df2.loc[0] = ''
-        frames = [allDf[0], df2]
+        frames = [df2, all_df[0]]
         xyfs_df = pd.concat(frames, axis=1)
         csvname = os.path.basename(filenames[i]).rpartition('.')[0]
-        xyfs_df.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', str(FPS), 'Hz_', csvname, timestr, '.csv')))),
+        xyfs_df.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_', str(FPS), 'Hz', timestr, csvname,
+                                                                '.csv')))),
                        index=True, chunksize=10000, encoding='utf-8')
-        dur_stats2, df_tm2 = bsoid_py.utils.statistics.main(labels_fshigh[i], OUTPUT_PATH)
-        dur_stats2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_', str(FPS), 'Hz_', csvname, timestr,
+        runlen_df2, dur_stats2, df_tm2 = bsoid_py.utils.statistics.main(labels_fshigh[i], OUTPUT_PATH)
+        runlen_df2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_', str(FPS), 'Hz', timestr, csvname,
+                                                                   '.csv')))),
+                         index=True, chunksize=10000, encoding='utf-8')
+        dur_stats2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_', str(FPS), 'Hz', timestr, csvname,
                                                                    '.csv')))),
                           index=True, chunksize=10000, encoding='utf-8')
-        df_tm2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_', str(FPS), 'Hz_', csvname, timestr,
+        df_tm2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_', str(FPS), 'Hz', timestr, csvname,
                                                                '.csv')))),
                       index=True, chunksize=10000, encoding='utf-8')
     logging.info('All saved.')

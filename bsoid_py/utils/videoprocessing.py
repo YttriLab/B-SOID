@@ -109,7 +109,7 @@ def repeatingNumbers(labels):
     return n_list, idx, lengths
 
 
-def create_labeled_vid(labels, crit=3, counts=5, frame_dir=FRAME_DIR, output_path=SHORTVID_DIR):
+def create_labeled_vid(labels, crit=3, counts=3, frame_dir=FRAME_DIR, output_path=SHORTVID_DIR):
     """
     :param labels: 1D array, labels from training or testing
     :param crit: scalar, minimum duration for random selection of behaviors, default 300ms

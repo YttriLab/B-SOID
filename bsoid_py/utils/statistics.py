@@ -56,21 +56,18 @@ def behv_time(labels):
     return beh_t
 
 
-def behv_dur(labels, output_path=OUTPUT_PATH):
+def behv_dur(labels):
     """
     :param labels: 1D array, predicted labels
-    :param output_path: string, output directory
+    :return runlen_df: object, behavioral duration run lengths data frame
     :return dur_stats: object, behavioral duration statistics data frame
     """
     lengths, pos, grp = rle(labels)
     df_lengths = pd.DataFrame(lengths, columns={'Run lengths'})
     df_grp = pd.DataFrame(grp, columns={'B-SOiD labels'})
-    df_pos = pd.DataFrame(pos, columns={'Start time (10Hz frames)'})
+    df_pos = pd.DataFrame(pos, columns={'Start time (frames)'})
     runlengths = [df_grp, df_pos, df_lengths]
     runlen_df = pd.concat(runlengths, axis=1)
-    timestr = time.strftime("_%Y%m%d_%H%M")
-    runlen_df.to_csv((os.path.join(output_path, str.join('', ('bsoid_runlengths', timestr, '.csv')))),
-                     index=True, chunksize=10000, encoding='utf-8')
     beh_t = behv_time(labels)
     dur_means = []
     dur_quant0 = []
@@ -79,7 +76,6 @@ def behv_dur(labels, output_path=OUTPUT_PATH):
     dur_quant3 = []
     dur_quant4 = []
     for i in range(0, len(np.unique(grp))):
-        print(i)
         try:
             dur_means.append(np.mean(lengths[np.where(grp == i)]))
             dur_quant0.append(np.quantile(lengths[np.where(grp == i)], 0.1))
@@ -102,21 +98,21 @@ def behv_dur(labels, output_path=OUTPUT_PATH):
                               np.array(dur_quant3).reshape(len(np.array(dur_quant3)), 1),
                               np.array(dur_quant4).reshape(len(np.array(dur_quant4)), 1)], axis=1)
     micolumns = pd.MultiIndex.from_tuples([('Stats', 'Percent of time'),
-                                           ('', 'Mean duration (100ms)'), ('', '10th Percentile.'),
-                                           ('', '25th Percentile.'), ('', '50th Percentile.'),
-                                           ('', '75th Percentile.'), ('', '90th Percentile.')],
+                                           ('', 'Mean duration (frames)'), ('', '10th %tile (frames)'),
+                                           ('', '25th %tile (frames)'), ('', '50th %tile (frames)'),
+                                           ('', '75th %tile (frames)'), ('', '90th %tile (frames)')],
                                           names=['', 'B-SOiD labels'])
     dur_stats = pd.DataFrame(alldata, columns=micolumns)
-    return dur_stats
+    return runlen_df, dur_stats
 
 
-def main(labels, output_path=OUTPUT_PATH):
+def main(labels):
     """
     :param labels: 1D array: predicted labels
     :param output_path: string, output directory
     :return dur_stats: object, behavioral duration statistics data frame
     :return tm: object, transition matrix data frame
     """
-    dur_stats = behv_dur(labels, output_path)
+    runlen_df, dur_stats = behv_dur(labels)
     tm = transition_matrix(labels)
-    return dur_stats, tm
+    return runlen_df, dur_stats, tm
