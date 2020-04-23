@@ -27,11 +27,11 @@ def build(train_folders):
     import bsoid_py.train
     f_10fps, trained_tsne, gmm_assignments, classifier, scores = bsoid_py.train.main(train_folders)
     alldata = np.concatenate([f_10fps.T, trained_tsne, gmm_assignments.reshape(len(gmm_assignments), 1)], axis=1)
-    micolumns = pd.MultiIndex.from_tuples([('Features', 'Relative snout to forepaws placement'),
-                                           ('', 'Relative snout to hind paws placement'),
-                                           ('', 'Inter-forepaw distance'),
-                                           ('', 'Body length'), ('', 'Body angle'), ('', 'Snout displacement'),
-                                           ('', 'Tail-base displacement'),
+    micolumns = pd.MultiIndex.from_tuples([('Features', 'Distance between points 1 & 5'),
+                                           ('', 'Distance between points 1 & 8'),
+                                           ('', 'Angle change between points 1 & 2'),
+                                           ('', 'Angle change between points 1 & 4'),
+                                           ('', 'Point 3 displacement'), ('', 'Point 7 displacement'),
                                            ('Embedded t-SNE', 'Dimension 1'), ('', 'Dimension 2'),
                                            ('', 'Dimension 3'), ('EM-GMM', 'Assignment No.')],
                                           names=['Type', 'Frame@10Hz'])
@@ -73,23 +73,23 @@ def run(predict_folders):
             all_df.append(curr_df)
     for i in range(0, len(feats_new)):
         alldata = np.concatenate([feats_new[i].T, labels_fslow[i].reshape(len(labels_fslow[i]), 1)], axis=1)
-        micolumns = pd.MultiIndex.from_tuples([('Features', 'Relative snout to forepaws placement'),
-                                               ('', 'Relative snout to hind paws placement'),
-                                               ('', 'Inter-forepaw distance'),
-                                               ('', 'Body length'), ('', 'Body angle'), ('', 'Snout displacement'),
-                                               ('', 'Tail-base displacement'),
+        micolumns = pd.MultiIndex.from_tuples([('Features', 'Distance between points 1 & 5'),
+                                               ('', 'Distance between points 1 & 8'),
+                                               ('', 'Angle change between points 1 & 2'),
+                                               ('', 'Angle change between points 1 & 4'),
+                                               ('', 'Point 3 displacement'), ('', 'Point 7 displacement'),
                                                ('Neural net classifier', 'B-SOiD labels')],
                                               names=['Type', 'Frame@10Hz'])
         predictions = pd.DataFrame(alldata, columns=micolumns)
         timestr = time.strftime("_%Y%m%d_%H%M")
         csvname = os.path.basename(filenames[i]).rpartition('.')[0]
-        predictions.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_10Hz', timestr, csvname,  '.csv')))),
+        predictions.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_10Hz', timestr, csvname, '.csv')))),
                            index=True, chunksize=10000, encoding='utf-8')
         runlen_df1, dur_stats1, df_tm1 = bsoid_py.utils.statistics.main(labels_fslow[i])
         if PLOT_TRAINING:
             plot_tmat(df_tm1, FPS)
         runlen_df1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_10Hz', timestr, csvname, '.csv')))),
-                         index=True, chunksize=10000, encoding='utf-8')
+                          index=True, chunksize=10000, encoding='utf-8')
         dur_stats1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_10Hz', timestr, csvname, '.csv')))),
                           index=True, chunksize=10000, encoding='utf-8')
         df_tm1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_10Hz', timestr, csvname, '.csv')))),
@@ -111,7 +111,7 @@ def run(predict_folders):
         runlen_df2, dur_stats2, df_tm2 = bsoid_py.utils.statistics.main(labels_fshigh[i])
         runlen_df2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_', str(FPS), 'Hz', timestr, csvname,
                                                                    '.csv')))),
-                         index=True, chunksize=10000, encoding='utf-8')
+                          index=True, chunksize=10000, encoding='utf-8')
         dur_stats2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_stats_', str(FPS), 'Hz', timestr, csvname,
                                                                    '.csv')))),
                           index=True, chunksize=10000, encoding='utf-8')

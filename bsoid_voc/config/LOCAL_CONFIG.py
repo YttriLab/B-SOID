@@ -6,15 +6,14 @@ PREDICT_FOLDERS = ['/Data1']  # Data folders, can contain the same as training o
 
 # This version requires the six body parts Snout/Head, Forepaws/Shoulders, Hindpaws/Hips, Tailbase.
 BODYPARTS = {
-    'Snout/Head': 0,
-    'Neck': None,
-    'Forepaw/Shoulder1': 1,
-    'Forepaw/Shoulder2': 2,
-    'Bodycenter': None,
-    'Hindpaw/Hip1': 3,
-    'Hindpaw/Hip2': 4,
-    'Tailbase': 5,
-    'Tailroot': None
+    'Point1': 0,
+    'Point2': 1,
+    'Point3': 2,
+    'Point4': 3,
+    'Point5': 4,
+    'Point6': 5,
+    'Point7': 6,
+    'Point8': 7,
 }
 
 FPS = 60  # Frame-rate of your video,
@@ -24,7 +23,7 @@ COMP = 1  # COMP = 1: Train one classifier for all CSV files; COMP = 0: Classifi
 # Output directory to where you want the analysis to be stored
 OUTPUT_PATH = '/Users/ahsu/Desktop/bsoid_py_beta'
 # Machine learning model name
-MODEL_NAME = 'c57bl6_n6_30min'
+MODEL_NAME = 'mky_30min'
 
 # Pick a video
 VID_NAME = '/Users/ahsu/B-SOID/datasets/Data1/2019-04-19_09-34-36cut0_30min.mp4'

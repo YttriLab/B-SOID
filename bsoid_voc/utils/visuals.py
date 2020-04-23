@@ -128,14 +128,14 @@ def plot_feats(feats: list, labels: list):
             feats_k = np.array(feats[k])
             R = np.linspace(0, 1, len(np.unique(labels_k)))
             color = plt.cm.get_cmap("Spectral")(R)
-            feat_ls = ("Relative snout to forepaws placement", "Relative snout to hind paws placement",
-                       "Inter-forepaw distance", "Body length", "Body angle",
-                       "Snout displacement", "Tail-base displacement")
+            feat_ls = ("Distance between points 1 & 5", "Distance between points 1 & 8",
+                       "Angle change between points 1 & 2", "Angle change between points 1 & 4",
+                       "Point 3 displacement", "Point 7 displacement")
             for j in range(0, feats_k.shape[0]):
                 fig = plt.figure(facecolor='w', edgecolor='k')
                 for i in range(0, len(np.unique(labels_k))):
                     plt.subplot(len(np.unique(labels_k)), 1, i + 1)
-                    if j == 2 or j == 3 or j == 5 or j == 6:
+                    if j == 0 or j == 1 or j == 4 or j == 5:
                         plt.hist(feats_k[j, labels_k == i],
                                  bins=np.linspace(0, np.mean(feats_k[j, :]) + 3 * np.std(feats_k[j, :]), num=50),
                                  range=(0, np.mean(feats_k[j, :]) + 3 * np.std(feats_k[j, :])),
@@ -162,14 +162,14 @@ def plot_feats(feats: list, labels: list):
     else:
         R = np.linspace(0, 1, len(np.unique(labels)))
         color = plt.cm.get_cmap("Spectral")(R)
-        feat_ls = ("Relative snout to forepaws placement", "Relative snout to hind paws placement",
-                   "Inter-forepaw distance", "Body length", "Body angle",
-                   "Snout displacement", "Tail-base displacement")
+        feat_ls = ("Distance between points 1 & 5", "Distance between points 1 & 8",
+                   "Angle change between points 1 & 2", "Angle change between points 1 & 4",
+                   "Point 3 displacement", "Point 7 displacement")
         for j in range(0, feats.shape[0]):
             fig = plt.figure(facecolor='w', edgecolor='k')
             for i in range(0, len(np.unique(labels))):
                 plt.subplot(len(np.unique(labels)), 1, i + 1)
-                if j == 2 or j == 3 or j == 5 or j == 6:
+                if j == 0 or j == 1 or j == 4 or j == 5:
                     plt.hist(feats[j, labels == i],
                              bins=np.linspace(0, np.mean(feats[j, :]) + 3 * np.std(feats[j, :]), num=50),
                              range=(0, np.mean(feats[j, :]) + 3 * np.std(feats[j, :])),

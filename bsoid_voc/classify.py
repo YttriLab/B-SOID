@@ -25,56 +25,48 @@ def bsoid_extract(data, bodyparts=BODYPARTS, fps=FPS):
     for m in range(len(data)):
         logging.info('Extracting features from CSV file {}...'.format(m + 1))
         dataRange = len(data[m])
-        fpd = data[m][:, 2 * bodyparts.get('Forepaw/Shoulder1'):2 * bodyparts.get('Forepaw/Shoulder1') + 2] - \
-              data[m][:, 2 * bodyparts.get('Forepaw/Shoulder2'):2 * bodyparts.get('Forepaw/Shoulder2') + 2]
-        cfp = np.vstack(((data[m][:, 2 * bodyparts.get('Forepaw/Shoulder1')] +
-                          data[m][:, 2 * bodyparts.get('Forepaw/Shoulder2')]) / 2,
-                         (data[m][:, 2 * bodyparts.get('Forepaw/Shoulder1') + 1] +
-                          data[m][:, 2 * bodyparts.get('Forepaw/Shoulder1') + 1]) / 2)).T
-        cfp_pt = np.vstack(([cfp[:, 0] - data[m][:, 2 * bodyparts.get('Tailbase')],
-                             cfp[:, 1] - data[m][:, 2 * bodyparts.get('Tailbase') + 1]])).T
-        chp = np.vstack((((data[m][:, 2 * bodyparts.get('Hindpaw/Hip1')] +
-                           data[m][:, 2 * bodyparts.get('Hindpaw/Hip2')]) / 2),
-                         ((data[m][:, 2 * bodyparts.get('Hindpaw/Hip1') + 1] +
-                           data[m][:, 2 * bodyparts.get('Hindpaw/Hip2') + 1]) / 2))).T
-        chp_pt = np.vstack(([chp[:, 0] - data[m][:, 2 * bodyparts.get('Tailbase')],
-                             chp[:, 1] - data[m][:, 2 * bodyparts.get('Tailbase') + 1]])).T
-        sn_pt = np.vstack(([data[m][:, 2 * bodyparts.get('Snout/Head')] - data[m][:, 2 * bodyparts.get('Tailbase')],
-                            data[m][:, 2 * bodyparts.get('Snout/Head') + 1] - data[m][:,
-                                                                              2 * bodyparts.get('Tailbase') + 1]])).T
-        fpd_norm = np.zeros(dataRange)
-        cfp_pt_norm = np.zeros(dataRange)
-        chp_pt_norm = np.zeros(dataRange)
-        sn_pt_norm = np.zeros(dataRange)
+        p12 = data[m][:, 2 * bodyparts.get('Point1'):2 * bodyparts.get('Point1') + 2] - \
+              data[m][:, 2 * bodyparts.get('Point2'):2 * bodyparts.get('Point2') + 2]
+        p14 = data[m][:, 2 * bodyparts.get('Point1'):2 * bodyparts.get('Point1') + 2] - \
+              data[m][:, 2 * bodyparts.get('Point4'):2 * bodyparts.get('Point4') + 2]
+        p15 = data[m][:, 2 * bodyparts.get('Point1'):2 * bodyparts.get('Point1') + 2] - \
+              data[m][:, 2 * bodyparts.get('Point5'):2 * bodyparts.get('Point5') + 2]
+        p18 = data[m][:, 2 * bodyparts.get('Point1'):2 * bodyparts.get('Point1') + 2] - \
+              data[m][:, 2 * bodyparts.get('Point8'):2 * bodyparts.get('Point8') + 2]
+        p15_norm = np.zeros(dataRange)
+        p18_norm = np.zeros(dataRange)
         for i in range(1, dataRange):
-            fpd_norm[i] = np.array(np.linalg.norm(fpd[i, :]))
-            cfp_pt_norm[i] = np.linalg.norm(cfp_pt[i, :])
-            chp_pt_norm[i] = np.linalg.norm(chp_pt[i, :])
-            sn_pt_norm[i] = np.linalg.norm(sn_pt[i, :])
-        fpd_norm_smth = boxcar_center(fpd_norm, win_len)
-        sn_cfp_norm_smth = boxcar_center(sn_pt_norm - cfp_pt_norm, win_len)
-        sn_chp_norm_smth = boxcar_center(sn_pt_norm - chp_pt_norm, win_len)
-        sn_pt_norm_smth = boxcar_center(sn_pt_norm, win_len)
-        sn_pt_ang = np.zeros(dataRange - 1)
-        sn_disp = np.zeros(dataRange - 1)
-        pt_disp = np.zeros(dataRange - 1)
+            p15_norm[i] = np.array(np.linalg.norm(p15[i, :]))
+            p18_norm[i] = np.array(np.linalg.norm(p18[i, :]))
+        p15_norm_smth = boxcar_center(p15_norm, win_len)
+        p18_norm_smth = boxcar_center(p18_norm, win_len)
+        p12_ang = np.zeros(dataRange - 1)
+        p14_ang = np.zeros(dataRange - 1)
+        p3_disp = np.zeros(dataRange - 1)
+        p7_disp = np.zeros(dataRange - 1)
         for k in range(0, dataRange - 1):
-            b_3d = np.hstack([sn_pt[k + 1, :], 0])
-            a_3d = np.hstack([sn_pt[k, :], 0])
+            b_3d = np.hstack([p12[k + 1, :], 0])
+            a_3d = np.hstack([p12[k, :], 0])
             c = np.cross(b_3d, a_3d)
-            sn_pt_ang[k] = np.dot(np.dot(np.sign(c[2]), 180) / np.pi,
-                                  math.atan2(np.linalg.norm(c), np.dot(sn_pt[k, :], sn_pt[k + 1, :])))
-            sn_disp[k] = np.linalg.norm(
-                data[m][k + 1, 2 * bodyparts.get('Snout/Head'):2 * bodyparts.get('Snout/Head') + 1] -
-                data[m][k, 2 * bodyparts.get('Snout/Head'):2 * bodyparts.get('Snout/Head') + 1])
-            pt_disp[k] = np.linalg.norm(
-                data[m][k + 1, 2 * bodyparts.get('Tailbase'):2 * bodyparts.get('Tailbase') + 1] -
-                data[m][k, 2 * bodyparts.get('Tailbase'):2 * bodyparts.get('Tailbase') + 1])
-        sn_pt_ang_smth = boxcar_center(sn_pt_ang, win_len)
-        sn_disp_smth = boxcar_center(sn_disp, win_len)
-        pt_disp_smth = boxcar_center(pt_disp, win_len)
-        feats.append(np.vstack((sn_cfp_norm_smth[1:], sn_chp_norm_smth[1:], fpd_norm_smth[1:],
-                                sn_pt_norm_smth[1:], sn_pt_ang_smth[:], sn_disp_smth[:], pt_disp_smth[:])))
+            p12_ang[k] = np.dot(np.dot(np.sign(c[2]), 180) / np.pi,
+                                math.atan2(np.linalg.norm(c), np.dot(p12[k, :], p12[k + 1, :])))
+            e_3d = np.hstack([p14[k + 1, :], 0])
+            d_3d = np.hstack([p14[k, :], 0])
+            f = np.cross(e_3d, d_3d)
+            p14_ang[k] = np.dot(np.dot(np.sign(f[2]), 180) / np.pi,
+                                math.atan2(np.linalg.norm(f), np.dot(p14[k, :], p14[k + 1, :])))
+            p3_disp[k] = np.linalg.norm(
+                data[m][k + 1, 2 * bodyparts.get('Point3'):2 * bodyparts.get('Point3') + 1] -
+                data[m][k, 2 * bodyparts.get('Point3'):2 * bodyparts.get('Point3') + 1])
+            p7_disp[k] = np.linalg.norm(
+                data[m][k + 1, 2 * bodyparts.get('Point7'):2 * bodyparts.get('Point7') + 1] -
+                data[m][k, 2 * bodyparts.get('Point7'):2 * bodyparts.get('Point7') + 1])
+        p12_ang_smth = boxcar_center(p12_ang, win_len)
+        p14_ang_smth = boxcar_center(p14_ang, win_len)
+        p3_disp_smth = boxcar_center(p3_disp, win_len)
+        p7_disp_smth = boxcar_center(p7_disp, win_len)
+        feats.append(np.vstack((p15_norm_smth[1:], p18_norm_smth[1:],
+                                p12_ang_smth[:], p14_ang_smth[:], p3_disp_smth[:], p7_disp_smth[:])))
     logging.info('Done extracting features from a total of {} training CSV files.'.format(len(data)))
     f_10fps = []
     for n in range(0, len(feats)):
@@ -82,12 +74,12 @@ def bsoid_extract(data, bodyparts=BODYPARTS, fps=FPS):
         for k in range(round(fps / 10) - 1, len(feats[n][0]), round(fps / 10)):
             if k > round(fps / 10) - 1:
                 feats1 = np.concatenate((feats1.reshape(feats1.shape[0], feats1.shape[1]),
-                                         np.hstack((np.mean((feats[n][0:4, range(k - round(fps / 10), k)]), axis=1),
-                                                    np.sum((feats[n][4:7, range(k - round(fps / 10), k)]),
+                                         np.hstack((np.mean((feats[n][0:2, range(k - round(fps / 10), k)]), axis=1),
+                                                    np.sum((feats[n][2:6, range(k - round(fps / 10), k)]),
                                                            axis=1))).reshape(len(feats[0]), 1)), axis=1)
             else:
-                feats1 = np.hstack((np.mean((feats[n][0:4, range(k - round(fps / 10), k)]), axis=1),
-                                    np.sum((feats[n][4:7, range(k - round(fps / 10), k)]), axis=1))).reshape(
+                feats1 = np.hstack((np.mean((feats[n][0:2, range(k - round(fps / 10), k)]), axis=1),
+                                    np.sum((feats[n][2:6, range(k - round(fps / 10), k)]), axis=1))).reshape(
                     len(feats[0]), 1)
         logging.info('Done integrating features into 100ms bins from CSV file {}.'.format(n + 1))
         f_10fps.append(feats1)
