@@ -119,8 +119,7 @@ def bsoid_tsne(data: list, bodyparts=BODYPARTS, fps=FPS, comp=COMP, tsne_params=
                                                                n + 1))
             trained_tsne_i = TSNE(perplexity=np.sqrt(f_10fps_sc[n].shape[1]),
                                   early_exaggeration=16,  # early exaggeration alpha 16 is good
-                                  learning_rate=max(200, f_10fps_sc.shape[1] / 16),  # alpha*eta = n
-                                  random_state=23,  # for reproducibility
+                                  learning_rate=max(200, f_10fps_sc[n].shape[1] / 16),  # alpha*eta = n
                                   **tsne_params).fit_transform(f_10fps_sc[n].T)
             trained_tsne.append(trained_tsne_i)
             logging.info('Done embedding into 3 D.')
@@ -134,7 +133,6 @@ def bsoid_tsne(data: list, bodyparts=BODYPARTS, fps=FPS, comp=COMP, tsne_params=
         trained_tsne = TSNE(perplexity=np.sqrt(f_10fps_sc.shape[1]),  # perplexity scales with sqrt, power law
                             early_exaggeration=16,  # early exaggeration alpha 16 is good
                             learning_rate=max(200, f_10fps_sc.shape[1] / 16),  # alpha*eta = n
-                            random_state=23,  # for reproducibility
                             **tsne_params).fit_transform(f_10fps_sc.T)
         logging.info('Done embedding into 3 D.')
     return f_10fps, f_10fps_sc, trained_tsne
