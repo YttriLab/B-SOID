@@ -9,8 +9,8 @@ import numpy as np
 import cv2
 from tqdm import tqdm
 
-from bsoid_py.utils.likelihoodprocessing import sort_nicely
-from bsoid_py.utils.visuals import *
+from bsoid_voc.utils.likelihoodprocessing import sort_nicely
+from bsoid_voc.utils.visuals import *
 
 
 def get_vidnames(folder):

@@ -8,7 +8,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from bsoid_py.config import *
+from bsoid_voc.config import *
 
 
 def transition_matrix(labels):

@@ -15,8 +15,8 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
 
-from bsoid_py.utils.likelihoodprocessing import boxcar_center
-from bsoid_py.utils.visuals import *
+from bsoid_voc.utils.likelihoodprocessing import boxcar_center
+from bsoid_voc.utils.visuals import *
 
 
 def bsoid_tsne(data: list, bodyparts=BODYPARTS, fps=FPS, comp=COMP, tsne_params=TSNE_PARAMS):
@@ -254,8 +254,8 @@ def main(train_folders: list):
     :return classifier: obj, MLP classifier
     :return scores: 1D array, cross-validated accuracy
     """
-    import bsoid_py.utils.likelihoodprocessing
-    filenames, training_data, perc_rect = bsoid_py.utils.likelihoodprocessing.main(train_folders)
+    import bsoid_voc.utils.likelihoodprocessing
+    filenames, training_data, perc_rect = bsoid_voc.utils.likelihoodprocessing.main(train_folders)
     f_10fps, f_10fps_sc, trained_tsne = bsoid_tsne(training_data)
     gmm_assignments = bsoid_gmm(trained_tsne)
     classifier, scores = bsoid_nn(f_10fps, gmm_assignments)

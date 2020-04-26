@@ -11,21 +11,21 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from bsoid_py.config import *
+from bsoid_voc.config import *
 
 
 def build(train_folders):
     """
     :param train_folders: list, folders to build behavioral model on
-    :returns f_10fps, trained_tsne, gmm_assignments, classifier, scores: see bsoid_py.train
+    :returns f_10fps, trained_tsne, gmm_assignments, classifier, scores: see bsoid_voc.train
     Automatically saves single CSV file containing training outputs (in 10Hz, 100ms per row):
     1. original features (number of training data points by 7 dimensions, columns 1-7)
     2. embedded features (number of training data points by 3 dimensions, columns 8-10)
     3. em-gmm assignments (number of training data points by 1, columns 11)
     Automatically saves classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     """
-    import bsoid_py.train
-    f_10fps, trained_tsne, gmm_assignments, classifier, scores = bsoid_py.train.main(train_folders)
+    import bsoid_voc.train
+    f_10fps, trained_tsne, gmm_assignments, classifier, scores = bsoid_voc.train.main(train_folders)
     alldata = np.concatenate([f_10fps.T, trained_tsne, gmm_assignments.reshape(len(gmm_assignments), 1)], axis=1)
     micolumns = pd.MultiIndex.from_tuples([('Features', 'Distance between points 1 & 5'),
                                            ('', 'Distance between points 1 & 8'),
@@ -48,20 +48,20 @@ def build(train_folders):
 def run(predict_folders):
     """
     :param predict_folders: list, folders to run prediction using behavioral model
-    :returns labels_fslow, labels_fshigh: see bsoid_py.classify
+    :returns labels_fslow, labels_fshigh: see bsoid_voc.classify
     Automatically loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing new outputs (1 in 10Hz, 1 in FPS, both with same format):
     1. original features (number of training data points by 7 dimensions, columns 1-7)
     2. Neural net predicted labels (number of training data points by 1, columns 8)
     """
-    import bsoid_py.classify
-    from bsoid_py.utils.likelihoodprocessing import get_filenames
-    import bsoid_py.utils.statistics
-    from bsoid_py.utils.visuals import plot_tmat
+    import bsoid_voc.classify
+    from bsoid_voc.utils.likelihoodprocessing import get_filenames
+    import bsoid_voc.utils.statistics
+    from bsoid_voc.utils.visuals import plot_tmat
 
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'rb') as fr:
         behv_model = joblib.load(fr)
-    data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.classify.main(predict_folders, FPS, behv_model)
+    data_new, feats_new, labels_fslow, labels_fshigh = bsoid_voc.classify.main(predict_folders, FPS, behv_model)
     filenames = []
     all_df = []
     for i, fd in enumerate(predict_folders):  # Loop through folders
@@ -85,7 +85,7 @@ def run(predict_folders):
         csvname = os.path.basename(filenames[i]).rpartition('.')[0]
         predictions.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_10Hz', timestr, csvname, '.csv')))),
                            index=True, chunksize=10000, encoding='utf-8')
-        runlen_df1, dur_stats1, df_tm1 = bsoid_py.utils.statistics.main(labels_fslow[i])
+        runlen_df1, dur_stats1, df_tm1 = bsoid_voc.utils.statistics.main(labels_fslow[i])
         if PLOT_TRAINING:
             plot_tmat(df_tm1, FPS)
         runlen_df1.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_10Hz', timestr, csvname, '.csv')))),
@@ -108,7 +108,7 @@ def run(predict_folders):
         xyfs_df.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_labels_', str(FPS), 'Hz', timestr, csvname,
                                                                 '.csv')))),
                        index=True, chunksize=10000, encoding='utf-8')
-        runlen_df2, dur_stats2, df_tm2 = bsoid_py.utils.statistics.main(labels_fshigh[i])
+        runlen_df2, dur_stats2, df_tm2 = bsoid_voc.utils.statistics.main(labels_fshigh[i])
         runlen_df2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_runlen_', str(FPS), 'Hz', timestr, csvname,
                                                                    '.csv')))),
                           index=True, chunksize=10000, encoding='utf-8')
@@ -126,8 +126,8 @@ def main(train_folders, predict_folders):
     """
     :param train_folders: list, folders to build behavioral model on
     :param predict_folders: list, folders to run prediction using behavioral model
-    :returns f_10fps, trained_tsne, gmm_assignments, classifier, scores: see bsoid_py.train
-    :returns feats_new, labels_fslow, labels_fshigh: see bsoid_py.classify
+    :returns f_10fps, trained_tsne, gmm_assignments, classifier, scores: see bsoid_voc.train
+    :returns feats_new, labels_fslow, labels_fshigh: see bsoid_voc.classify
     Automatically saves and loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing training and new outputs
     """

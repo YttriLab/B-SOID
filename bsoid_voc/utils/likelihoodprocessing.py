@@ -9,7 +9,7 @@ import re
 import numpy as np
 from tqdm import tqdm
 
-from bsoid_py.utils.visuals import *
+from bsoid_voc.utils.visuals import *
 
 
 def boxcar_center(a, n):
@@ -114,9 +114,9 @@ def adp_filt(currdf: object):
         a, b = np.histogram(data_lh[1:, x].astype(np.float))
         rise_a = np.where(np.diff(a) >= 0)
         if rise_a[0][0] > 1:
-            llh = (b[rise_a[0][0]])
+            llh = ((b[rise_a[0][0]] + b[rise_a[0][0]-1]) / 2)
         else:
-            llh = (b[rise_a[0][1]])
+            llh = ((b[rise_a[0][1]] + b[rise_a[0][1]-1]) / 2)
         data_lh_float = data_lh[1:, x].astype(np.float)
         perc_rect[x] = np.sum(data_lh_float < llh) / data_lh.shape[0]
         for i in range(1, data_lh.shape[0] - 1):

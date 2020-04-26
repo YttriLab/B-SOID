@@ -4,7 +4,7 @@ BASE_PATH = '/Users/ahsu/B-SOID/datasets'  # Base directory path.
 TRAIN_FOLDERS = ['/Train1', '/Train2']  # Data folders used to training neural network.
 PREDICT_FOLDERS = ['/Data1']  # Data folders, can contain the same as training or new data for consistency.
 
-# This version requires the six body parts Snout/Head, Forepaws/Shoulders, Hindpaws/Hips, Tailbase.
+# Order the points that are encircling the mouth.
 BODYPARTS = {
     'Point1': 0,
     'Point2': 1,
@@ -21,7 +21,7 @@ FPS = 60  # Frame-rate of your video,
 COMP = 1  # COMP = 1: Train one classifier for all CSV files; COMP = 0: Classifier/CSV file.
 
 # Output directory to where you want the analysis to be stored
-OUTPUT_PATH = '/Users/ahsu/Desktop/bsoid_py_beta'
+OUTPUT_PATH = '/Users/ahsu/Desktop/bsoid_voc_beta'
 # Machine learning model name
 MODEL_NAME = 'mky_30min'
 

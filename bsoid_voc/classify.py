@@ -1,15 +1,15 @@
 """
 Classify behaviors based on (x,y) using trained B-SOiD behavioral model.
-B-SOiD behavioral model has been developed using bsoid_py.main.build()
+B-SOiD behavioral model has been developed using bsoid_voc.main.build()
 """
 
 import math
 
 import numpy as np
 
-from bsoid_py.utils import videoprocessing
-from bsoid_py.utils.likelihoodprocessing import boxcar_center
-from bsoid_py.utils.visuals import *
+from bsoid_voc.utils import videoprocessing
+from bsoid_voc.utils.likelihoodprocessing import boxcar_center
+from bsoid_voc.utils.visuals import *
 
 
 def bsoid_extract(data, bodyparts=BODYPARTS, fps=FPS):
@@ -149,8 +149,8 @@ def main(predict_folders, fps, behv_model):
     :return labels_fslow, 1D array, label/100ms
     :return labels_fshigh, 1D array, label/frame
     """
-    import bsoid_py.utils.likelihoodprocessing
-    filenames, data_new, perc_rect = bsoid_py.utils.likelihoodprocessing.main(predict_folders)
+    import bsoid_voc.utils.likelihoodprocessing
+    filenames, data_new, perc_rect = bsoid_voc.utils.likelihoodprocessing.main(predict_folders)
     feats_new = bsoid_extract(data_new)
     labels_fslow = bsoid_predict(feats_new, behv_model)
     labels_fshigh = bsoid_frameshift(data_new, fps, behv_model)

@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sn
 
-from bsoid_py.config import *
+from bsoid_voc.config import *
 
 matplotlib_axes_logger.setLevel('ERROR')
 
