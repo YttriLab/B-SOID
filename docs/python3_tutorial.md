@@ -16,7 +16,7 @@ You should now see (bsoid_env) $yourusername@yourmachine ~ %
 ### Step 3: install dependencies
 ```
 conda install ipython  
-pip install pandas tqdm matplotlib opencv-python seaborn scikit-learn
+pip install pandas tqdm matplotlib opencv-python seaborn scikit-learn bhtsne
 ```
 ![Step3](../demo/py3_step3.gif)
 
@@ -64,10 +64,7 @@ Use the vim commands as follows:
 * OUTPUT_PATH = '/Users/ahsu/Desktop/'
     * Change to desired output path that the program will be saving results to.
 * MODEL_NAME = 'c57bl6_n2_120min'
-    * If you have multiple different experimental conditions and/or would like to play with the machine learning parameters, you can name the machine learning model.
-* FINALMODEL_NAME = 'bsoid_c57bl6_n2_120min_20200413_1941.sav'
-    * Once you're comfortable with your model, you can set the final model designation.
-    * This is calling the name of the model you'll be using for any future predictions.
+    * Name the machine learning model.
 * VID_NAME = '/Users/ahsu/B-SOID/datasets/041919/2019-04-19_09-34-36cut0_30min.mp4'
     * If you want to visualize the output to understand what each group means, pick a video.
 * ID = 0
@@ -107,7 +104,7 @@ import bsoid_py.main
 ```
 Build your behavioral model using your training csv files within your train folders (LOCAL_CONFIG.py):
 ```
-bsoid_py.main.build(TRAIN_FOLDERS)
+f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores = bsoid_py.main.build(TRAIN_FOLDERS)
 ```
 ![Step5](../demo/py3_step5.gif)
 Note that this process takes some time depending on how big your dataset is. 
@@ -118,7 +115,7 @@ Once this process is done
 ### Step 6: Run your classifier on all future datasets!
 Still inside iPython, see above.
 ```
-bsoid_py.main.run(PREDICT_FOLDERS)
+data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.main.run(PREDICT_FOLDERS)
 ```
 ![Step6](../demo/py3_step6.gif)
 The output results will be stored automatically in the OUTPUT_PATH (LOCAL_CONFIG.py).
