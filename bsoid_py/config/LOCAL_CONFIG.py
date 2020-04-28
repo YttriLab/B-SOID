@@ -1,7 +1,7 @@
 ################### THINGS YOU MAY WANT TO CHANGE ###################
 
 BASE_PATH = '/Users/ahsu/B-SOID/datasets'  # Base directory path.
-TRAIN_FOLDERS = ['/Train1', '/Train2']  # Data folders used to training neural network.
+TRAIN_FOLDERS = ['/Train1']  # Data folders used to training neural network.
 PREDICT_FOLDERS = ['/Data1']  # Data folders, can contain the same as training or new data for consistency.
 
 # This version requires the six body parts Snout/Head, Forepaws/Shoulders, Hindpaws/Hips, Tailbase.

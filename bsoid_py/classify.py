@@ -94,17 +94,18 @@ def bsoid_extract(data, bodyparts=BODYPARTS, fps=FPS):
     return f_10fps
 
 
-def bsoid_predict(feats, model):
+def bsoid_predict(feats, scaler, model):
     """
     :param feats: list, multiple feats (original feature space)
-    :param model: Obj, MLP classifier
+    :param model: Obj, SVM classifier
     :return labels_fslow: list, label/100ms
     """
     labels_fslow = []
     for i in range(0, len(feats)):
         logging.info('Predicting file {} with {} instances '
                      'using learned classifier: {}{}...'.format(i + 1, feats[i].shape[1], 'bsoid_', MODEL_NAME))
-        labels = model.predict(feats[i].T)
+        feats_sc = scaler.transform(feats[i].T).T
+        labels = model.predict(feats_sc.T)
         logging.info('Done predicting file {} with {} instances in {} D space.'.format(i + 1, feats[i].shape[1],
                                                                                        feats[i].shape[0]))
         labels_fslow.append(labels)
@@ -117,7 +118,7 @@ def bsoid_frameshift(data_new, fps, model):
     Frame-shift paradigm to output behavior/frame
     :param data_new: list, new data from predict_folders
     :param fps: scalar, argument specifying camera frame-rate in LOCAL_CONFIG
-    :param model: Obj, MLP classifier
+    :param model: Obj, SVM classifier
     :return labels_fshigh, 1D array, label/frame
     """
     labels_fs = []
@@ -147,11 +148,11 @@ def bsoid_frameshift(data_new, fps, model):
     return labels_fshigh
 
 
-def main(predict_folders, fps, behv_model):
+def main(predict_folders, scaler, fps, behv_model):
     """
     :param predict_folders: list, data folders
     :param fps: scalar, camera frame-rate
-    :behv_model: object, MLP classifier
+    :behv_model: object, SVM classifier
     :return data_new: list, csv data
     :return feats_new: 2D array, extracted features
     :return labels_fslow, 1D array, label/100ms
@@ -160,8 +161,8 @@ def main(predict_folders, fps, behv_model):
     import bsoid_py.utils.likelihoodprocessing
     filenames, data_new, perc_rect = bsoid_py.utils.likelihoodprocessing.main(predict_folders)
     feats_new = bsoid_extract(data_new)
-    labels_fslow = bsoid_predict(feats_new, behv_model)
-    labels_fshigh = bsoid_frameshift(data_new, fps, behv_model)
+    labels_fslow = bsoid_predict(feats_new, scaler, behv_model)
+    labels_fshigh = bsoid_frameshift(data_new, scaler, fps, behv_model)
     if PLOT_TRAINING:
         plot_feats(feats_new, labels_fslow)
     if GEN_VIDEOS:

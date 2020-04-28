@@ -62,7 +62,7 @@ def plot_classes(data, assignments):
 
 def plot_accuracy(scores):
     """
-    :param scores: 1D array, cross-validated accuracies for MLP classifier.
+    :param scores: 1D array, cross-validated accuracies for SVM classifier.
     """
     fig = plt.figure(facecolor='w', edgecolor='k')
     fig.suptitle("Performance on {} % data".format(HLDOUT * 100))
@@ -70,7 +70,7 @@ def plot_accuracy(scores):
     ax.boxplot(scores, notch=None)
     x = np.random.normal(1, 0.04, size=len(scores))
     plt.scatter(x, scores, s=40, c='r', alpha=0.5)
-    ax.set_xlabel('MLP classifier')
+    ax.set_xlabel('SVM classifier')
     ax.set_ylabel('Accuracy')
     plt.show()
     timestr = time.strftime("_%Y%m%d_%H%M")

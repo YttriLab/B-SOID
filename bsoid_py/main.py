@@ -25,7 +25,7 @@ def build(train_folders):
     Automatically saves classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     """
     import bsoid_py.train
-    f_10fps, trained_tsne, gmm_assignments, classifier, scores = bsoid_py.train.main(train_folders)
+    f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores = bsoid_py.train.main(train_folders)
     alldata = np.concatenate([f_10fps.T, trained_tsne, gmm_assignments.reshape(len(gmm_assignments), 1)], axis=1)
     micolumns = pd.MultiIndex.from_tuples([('Features', 'Relative snout to forepaws placement'),
                                            ('', 'Relative snout to hind paws placement'),
@@ -42,17 +42,17 @@ def build(train_folders):
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'wb') as f:
         joblib.dump(classifier, f)
     logging.info('Saved.')
-    return f_10fps, trained_tsne, gmm_assignments, classifier, scores
+    return f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores
 
 
-def run(predict_folders):
+def run(predict_folders, scaler):
     """
     :param predict_folders: list, folders to run prediction using behavioral model
     :returns labels_fslow, labels_fshigh: see bsoid_py.classify
     Automatically loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing new outputs (1 in 10Hz, 1 in FPS, both with same format):
     1. original features (number of training data points by 7 dimensions, columns 1-7)
-    2. Neural net predicted labels (number of training data points by 1, columns 8)
+    2. SVM predicted labels (number of training data points by 1, columns 8)
     """
     import bsoid_py.classify
     from bsoid_py.utils.likelihoodprocessing import get_filenames
@@ -61,7 +61,7 @@ def run(predict_folders):
 
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'rb') as fr:
         behv_model = joblib.load(fr)
-    data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.classify.main(predict_folders, FPS, behv_model)
+    data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.classify.main(predict_folders, scaler, FPS, behv_model)
     filenames = []
     all_df = []
     for i, fd in enumerate(predict_folders):  # Loop through folders
@@ -78,7 +78,7 @@ def run(predict_folders):
                                                ('', 'Inter-forepaw distance'),
                                                ('', 'Body length'), ('', 'Body angle'), ('', 'Snout displacement'),
                                                ('', 'Tail-base displacement'),
-                                               ('Neural net classifier', 'B-SOiD labels')],
+                                               ('SVM classifier', 'B-SOiD labels')],
                                               names=['Type', 'Frame@10Hz'])
         predictions = pd.DataFrame(alldata, columns=micolumns)
         timestr = time.strftime("_%Y%m%d_%H%M")
@@ -131,11 +131,12 @@ def main(train_folders, predict_folders):
     Automatically saves and loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing training and new outputs
     """
-    f_10fps, trained_tsne, gmm_assignments, classifier, scores = build(train_folders)
-    data_new, feats_new, labels_fslow, labels_fshigh = run(predict_folders)
-    return f_10fps, trained_tsne, gmm_assignments, classifier, scores, data_new, feats_new, labels_fslow, labels_fshigh
+    f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores = build(train_folders)
+    data_new, feats_new, labels_fslow, labels_fshigh = run(predict_folders, scaler)
+    return f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores, \
+           data_new, feats_new, labels_fslow, labels_fshigh
 
 
 if __name__ == "__main__":
-    f_10fps, trained_tsne, gmm_assignments, classifier, scores, data_new, feats_new, labels_fslow, labels_fshigh \
-        = main(TRAIN_FOLDERS, PREDICT_FOLDERS)
+    f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores, \
+    data_new, feats_new, labels_fslow, labels_fshigh = main(TRAIN_FOLDERS, PREDICT_FOLDERS)
