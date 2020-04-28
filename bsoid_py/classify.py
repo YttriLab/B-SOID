@@ -113,7 +113,7 @@ def bsoid_predict(feats, scaler, model):
     return labels_fslow
 
 
-def bsoid_frameshift(data_new, fps, model):
+def bsoid_frameshift(data_new, scaler, fps, model):
     """
     Frame-shift paradigm to output behavior/frame
     :param data_new: list, new data from predict_folders
@@ -129,7 +129,7 @@ def bsoid_frameshift(data_new, fps, model):
         for j in range(math.floor(fps / 10)):
             data_offset.append(data_new[i][j:, :])
         feats_new = bsoid_extract(data_offset)
-        labels = bsoid_predict(feats_new, model)
+        labels = bsoid_predict(feats_new, scaler, model)
         for m in range(0, len(labels)):
             labels[m] = labels[m][::-1]
         labels_pad = -1 * np.ones([len(labels), len(max(labels, key=lambda x: len(x)))])
