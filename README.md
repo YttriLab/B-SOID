@@ -27,7 +27,8 @@ git clone https://github.com/YttriLab/B-SOID.git
 ## Usage
 ### MATLAB: Follow these [steps](docs/matlab_tutorial.md).
 
-### Python3: Follow these [steps](docs/python3_tutorial.md).
+### Python3: Watch this [tutorial video](demo/bsoid_py_tutorial_v2.mp4). 
+Here are the [command lines](docs/python3_tutorial.md) for you to copy and paste.
 
 ## Contributing
 
