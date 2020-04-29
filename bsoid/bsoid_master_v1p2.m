@@ -4,10 +4,10 @@
 %   Created by Alexander Hsu, Date: 021920
 %   Contact ahsu2@andrew.cmu.edu
 
+close all; clear all;
+
 FPS = 60; % Change 60 to your frame rate.
 COMP = 1; % Set 1 for a compiled space for all .csv. 0 for individual classifier/csv.
-
-close all; clear all;
 n = 1; % How many .csv files do you want to build your model on?
 for i = 1:n
     %% Import data
@@ -40,7 +40,7 @@ end
 %% Classifier a test dataset that the algorithm has not seen before, no ground truth but can test against human observers
 %%% As long as the distance from view is similar, this behavioral model can predict action based on pose with a different frame rate than the training.
 %%% For instance, I built a SVM classifier based on 60 fps and generalized the prediction to a 200fps video behaviors based on pose.
-[labels,f_10fps_test] = bsoid_svm(MsTestingData,FPS,behv_mdl); % Change 60 to your frame rate.
+[labels,f_10fps_test] = bsoid_svm(MsTestingData,60,behv_mdl); % Change 60 to your frame rate.
 
 %% MAKE SURE FFMPEG IS DONE BEFORE THIS
 fprintf('Please select the folder containing FFmpeg generated frames from your 10fps video. \n');
