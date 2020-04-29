@@ -40,12 +40,12 @@ def build(train_folders):
     training_data.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_trainlabels_10Hz', timestr, '.csv')))),
                          index=True, chunksize=10000, encoding='utf-8')
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'wb') as f:
-        joblib.dump(classifier, f)
+        joblib.dump([classifier, scaler], f)
     logging.info('Saved.')
     return f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores
 
 
-def run(predict_folders, scaler):
+def run(predict_folders):
     """
     :param predict_folders: list, folders to run prediction using behavioral model
     :returns labels_fslow, labels_fshigh: see bsoid_py.classify
@@ -60,7 +60,7 @@ def run(predict_folders, scaler):
     from bsoid_py.utils.visuals import plot_tmat
 
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'rb') as fr:
-        behv_model = joblib.load(fr)
+        behv_model, scaler = joblib.load(fr)
     data_new, feats_new, labels_fslow, labels_fshigh = bsoid_py.classify.main(predict_folders, scaler, FPS, behv_model)
     filenames = []
     all_df = []
@@ -118,6 +118,8 @@ def run(predict_folders, scaler):
         df_tm2.to_csv((os.path.join(OUTPUT_PATH, str.join('', ('bsoid_transitions_', str(FPS), 'Hz', timestr, csvname,
                                                                '.csv')))),
                       index=True, chunksize=10000, encoding='utf-8')
+    with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_predictions.sav'))), 'wb') as f:
+        joblib.dump([labels_fslow, labels_fshigh], f)
     logging.info('All saved.')
     return data_new, feats_new, labels_fslow, labels_fshigh
 
@@ -132,7 +134,7 @@ def main(train_folders, predict_folders):
     Automatically saves CSV files containing training and new outputs
     """
     f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores = build(train_folders)
-    data_new, feats_new, labels_fslow, labels_fshigh = run(predict_folders, scaler)
+    data_new, feats_new, labels_fslow, labels_fshigh = run(predict_folders)
     return f_10fps, trained_tsne, scaler, gmm_assignments, classifier, scores, \
            data_new, feats_new, labels_fslow, labels_fshigh
 
