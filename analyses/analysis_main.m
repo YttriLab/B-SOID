@@ -2,8 +2,6 @@
 %   Created by Alexander Hsu, Date: 042920
 %   Contact: ahsu2@andrew.cmu.edu
 
-clear all; close all; clc;
-
 %% Create output folder to store results, plots/traces or values.
 fprintf('Please select folder to store results'); 
 filepathOutResults = uigetdir;
