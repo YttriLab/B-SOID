@@ -168,11 +168,13 @@ def main(train_folders, predict_folders):
     Automatically saves and loads classifier in OUTPUTPATH with MODELNAME in LOCAL_CONFIG
     Automatically saves CSV files containing training and new outputs
     """
-    f_10fps, umap_embeddings, nn_classifier, scores, nn_assignments = build(train_folders)
+    f_10fps, f_10fps_sc, umap_embeddings, hdb_assignments, soft_assignments, soft_clusters, nn_classifier, \
+    scores, nn_assignments = build(train_folders)
     data_new, fs_labels = run(predict_folders)
-    return f_10fps, umap_embeddings, nn_classifier, scores, nn_assignments, data_new, fs_labels
+    return f_10fps, f_10fps_sc, umap_embeddings, hdb_assignments, soft_assignments, soft_clusters, nn_classifier, \
+           scores, nn_assignments, data_new, fs_labels
 
 
 if __name__ == "__main__":
-    f_10fps, umap_embeddings, nn_classifier, scores, nn_assignments, \
-    data_new, fs_labels = main(TRAIN_FOLDERS, PREDICT_FOLDERS)
+    f_10fps, f_10fps_sc, umap_embeddings, hdb_assignments, soft_assignments, soft_clusters, nn_classifier, \
+    scores, nn_assignments, data_new, fs_labels = main(TRAIN_FOLDERS, PREDICT_FOLDERS)
