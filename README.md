@@ -30,6 +30,9 @@ git clone https://github.com/YttriLab/B-SOID.git
 ### Python3: Watch this [tutorial video](demo/bsoid_py_tutorial_v2.mp4). 
 Here are the [command lines](docs/python3_tutorial.md) for you to copy and paste.
 
+### Python3, B-SOiD v1.3 (UMAP + HDBSCAN)
+Here are the [command lines](docs/bsoid_umap_tutorial.md) for you to copy and paste.
+
 ## Contributing
 
 Pull requests are welcome. For recommended changes that you would like to see, open an issue. Or join our [slack group](https://join.slack.com/t/b-soid/shared_invite/zt-dksalgqu-Eix8ZVYYFVVFULUhMJfvlw)

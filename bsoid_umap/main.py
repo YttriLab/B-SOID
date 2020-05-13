@@ -111,7 +111,8 @@ def run(predict_folders):
     import bsoid_umap.utils.statistics
     from bsoid_umap.utils.visuals import plot_tmat
     with open(os.path.join(OUTPUT_PATH, str.join('', ('bsoid_', MODEL_NAME, '.sav'))), 'rb') as fr:
-        f_10fps, umap_embeddings, nn_classifier, scores, nn_assignments = joblib.load(fr)
+        f_10fps, f_10fps_sc, umap_embeddings, hdb_assignments, soft_assignments, soft_clusters, \
+        nn_classifier, scores, nn_assignments = joblib.load(fr)
     data_new, fs_labels = bsoid_umap.classify.main(predict_folders, FPS, nn_classifier)
     filenames = []
     all_df = []
