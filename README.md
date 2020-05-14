@@ -61,3 +61,7 @@ September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/conte
 6. [Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.](http://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
 
 7. [Belkina, A.C., Ciccolella, C.O., Anno, R. et al. Automated optimized parameters for T-distributed stochastic neighbor embedding improve visualization and analysis of large datasets. Nat Commun 10, 5415 (2019).](https://doi.org/10.1038/s41467-019-13055-y)
+
+8. [McInnes, L., Healy, J., & Melville, J. (2018). UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction.](http://arxiv.org/abs/1802.03426)
+
+9. [McInnes, L., Healy, J., & Astels, S. (2017). hdbscan: Hierarchical density based clustering. The Journal of Open Source Software, 2(11), 205.](https://doi.org/10.21105/joss.00205)

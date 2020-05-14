@@ -1,4 +1,4 @@
-## Python3 Tutorial (not compatible with Python 2.)
+## Python3 v1.3 (UMAP + HDBSCAN) Tutorial (not compatible with Python 2.)
 
 ## Install the necessary utilities 
 ### Step 1: Install Anaconda/Python3
