@@ -45,20 +45,23 @@ def vid2frame(vidname, labels, fps, output_path=FRAME_DIR):
     while vidobj.isOpened():
         ret, frame = vidobj.read()
         if ret:
-            text = 'Group' + str(labels[count1])
-            (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=1)[0]
-            text_offset_x = 50
-            text_offset_y = 50
-            box_coords = ((text_offset_x - 12, text_offset_y + 12),
-                          (text_offset_x + text_width + 12, text_offset_y - text_height - 8))
-            cv2.rectangle(frame, box_coords[0], box_coords[1], rectangle_bgr, cv2.FILLED)
-            cv2.putText(frame, text, (text_offset_x, text_offset_y), font,
-                        fontScale=font_scale, color=(255, 255, 255), thickness=1)
-            cv2.imwrite(os.path.join(output_path, 'frame{:d}.png'.format(count1)), frame)
-            count += round(fps / 10)  # i.e. at 60fps, this skips every 5
-            count1 += 1
-            vidobj.set(1, count)
-            pbar.update(round(fps / 10))
+            try:
+                text = 'Group' + str(labels[count1])
+                (text_width, text_height) = cv2.getTextSize(text, font, fontScale=font_scale, thickness=1)[0]
+                text_offset_x = 50
+                text_offset_y = 50
+                box_coords = ((text_offset_x - 12, text_offset_y + 12),
+                              (text_offset_x + text_width + 12, text_offset_y - text_height - 8))
+                cv2.rectangle(frame, box_coords[0], box_coords[1], rectangle_bgr, cv2.FILLED)
+                cv2.putText(frame, text, (text_offset_x, text_offset_y), font,
+                            fontScale=font_scale, color=(255, 255, 255), thickness=1)
+                cv2.imwrite(os.path.join(output_path, 'frame{:d}.png'.format(count1)), frame)
+                count += round(fps / 10)  # i.e. at 60fps, this skips every 5
+                count1 += 1
+                vidobj.set(1, count)
+                pbar.update(round(fps / 10))
+            except:
+                pass
         else:
             vidobj.release()
             break
