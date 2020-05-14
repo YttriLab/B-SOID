@@ -149,5 +149,5 @@ def main(predict_folders, fps, clf):
     filenames, data_new, perc_rect = bsoid_umap.utils.likelihoodprocessing.main(predict_folders)
     fs_labels = bsoid_frameshift(data_new, fps, clf)
     if VID:
-        videoprocessing.main(VID_NAME, fs_labels[ID][0:-1:6], FPS, FRAME_DIR)
+        videoprocessing.main(VID_NAME, fs_labels[ID][0:-1:int(round(FPS / 10))], FPS, FRAME_DIR)
     return data_new, fs_labels
