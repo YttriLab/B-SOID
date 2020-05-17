@@ -49,7 +49,7 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
             b_ex{b}(r,:) = [B{b}(find(B{b}(:,2) == x{b}(r)),2)-B{b}(find(B{b}(:,2) == x{b}(r)),3)+1, B{b}(find(B{b}(:,2) == x{b}(r)),2)];
             images = {};
             for i = b_ex{b}(r,1):b_ex{b}(r,2)
-                images{end+1} = imread(sprintf('%s%s',PNGpath,'frame',num2str(i+1),'.png'));
+                images{end+1} = imread(sprintf('%s%s',PNGpath,'img',num2str(i+1),'.png'));
             end
 
             % create the video writer with 3 fps
