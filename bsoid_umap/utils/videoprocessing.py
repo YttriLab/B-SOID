@@ -36,7 +36,7 @@ def vid2frame(vidname, labels, fps, output_path=FRAME_DIR):
     pbar = tqdm(total=int(vidobj.get(cv2.CAP_PROP_FRAME_COUNT)))
     width = vidobj.get(3)
     height = vidobj.get(4)
-    labels = np.hstack((labels[0],labels)) # fill the first frame
+    labels = np.hstack((labels[0], labels))  # fill the first frame
     count = 0
     count1 = 0
     font_scale = 1
@@ -132,7 +132,7 @@ def create_labeled_vid(labels, crit=3, counts=5, frame_dir=FRAME_DIR, output_pat
         if j >= crit:
             rnges.append(range(idx[i], idx[i] + j))
             idx2.append(i)
-    for i in tqdm(range(0, len(np.unique(labels)))):
+    for b, i in enumerate(tqdm(np.unique(labels))):
         a = []
         for j in range(0, len(rnges)):
             if n[idx2[j]] == i:
