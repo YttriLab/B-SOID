@@ -43,27 +43,27 @@ function [labels,f_10fps_test] = bsoid_svm(data_test,fps,OF_mdl,smth_hstry,smth_
         chp_pt = [chp(:,1) - data_test{m}(:,11), chp(:,2) - data_test{m}(:,12)]; % Center of hind paws to proximal tail x,y
         sn_pt = [data_test{m}(:,1) - data_test{m}(:,11), data_test{m}(:,2) - data_test{m}(:,12)]; % Snout to proximal tail x,y
         for i = 1:length(data_test{m}) % Euclidean distance of x,y, since position means nothing
-            fpd_norm(i) = norm(data_test{m}(i,3:4)-data_test{m}(i,5:6)); % Front paw R to L euclidean distance    
+            fpd_norm(i) = norm(data_test{m}(i,3:4)-data_test{m}(i,5:6)); % Front paw R to L euclidean distance
             cfp_pt_norm(i) = norm(cfp_pt(i,:)); % Center of front paws to proximal tail euclidean distance
             chp_pt_norm(i) = norm(chp_pt(i,:)); % Center of hind paws to proximal tail euclidean distance
             sn_pt_norm(i) = norm(sn_pt(i,:)); % Snout to proximal tail euclidean distance, i.e. body length
         end
-        fpd_norm_smth(m,:) = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_cfp_norm_smth(m,:) = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_chp_norm_smth(m,:) = movmean(sn_pt_norm-chp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_pt_norm_smth(m,:) = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        fpd_norm_smth{m} = movmean(fpd_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_cfp_norm_smth{m} = movmean(sn_pt_norm-cfp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_chp_norm_smth{m} = movmean(sn_pt_norm-chp_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_pt_norm_smth{m} = movmean(sn_pt_norm,[smth_hstry,smth_futr]); % Reduce label noise
         for k = 1:length(data_test{m})-1 % Velocity and angle over time
             b_3d = [sn_pt(k+1,:),0]; a_3d = [sn_pt(k,:),0]; c = cross(b_3d,a_3d);
-            sn_pt_ang(k) = sign(c(3))*180/pi*atan2(norm(c),dot(sn_pt(k,:),sn_pt(k+1,:))); % Body angle, arctan between body  
+            sn_pt_ang(k) = sign(c(3))*180/pi*atan2(norm(c),dot(sn_pt(k,:),sn_pt(k+1,:))); % Body angle, arctan between body
             sn_disp(k) = norm(data_test{m}(k+1,1:2)-data_test{m}(k,1:2)); % Snout displacement over time
             pt_disp(k) = norm(data_test{m}(k+1,11:12)-data_test{m}(k,11:12)); % Proximal tail displacement over time
-        end 
-        sn_pt_ang_smth(m,:) = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
-        sn_disp_smth(m,:) = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
-        pt_disp_smth(m,:) = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        end
+        sn_pt_ang_smth{m} = movmean(sn_pt_ang,[smth_hstry,smth_futr]); % Reduce label noise
+        sn_disp_smth{m} = movmean(sn_disp,[smth_hstry,smth_futr]); % Reduce label noise
+        pt_disp_smth{m} = movmean(pt_disp,[smth_hstry,smth_futr]); % Reduce label noise
         %% Collate 7 features. 
-        feats_test{m} = [sn_cfp_norm_smth(m,2:end); sn_chp_norm_smth(m,2:end); fpd_norm_smth(m,2:end); sn_pt_norm_smth(m,2:end); ...
-            sn_pt_ang_smth(m,1:end); sn_disp_smth(m,1:end); pt_disp_smth(m,1:end)];
+        feats_test{m} = [sn_cfp_norm_smth{m}(:,2:end); sn_chp_norm_smth{m}(:,2:end); fpd_norm_smth{m}(:,2:end); sn_pt_norm_smth{m}(:,2:end); ...
+            sn_pt_ang_smth{m}(:,1:end); sn_disp_smth{m}(:,1:end); pt_disp_smth{m}(:,1:end)];
     end
     %% For each test dataset, we will predict the behavior based on the model parameters in MDL at a temporal resolution of 10fps.
     for n = 1:length(feats_test)
