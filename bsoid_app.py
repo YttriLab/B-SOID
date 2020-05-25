@@ -145,15 +145,15 @@ if not last_run:
         st.write('This line chart shows __% body part below file-based threshold__')
         subllh_percent = pd.DataFrame(perc_rect_li)
         st.bar_chart(subllh_percent)
-    st.write('This allows you to scroll through and visualize raw vs processed data.')
-    if st.checkbox("Show raw & processed data?", False):
-        try:
-            ID = int(st.number_input('Enter csv/data-list index:', min_value=1, max_value=len(rawdata_li), value=1))
-            st.markdown('This is file *{}*.'.format(filenames[ID - 1]))
-            st.write(rawdata_li[ID - 1])
-            st.write(training_data[ID - 1])
-        except:
-            pass
+    # st.write('This allows you to scroll through and visualize raw vs processed data.')
+    # if st.checkbox("Show raw & processed data?", False):
+    #     try:
+    #         ID = int(st.number_input('Enter csv/data-list index:', min_value=1, max_value=len(rawdata_li), value=1))
+    #         st.markdown('This is file *{}*.'.format(filenames[ID - 1]))
+    #         st.write(rawdata_li[ID - 1])
+    #         st.write(training_data[ID - 1])
+    #     except:
+    #         pass
 
 if last_run:
     with open(os.path.join(OUTPUT_PATH, str.join('', (MODEL_NAME, '_data.sav'))), 'rb') as fr:
