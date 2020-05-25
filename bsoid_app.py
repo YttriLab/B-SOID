@@ -519,6 +519,10 @@ else:
         st.markdown('You have selected **{}** as your video matching **{}**.'.format(vid_file, csv_file))
         csvname = os.path.basename(csv_file).rpartition('.')[0]
         try:
+            os.mkdir(str.join('', (BASE_PATH, csv_dir, '/pngs')))
+        except FileExistsError:
+            pass
+        try:
             os.mkdir(str.join('', (BASE_PATH, csv_dir, '/pngs', '/', csvname)))
         except FileExistsError:
             pass
@@ -543,6 +547,10 @@ else:
             except ffmpeg.Error as e:
                 print('stdout:', e.stdout.decode('utf8'))
                 print('stderr:', e.stderr.decode('utf8'))
+        try:
+            os.mkdir(str.join('', (BASE_PATH, csv_dir, '/mp4s')))
+        except FileExistsError:
+            pass
         try:
             os.mkdir(str.join('', (BASE_PATH, csv_dir, '/mp4s', '/', csvname)))
         except FileExistsError:
