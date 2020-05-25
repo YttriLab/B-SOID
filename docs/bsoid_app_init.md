@@ -1,4 +1,4 @@
-## Python3 v1.3 (UMAP + HDBSCAN) Tutorial (not compatible with Python 2.)
+## B-SOID APP initialization
 
 ## Install the necessary utilities 
 ### Step 1: Install Anaconda/Python3
@@ -17,7 +17,7 @@ conda install ipython
 pip install pandas tqdm matplotlib opencv-python ffmpeg-python seaborn scikit-learn umap-learn hdbscan streamlit
 ```
 
-### Step 4: Clone B-SOID and change your current directory to B-SOID/bsoid_py/config to edit your configuration path
+### Step 4: Clone B-SOID
 ```
 git clone https://github.com/YttriLab/B-SOID.git
 ```
