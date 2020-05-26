@@ -534,7 +534,7 @@ else:
         height = int(video_info['height'])
         num_frames = int(video_info['nb_frames'])
         bit_rate = int(video_info['bit_rate'])
-        avg_frame_rate = int(video_info['avg_frame_rate'].rpartition('/')[0])
+        avg_frame_rate = round(int(video_info['avg_frame_rate'].rpartition('/')[0]) / int(video_info['avg_frame_rate'].rpartition('/')[2]))
         if st.button('Start frame extraction for {} frames at {} frames per second'.format(num_frames, avg_frame_rate)):
             try:
                 (ffmpeg.input(os.path.join(vid_dir, vid_file))
