@@ -224,7 +224,8 @@ if st.button("Start dimensionality reduction"):
         ang_smth = np.array(ang_smth)
         feats.append(np.vstack((dxy_smth[:, 1:], ang_smth, dis_smth)))
         my_bar.progress(round((m + 1) / len(training_data) * 100))
-    st.info('Done extracting features from a total of **{}** training CSV files.'.format(len(training_data)))
+    st.info('Done extracting features from a total of **{}** training CSV files. '
+            'Now reducing dimensions...'.format(len(training_data)))
     for n in range(0, len(feats)):
         feats1 = np.zeros(len(training_data[n]))
         for k in range(round(FPS / 10), len(feats[n][0]), round(FPS / 10)):
@@ -257,7 +258,8 @@ if st.button("Start dimensionality reduction"):
         trained_umap = umap.UMAP(n_neighbors=100,  # power law
                                  **UMAP_PARAMS).fit(feats_train)
     else:
-        trained_umap = umap.UMAP(n_neighbors=100, low_memory=False,  # power law
+        st.info('Detecting that you are running low on available memory for this computation, setting low_memory so will take longer.')
+        trained_umap = umap.UMAP(n_neighbors=100, low_memory=True,  # power law
                                  **UMAP_PARAMS).fit(feats_train)
     umap_embeddings = trained_umap.embedding_
     st.info(

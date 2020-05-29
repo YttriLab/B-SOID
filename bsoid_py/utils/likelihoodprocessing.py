@@ -100,7 +100,6 @@ def adp_filt(currdf: object):
         elif currdf[0][header] == "y":
             yIndex.append(header)
     logging.info('Extracting likelihood value...')
-    currdf = np.array(currdf)
     curr_df1 = currdf[:, 1:]
     datax = curr_df1[:, np.array(xIndex) - 1]
     datay = curr_df1[:, np.array(yIndex) - 1]
