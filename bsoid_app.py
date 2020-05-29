@@ -1,6 +1,7 @@
 import itertools
 import math
 
+from psutil import virtual_memory
 import ffmpeg
 import hdbscan
 import joblib
@@ -251,8 +252,13 @@ if st.button("Start dimensionality reduction"):
             feats1_sc = scaler.transform(feats1.T).T
             f_10fps_sc = feats1_sc  # scaling is important as I've seen wildly different stdev/feat between sessions
     feats_train = f_10fps_sc.T
-    trained_umap = umap.UMAP(n_neighbors=int(round(np.sqrt(feats_train.shape[0]))),  # power law
-                             **UMAP_PARAMS).fit(feats_train)
+    mem = virtual_memory()
+    if mem.available > f_10fps_sc.shape[0] * f_10fps_sc.shape[1] * 32 * 100 + 256000000:
+        trained_umap = umap.UMAP(n_neighbors=100,  # power law
+                                 **UMAP_PARAMS).fit(feats_train)
+    else:
+        trained_umap = umap.UMAP(n_neighbors=100, low_memory=False,  # power law
+                                 **UMAP_PARAMS).fit(feats_train)
     umap_embeddings = trained_umap.embedding_
     st.info(
         'Done non-linear transformation of **{}** instances from **{}** D into **{}** D.'.format(feats_train.shape[0],
@@ -274,10 +280,10 @@ if last_run:
 st.subheader('Perform density-based clustering.')
 st.text_area('', '''
 The following slider allows you to adjust cluster number.
-The preset (0.7-1.5%) works for most large (> 25k instances) datasets. 
+The preset (0.5-1.5%) works for most large (> 25k instances) datasets. 
 It is recommended to tweak this for cluster number > 40 or < 4.
 ''')
-cluster_range = st.slider('Select range of minimum cluster size in %', 0.01, 5.0, (0.7, 1.5))
+cluster_range = st.slider('Select range of minimum cluster size in %', 0.01, 5.0, (0.4, 1.2))
 st.markdown('Your minimum cluster size ranges between **{}%** and **{}%**.'.format(cluster_range[0], cluster_range[1]))
 if st.button("Start clustering"):
     with open(os.path.join(OUTPUT_PATH, str.join('', (MODEL_NAME, '_feats.sav'))), 'rb') as fr:
