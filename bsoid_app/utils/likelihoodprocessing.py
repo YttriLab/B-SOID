@@ -104,9 +104,9 @@ def adp_filt(currdf: object, BODYPARTS):
     logging.info('Extracting likelihood value...')
     currdf = np.array(currdf)
     curr_df1 = currdf[:, 1:]
-    datax = curr_df1[1:, np.array(xIndex) - 1]
-    datay = curr_df1[1:, np.array(yIndex) - 1]
-    data_lh = curr_df1[1:, np.array(lIndex) - 1]
+    datax = curr_df1[1:, np.array(xIndex)]
+    datay = curr_df1[1:, np.array(yIndex)]
+    data_lh = curr_df1[1:, np.array(lIndex)]
     currdf_filt = np.zeros((datax.shape[0] - 1, (datax.shape[1]) * 2))
     perc_rect = []
     logging.info('Computing data threshold to forward fill any sub-threshold (x,y)...')
