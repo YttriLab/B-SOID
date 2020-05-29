@@ -13,14 +13,12 @@ You should now see (bsoid_env) $yourusername@yourmachine ~ %
 
 ### Step 3: install dependencies
 ```
-pip install pandas psutil tqdm matplotlib opencv-python ffmpeg ffmpeg-python seaborn scikit-learn networkx umap-learn hdbscan streamlit
+conda install -c conda-forge hdbscan
+conda install -c anaconda psutil
+conda install -c conda-forge ffmpeg
+pip install pandas tqdm matplotlib opencv-python ffmpeg-python seaborn scikit-learn networkx umap-learn streamlit
 ```
 
-if failed to install hdbscan, do this instead
-```
-conda install -c conda-forge hdbscan
-pip install pandas psutil tqdm matplotlib opencv-python ffmpeg ffmpeg-python seaborn scikit-learn networkx umap-learn streamlit
-```
 
 ### Step 4: Clone B-SOID
 ```
