@@ -59,7 +59,7 @@ def get_kinematics(path, name, exp, group_num, bp, fps):
                                                                        pose_single_bp[bt][row, :])))
                     except TypeError:
                         pass
-                eu_dist_ = np.array([np.nan if b_ > np.percentile(eu_dist_, 95) else b_ for b_ in eu_dist_])
+                eu_dist_ = np.array([np.nan if b_ > np.percentile(eu_dist_, 98) else b_ for b_ in eu_dist_])
                 jump_idx = np.where(np.isnan(eu_dist_))[0]
                 for ju in jump_idx:
                     try:

@@ -39,33 +39,29 @@ try:
     st.markdown('You have selected **{}_XXX.sav** for prior prefix.'.format(prefix))
 except TypeError:
     st.error('Please input a prior prefix to load workspace.')
-try:
-    [framerate, features, sampled_features, sampled_embeddings, assignments, soft_assignments,
-     folders, folder, filenames, new_data, new_predictions] = load_data(working_dir, prefix)
-    if st.sidebar.checkbox('Synchronized B-SOiD video (paper Supp. Video 1)', False, key='v'):
-        video_generator = video_analysis.bsoid_video(working_dir, prefix, features, sampled_features,
-                                                     sampled_embeddings, soft_assignments, framerate,
-                                                     filenames, new_data)
-        video_generator.main()
-    if st.sidebar.checkbox('K-fold accuracy boxplot (paper fig2c)', False, key='a'):
-        performance_eval = machine_performance.performance(working_dir, prefix, soft_assignments)
-        performance_eval.main()
-    if st.sidebar.checkbox('Limb trajectories (paper fig2d/g)', False, key='t'):
-        st.write(filenames[0].partition('.')[-1])
-        trajectory_mapper = trajectory_analysis.trajectory(working_dir, prefix, framerate,
-                                                           filenames, new_data, new_predictions)
-        trajectory_mapper.main()
-    if st.sidebar.checkbox('(beta) Kinematics (paper fig6b/d)', False, key='k'):
-        kinematics_analyzer = kinematics_analysis.kinematics(working_dir, prefix, framerate, soft_assignments, filenames)
-        kinematics_analyzer.main()
-    if st.sidebar.checkbox('(alpha) Behavioral directed graph', False, key='d'):
-        network = directed_graph_analysis.directed_graph(working_dir, prefix, soft_assignments,
-                                                         folders, folder, new_predictions)
-        network.main()
-    if st.sidebar.checkbox('Return computation to main app (please close current browser when new browser pops up)', False):
-        streamlit_run('./bsoid_app')
-except TypeError:
-    st.error('Could not obtain B-SOiD data (wrong path?), go back to main app if not finished.')
-    if st.sidebar.checkbox('Return computation to main app (please close current browser when new browser pops up)',
-                           False):
-        streamlit_run('./bsoid_app')
+
+[framerate, features, sampled_features, sampled_embeddings, assignments, soft_assignments,
+ folders, folder, filenames, new_data, new_predictions] = load_data(working_dir, prefix)
+if st.sidebar.checkbox('Synchronized B-SOiD video (paper Supp. Video 1)', False, key='v'):
+    video_generator = video_analysis.bsoid_video(working_dir, prefix, features, sampled_features,
+                                                 sampled_embeddings, soft_assignments, framerate,
+                                                 filenames, new_data)
+    video_generator.main()
+if st.sidebar.checkbox('K-fold accuracy boxplot (paper fig2c)', False, key='a'):
+    performance_eval = machine_performance.performance(working_dir, prefix, soft_assignments)
+    performance_eval.main()
+if st.sidebar.checkbox('Limb trajectories (paper fig2d/g)', False, key='t'):
+    st.write(filenames[0].partition('.')[-1])
+    trajectory_mapper = trajectory_analysis.trajectory(working_dir, prefix, soft_assignments, framerate,
+                                                       filenames, new_data, new_predictions)
+    trajectory_mapper.main()
+if st.sidebar.checkbox('(beta) Kinematics (paper fig6b/d)', False, key='k'):
+    kinematics_analyzer = kinematics_analysis.kinematics(working_dir, prefix, framerate, soft_assignments, filenames)
+    kinematics_analyzer.main()
+if st.sidebar.checkbox('(alpha) Behavioral directed graph', False, key='d'):
+    network = directed_graph_analysis.directed_graph(working_dir, prefix, soft_assignments,
+                                                     folders, folder, new_predictions)
+    network.main()
+if st.sidebar.checkbox('Return computation to main app (please close current browser when new browser pops up)', False):
+    streamlit_run('./bsoid_app')
+

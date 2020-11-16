@@ -48,13 +48,13 @@ class bsoid_video:
         self.mov_st_min = int(st.number_input('From minute:',
                                               min_value=0,
                                               max_value=int((len(self.new_data[f_index])) / (60 * self.framerate)),
-                                              value=4))
-        self.mov_st_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=45.0)
+                                              value=0))
+        self.mov_st_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=0.0)
         self.mov_sp_min = int(st.number_input('till minute:',
                                               min_value=0,
                                               max_value=int((len(self.new_data[f_index])) / (60 * self.framerate)),
-                                              value=5))
-        self.mov_sp_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=15.0)
+                                              value=0))
+        self.mov_sp_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=1.0)
         self.mov_start = np.sum([len(self.new_data[j]) for j in np.arange(0, f_index)]) + \
                          int((self.mov_st_min * 60 + self.mov_st_sec) * self.framerate) - 1
         self.mov_stop = np.sum([len(self.new_data[j]) for j in np.arange(0, f_index)]) + \
@@ -72,11 +72,14 @@ class bsoid_video:
 
     def generate(self):
         if st.button('Generate synchronized B-SOiD video?'):
-            umap_scatter(self.ordered_embeds, self.ordered_assigns, self.mov_range,
-                         self.working_dir, self.width, self.height)
-            trim_video(self.vid_path, self.vid_name, self.mov_range,
-                       self.mov_st_min, self.mov_st_sec, self.mov_sp_min, self.mov_sp_sec, self.working_dir)
-            video_umap(self.working_dir, self.mov_range)
+            try:
+                umap_scatter(self.ordered_embeds, self.ordered_assigns, self.mov_range,
+                             self.working_dir, self.width, self.height)
+                trim_video(self.vid_path, self.vid_name, self.mov_range,
+                           self.mov_st_min, self.mov_st_sec, self.mov_sp_min, self.mov_sp_sec, self.working_dir)
+                video_umap(self.working_dir, self.mov_range)
+            except IndexError:
+                st.error('Range out of bounds!')
         if st.checkbox('Show left-right synchronized B-SOiD video (from {})?'.format(self.working_dir)):
             bsoid_vid_leftright = \
                 open(os.path.join(str.join('', (self.working_dir,

@@ -48,9 +48,10 @@ class preprocess:
                                      'under {} for training?'.format(self.root_path), value=3))
         st.markdown('Your will be training on *{}* data file containing sub-directories.'.format(no_dir))
         for i in range(no_dir):
-            d = st.text_input('Enter # {} __data file containing directory__ '
-                              'under {}, e.g. __/control__ for '
-                              '/Users/projectX/control/xxx.{}'.format(i + 1, self.root_path, self.ftype))
+            d = str.join('', ('/', st.selectbox('Enter # {} __data file containing directory__ under {}, '
+                                                'e.g. __/control__ for /Users/projectX/control/xxx.{}'
+                                                ''.format(i + 1, self.root_path, self.ftype),
+                                                (os.listdir(self.root_path)), index=0)))
             try:
                 os.listdir(str.join('', (self.root_path, d)))
             except FileNotFoundError:

@@ -116,7 +116,7 @@ def plot_peaks(x, ax, ind):
 
 
 def plot_kinematics_cdf(ax, var, vname, data, c, bnct, tk, leg,
-                        fig_size, fig_format='png', outpath=os.getcwd(), save=True):
+                        fig_size, fig_format='png', outpath=os.getcwd(), save=None):
     fig = figure(num=None, figsize=fig_size, dpi=300, facecolor='w', edgecolor='k')
     if save:
         ax = plt.axes()
@@ -164,6 +164,7 @@ def plot_kinematics_cdf(ax, var, vname, data, c, bnct, tk, leg,
         ax.tick_params(labelsize=24)
         plt.savefig(str.join('', (outpath, '/{}_{}_cdf.'.format(var, vname), fig_format)),
                     format=fig_format, transparent=True)
+        plt.close('all')
     else:
         return fig, ax
 
@@ -247,36 +248,29 @@ def umap_scatter(embeds, assigns, mov_range, output_path, width, height):
     uk = list(np.unique(assigns))
     R = np.linspace(0, 1, len(uk))
     cmap = plt.cm.get_cmap("Spectral")(R)
-    umap_x, umap_y = embeds[mov_range[0] - 150:mov_range[1], 0], embeds[mov_range[0] - 150:mov_range[1], 1]
+    umap_x, umap_y = embeds[mov_range[0]:mov_range[1], 0], embeds[mov_range[0]:mov_range[1], 1]
     fig = figure(facecolor='k', edgecolor='w')
     fig.set_size_inches(width / 100, height / 100)
     ax = fig.add_subplot(111)
     ax.axes.axis([min(umap_x) - 0.2, max(umap_x) + 0.2, min(umap_y) - 0.2, max(umap_y) + 0.2])
     count = 0
-    for i, j in enumerate(range(mov_range[0] - 150, mov_range[1])):
-        if i < 150:
-            alph = 0.5
-            m_size = 30
-        else:
-            alph = 0.8
-            m_size = 80
+    for i, j in enumerate(range(mov_range[0], mov_range[1])):
+        alph = 0.8
+        m_size = 80
         for g in np.unique(assigns):
             if assigns[j] == g and assigns[j] >= 0:
                 ax.scatter(umap_x[i], umap_y[i], c=cmap[g], edgecolors='w',
                            label=g, s=m_size, marker='o', alpha=alph)
-        if i >= 150:
-            for g in np.unique(assigns):
-                if assigns[j] == g and assigns[j] >= 0:
-                    txt = plt.text(1, 1, 'group {}'.format(g), c='white', horizontalalignment='center',
-                                   verticalalignment='center', transform=ax.transAxes, fontsize=20,
-                                   bbox=dict(facecolor=cmap[g], alpha=0.8))
-            ax.xaxis.set_ticks([])
-            ax.yaxis.set_ticks([])
-            ax.set_facecolor('black')
-            ax.tick_params(length=6, width=2, color='white')
-            count += 1
-            plt.savefig(output_path + "/file%04d.png" % count)
-            txt.set_visible(False)
+                txt = plt.text(1, 1, 'group {}'.format(g), c='white', horizontalalignment='center',
+                               verticalalignment='center', transform=ax.transAxes, fontsize=20,
+                               bbox=dict(facecolor=cmap[g], alpha=0.8))
+        ax.xaxis.set_ticks([])
+        ax.yaxis.set_ticks([])
+        ax.set_facecolor('black')
+        ax.tick_params(length=6, width=2, color='white')
+        count += 1
+        plt.savefig(output_path + "/file%04d.png" % count)
+        txt.set_visible(False)
 
     plt.close('all')
     subprocess.call([

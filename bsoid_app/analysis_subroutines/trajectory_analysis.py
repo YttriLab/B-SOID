@@ -9,10 +9,11 @@ from analysis_subroutines.analysis_scripts.trajectory_plot import *
 
 class trajectory:
 
-    def __init__(self, working_dir, prefix, framerate, filenames, new_data, new_predictions):
+    def __init__(self, working_dir, prefix, soft_assignments, framerate, filenames, new_data, new_predictions):
         st.subheader('LIMB TRAJECTORIES (PAPER **FIGURE 2D/G**)')
         self.working_dir = working_dir
         self.prefix = prefix
+        self.soft_assignments = soft_assignments
         self.framerate = framerate
         self.filenames = filenames
         self.new_data = new_data
@@ -58,13 +59,13 @@ class trajectory:
         start_min = int(st.number_input('From minute:',
                                         min_value=0,
                                         max_value=int((len(self.new_data[self.animal_index])) /
-                                                      (60 * self.framerate)), value=20))
-        start_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=42.0)
+                                                      (60 * self.framerate)), value=0))
+        start_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=0.0)
         stop_min = int(st.number_input('till minute:',
                                        min_value=0,
                                        max_value=int((len(self.new_data[self.animal_index])) /
-                                                     (60 * self.framerate)), value=20))
-        stop_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=44.0)
+                                                     (60 * self.framerate)), value=0))
+        stop_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=1.0)
         start = int((start_min * 60 + start_sec) * self.framerate) - 1
         stop = int((stop_min * 60 + stop_sec) * self.framerate)
         self.time_range = [start, stop]
@@ -85,23 +86,27 @@ class trajectory:
         self.c = [color1, color2]
 
     def plot(self):
-        if st.checkbox('Show trajectory', False, key='tp'):
-            labels, limbs, soft_assigns = limb_trajectory(self.working_dir, self.prefix,
-                                                          self.animal_index, self.pose_chosen, self.time_range)
-            fig, ax1, ax2 = plot_trajectory(limbs, labels, soft_assigns, self.time_range,
-                                            self.order1, self.order2, self.c,
-                                            fig_size=(5, 3), save=False)
-            fig.suptitle('Trajectory visual')
-            ax1.set_ylabel('$\Delta$ pixels')
-            ax2.set_ylabel('$\Delta$ pixels')
-            ax2.set_xlabel('Frame number')
-            st.pyplot(fig)
+        try:
+            if st.checkbox('Show trajectory', False, key='tp'):
+                labels, limbs, soft_assigns = limb_trajectory(self.working_dir, self.prefix,
+                                                              self.animal_index, self.pose_chosen, self.time_range)
+                fig, ax1, ax2 = plot_trajectory(limbs=limbs, labels=labels, soft_assignments=self.soft_assignments,
+                                                t_range=self.time_range, ord1=self.order1,
+                                                ord2=self.order2, c=self.c, fig_size=(5, 3), save=False)
+                fig.suptitle('Trajectory visual')
+                ax1.set_ylabel('$\Delta$ pixels')
+                ax2.set_ylabel('$\Delta$ pixels')
+                ax2.set_xlabel('Frame number')
+                st.pyplot(fig)
+        except IndexError:
+            st.error('Range out of bounds or no transitions detected!')
             fig_format = str(st.selectbox('What file type?',
                                           list(plt.gcf().canvas.get_supported_filetypes().keys()), index=5))
             outpath = str.join('', (st.text_input('Where would you like to save it?'), '/'))
             if st.button('Save in {}?'.format(outpath)):
-                plot_trajectory(limbs, labels, self.time_range, self.order1, self.order2,
-                                self.c, (8.5, 16), fig_format, outpath, True)
+                plot_trajectory(limbs=limbs, labels=labels, soft_assignments=self.soft_assignments,
+                                t_range=self.time_range, ord1=self.order1, ord2=self.order2, c=self.c,
+                                fig_size=(8.5, 16), fig_format=fig_format, outpath=outpath, save=True)
 
     def main(self):
         self.plot()

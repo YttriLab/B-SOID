@@ -174,17 +174,9 @@ class prediction:
             st.info('Done frameshift-predicting a total of **{}** files.'.format(len(self.new_data)))
             for i in range(0, len(self.new_predictions)):
                 filename_i = os.path.basename(self.filenames[i]).rpartition('.')[0]
-                fs_labels_pad = np.pad(self.new_predictions[i], (0, len(self.all_df[i]) - 2 -
+                fs_labels_pad = np.pad(self.new_predictions[i], (0, len(self.all_df[i]) -
                                                                  len(self.new_predictions[i])), 'edge')
                 df2 = pd.DataFrame(fs_labels_pad, columns={'B-SOiD labels'})
-                st.write(self.new_predictions[i][:20] + self.new_predictions[i][-20:])
-                st.write(fs_labels_pad[:20], fs_labels_pad[-20:])
-                df2.loc[len(df2)] = ''
-                df2.loc[len(df2)] = ''
-                df2 = df2.shift()
-                df2.loc[0] = ''
-                df2 = df2.shift()
-                df2.loc[0] = ''
                 frames = [df2, self.all_df[0]]
                 xyfs_df = pd.concat(frames, axis=1)
                 runlen_df, dur_stats, tm_array, tm_df, tm_norm = statistics.main(self.new_predictions[i],
@@ -199,7 +191,7 @@ class prediction:
                         str.join('', (self.new_prefix, 'labels_pose_', str(self.new_framerate),
                                       'Hz', filename_i, '.csv'))),
                         index=True, chunksize=10000, encoding='utf-8')
-                    st.info('Labels .csv in {}'.format(
+                    st.info('Saved Labels .csv in {}'.format(
                         str.join('', (self.new_root_path, self.folder[i], '/BSOID'))))
                 if any('Group durations (in frames)' in o for o in self.options):
                     runlen_df.to_csv(os.path.join(

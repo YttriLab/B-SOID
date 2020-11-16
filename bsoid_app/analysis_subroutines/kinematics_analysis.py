@@ -45,8 +45,8 @@ class kinematics:
             try:
                 file0_df = pd.read_hdf(self.filenames[0], low_memory=False)
                 self.p = st.multiselect('Identified __pose__ to include:',
-                                   [*np.array(file0_df.columns.get_level_values(1)[1:-1:3])],
-                                   [*np.array(file0_df.columns.get_level_values(1)[1:-1:3])])
+                                        [*np.array(file0_df.columns.get_level_values(1)[1:-1:3])],
+                                        [*np.array(file0_df.columns.get_level_values(1)[1:-1:3])])
                 for b in self.p:
                     index = [i for i, s in enumerate(np.array(file0_df.columns.get_level_values(1)[:])) if b in s]
                     if not index in self.pose_chosen:
@@ -54,8 +54,8 @@ class kinematics:
             except:
                 file0_df = h5py.File(self.filenames[0], 'r')
                 self.p = st.multiselect('Identified __pose__ to include:',
-                                   [*np.array(file0_df['node_names'][:])],
-                                   [*np.array(file0_df['node_names'][:])])
+                                        [*np.array(file0_df['node_names'][:])],
+                                        [*np.array(file0_df['node_names'][:])])
                 for b in self.p:
                     index = [i for i, s in enumerate(np.array(file0_df['node_names'][:])) if b in s]
                     if not index in self.pose_chosen:
@@ -94,14 +94,11 @@ class kinematics:
             results_.save_sav(
                 [self.bps_exp1_bout_disp, self.bps_exp2_bout_disp, self.bps_exp1_bout_peak_speed,
                  self.bps_exp2_bout_peak_speed, self.bps_exp1_bout_dur, self.bps_exp2_bout_dur, self.p,
-                 self.pose_chosen, self.conditions, self.vid_outpath], self.variable_name)
+                 self.pose_chosen,
+                 self.conditions, self.vid_outpath], self.variable_name)
+            st.info('Done analyzing kinematics. Click "R" for plots.')
 
-    def plot(self):
-        example_vid_file = open(os.path.join(str.join('', (self.vid_outpath,
-                                                           '/kinematics_subsample_examples.mp4'))), 'rb')
-        st.markdown('You have selected to view examples from {}.'.format(self.vid_outpath))
-        video_bytes = example_vid_file.read()
-        st.video(video_bytes)
+    def plot(self, save, out_path, fig_format):
         for pose in range(len(self.p)):
             f, ax = plt.subplots(1, 3)
             f.suptitle('Kinematics CDF for {}'.format(self.variable_name))
@@ -135,23 +132,12 @@ class kinematics:
             except:
                 pass
             st.pyplot(f)
-        fig_format = str(st.selectbox('What file type?',
-                                      list(plt.gcf().canvas.get_supported_filetypes().keys()), index=5))
-        out_path = str.join('', (st.text_input('Where would you like to save it?'), '/'))
-        if st.button('Save in {}?'.format(out_path)):
-            for pose in range(len(self.pose_chosen)):
-                plot_kinematics_cdf(None, 'distance_{}'.format(self.p[pose]), self.variable_name,
-                                    [np.concatenate(self.bps_exp1_bout_disp[pose]),
-                                     np.concatenate(self.bps_exp2_bout_disp[pose])],
-                                    self.c, None, 50, 3, 1, (16, 16), fig_format, out_path, True)
-                plot_kinematics_cdf(None, 'speed_{}'.format(self.p[pose]), self.variable_name,
-                                    [np.concatenate(self.bps_exp1_bout_peak_speed[pose]),
-                                     np.concatenate(self.bps_exp2_bout_peak_speed[pose])],
-                                    self.c, None, 50, 3, 1, (16, 16), fig_format, out_path, True)
-                plot_kinematics_cdf(None, 'duration_{}'.format(self.p[pose]), self.variable_name,
-                                    [self.bps_exp1_bout_dur[pose] / self.framerate * 1000,
-                                     self.bps_exp2_bout_dur[pose] / self.framerate * 1000],
-                                    self.c, None, 50, 3, 1, (16, 16), fig_format, out_path, True)
+            if save:
+                try:
+                    f.savefig(str.join('', (out_path, '/{}_kin_{}_cdf.'.format(self.p[pose], self.variable_name), '.',
+                                            fig_format)), dpi=300, format=fig_format, transparent=False)
+                except RuntimeError:
+                    st.error('Could not save in this format, find another one (jpeg/png/svg)?')
 
     def main(self):
         try:
@@ -164,11 +150,22 @@ class kinematics:
                         '**Bout duration** computed using ***number of consecutive frames*** in B-SOID defined bouts. '
                         'The pose trajectory algorithm performance can be visualized above '
                         '(checkbox, 50% random samples).')
-            if st.checkbox('Redo?', key='kr'):
+            if st.checkbox('Redo?', key='r'):
                 self.find_peaks()
-            self.plot()
-
+            ftype_out = st.selectbox('What file type?',
+                                     list(plt.gcf().canvas.get_supported_filetypes().keys()), index=5)
+            out_path = str.join('', (st.text_input('Where would you like to save it?'), '/'))
+            save = st.checkbox('Save in {}?'.format(out_path), False, key='sa')
+            if save:
+                self.plot(save=True, out_path=out_path, fig_format=ftype_out)
+            else:
+                self.plot(save=False, out_path=out_path, fig_format=ftype_out)
+            if st.checkbox('Show peak finding algorithm performance?', False):
+                example_vid_file = open(os.path.join(str.join('', (self.vid_outpath,
+                                                                   '/kinematics_subsample_examples.mp4'))), 'rb')
+                st.markdown('You have selected to view examples from {}.'.format(self.vid_outpath))
+                video_bytes = example_vid_file.read()
+                st.video(video_bytes)
         except:
             self.find_peaks()
-            self.plot()
 
