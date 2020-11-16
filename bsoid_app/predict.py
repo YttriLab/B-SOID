@@ -177,6 +177,8 @@ class prediction:
                 fs_labels_pad = np.pad(self.new_predictions[i], (0, len(self.all_df[i]) - 2 -
                                                                  len(self.new_predictions[i])), 'edge')
                 df2 = pd.DataFrame(fs_labels_pad, columns={'B-SOiD labels'})
+                st.write(self.new_predictions[i][:20] + self.new_predictions[i][-20:])
+                st.write(fs_labels_pad[:20], fs_labels_pad[-20:])
                 df2.loc[len(df2)] = ''
                 df2.loc[len(df2)] = ''
                 df2 = df2.shift()
@@ -197,18 +199,24 @@ class prediction:
                         str.join('', (self.new_prefix, 'labels_pose_', str(self.new_framerate),
                                       'Hz', filename_i, '.csv'))),
                         index=True, chunksize=10000, encoding='utf-8')
+                    st.info('Labels .csv in {}'.format(
+                        str.join('', (self.new_root_path, self.folder[i], '/BSOID'))))
                 if any('Group durations (in frames)' in o for o in self.options):
                     runlen_df.to_csv(os.path.join(
                         str.join('', (self.new_root_path, self.folder[i], '/BSOID')),
                         str.join('', (self.new_prefix, 'bout_lengths_', str(self.new_framerate),
                                       'Hz', filename_i, '.csv'))),
                         index=True, chunksize=10000, encoding='utf-8')
+                    st.info('Saved Group durations .csv in {}'.format(
+                        str.join('', (self.new_root_path, self.folder[i], '/BSOID'))))
                 if any('Transition matrix' in o for o in self.options):
                     tm_df.to_csv(os.path.join(
                         str.join('', (self.new_root_path, self.folder[i], '/BSOID')),
                         str.join('', (self.new_prefix, 'transitions_mat_',
                                       str(self.new_framerate), 'Hz', filename_i, '.csv'))),
                         index=True, chunksize=10000, encoding='utf-8')
+                    st.info('Saved transition matrix .csv in {}'.format(
+                        str.join('', (self.new_root_path, self.folder[i], '/BSOID'))))
             with open(os.path.join(self.working_dir, str.join('', (self.new_prefix, '_predictions.sav'))), 'wb') as f:
                 joblib.dump([self.folders, self.folder, self.filenames, self.new_data, self.new_predictions], f)
             st.balloons()

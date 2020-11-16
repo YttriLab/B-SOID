@@ -79,7 +79,10 @@ class protocol:
             if st.checkbox("Show cross-validated accuracy on test?", False, key='mss'):
                 self.show_crossval_score()
         except FileNotFoundError:
-            self.randomforest()
+            try:
+                self.randomforest()
+            except:
+                st.error('Sometimes this needs some time to update, uncheck sidebar then rerun ')
             if st.checkbox("Show confusion matrix on test?", False, key='ms'):
                 self.show_confusion_matrix()
             if st.checkbox("Show cross-validated accuracy on test?", False, key='mss'):

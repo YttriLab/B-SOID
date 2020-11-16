@@ -11,6 +11,16 @@ from bsoid_app.bsoid_utilities.videoprocessing import *
 from bsoid_app.bsoid_utilities.bsoid_classification import *
 
 
+@st.cache(allow_output_mutation=True)
+def selected_file(d_file):
+    return d_file
+
+
+@st.cache(allow_output_mutation=True)
+def selected_vid(vid_file):
+    return vid_file
+
+
 class creator:
 
     def __init__(self, root_path, data_directories, processed_input_data,
@@ -40,9 +50,7 @@ class creator:
         self.min_frames = []
         self.number_examples = []
         self.out_fps = []
-        self.new_data = []
         self.file_j_processed = []
-        self.test_feats = []
 
     def setup(self):
         if st.checkbox("Change __root directory__ to other than **{}**? Do this if you have another project "
@@ -63,18 +71,21 @@ class creator:
                                      index=int([i for i, s in enumerate(['csv', 'h5', 'json'])
                                                 if s in self.input_filenames[0].partition('.')[-1]][0]))
         if self.filetype == 'csv':
-            self.d_file = st.selectbox('Select the csv file',
-                                       sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            d_file = st.selectbox('Select the csv file',
+                                  sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            self.d_file = selected_file(d_file)
         elif self.filetype == 'h5':
-            self.d_file = st.selectbox('Select the h5 file',
-                                       sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            d_file = st.selectbox('Select the h5 file',
+                                  sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            self.d_file = selected_file(d_file)
         elif self.filetype == 'json':
             d_files = get_filenamesjson(self.root_path, self.file_directory)
             fname = d_files[0].rpartition('/')[-1].rpartition('_')[0].rpartition('_')[0]
             if not os.path.isfile(str.join('', (d_files[0].rpartition('/')[0], '/', fname, '.csv'))):
                 json2csv_multi(d_files)
-            self.d_file = st.selectbox('Select the autocompiled csv file containing all jsons',
-                                       sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            d_file = st.selectbox('Select the autocompiled csv file containing all jsons',
+                                  sorted(os.listdir(str.join('', (self.root_path, self.file_directory)))))
+            self.d_file = selected_file(d_file)
         self.vid_dir = st.text_input('Enter corresponding video directory (Absolute path):',
                                      str.join('', (self.root_path, self.data_directories[0])))
         try:
@@ -83,8 +94,8 @@ class creator:
                 'You have selected **{}** as your video directory.'.format(self.vid_dir))
         except FileNotFoundError:
             st.error('No such directory')
-
-        self.vid_file = st.selectbox('Select the video (.mp4 or .avi)', sorted(os.listdir(self.vid_dir)))
+        vid_file = st.selectbox('Select the video (.mp4 or .avi)', sorted(os.listdir(self.vid_dir)))
+        self.vid_file = selected_vid(vid_file)
         if self.filetype == 'csv' or self.filetype == 'h5':
             st.markdown('You have selected **{}** matching **{}**.'.format(self.vid_file, self.d_file))
             csvname = os.path.basename(self.d_file).rpartition('.')[0]
@@ -101,7 +112,7 @@ class creator:
         except FileExistsError:
             pass
         self.frame_dir = str.join('', (self.root_path, self.file_directory, '/pngs', '/', csvname))
-        st.markdown('You have created **{}** as your PNG directory for video {}.'.format(self.frame_dir, self.vid_file))
+        st.markdown('Created {} as your **video frames** directory.'.format(self.frame_dir, self.vid_file))
         probe = ffmpeg.probe(os.path.join(self.vid_dir, self.vid_file))
         video_info = next(s for s in probe['streams'] if s['codec_type'] == 'video')
         self.width = int(video_info['width'])
@@ -119,24 +130,22 @@ class creator:
         except FileExistsError:
             pass
         self.shortvid_dir = str.join('', (self.root_path, self.file_directory, '/mp4s', '/', csvname))
-        st.markdown('You have created **{}** as your .mp4 directory '
-                    'for group examples from video {}.'.format(self.shortvid_dir, self.vid_file))
+        st.markdown('Created {} as your **behavioral snippets** directory.'.format(self.shortvid_dir, self.vid_file))
         min_time = st.number_input('Enter minimum time for bout in ms:', value=200)
         self.min_frames = round(float(min_time) * 0.001 * float(self.framerate))
-        st.markdown('You have entered **{} ms** as your minimum duration per bout, '
-                    'which is equivalent to **{} frames**.'
-                    '(drop this down for more group representations)'.format(min_time, self.min_frames))
-        self.number_examples = st.slider('Select number of non-repeated examples', 1, 10, 5)
+        st.markdown('Entered **{} ms** as minimum duration per bout, '
+                    'which is equivalent to **{} frames**.'.format(min_time, self.min_frames))
+        self.number_examples = st.slider('Select number of non-repeated examples', 1, 20, 5)
         st.markdown(
             'Your will obtain a maximum of **{}** non-repeated output examples per group.'.format(self.number_examples))
-        self.out_fps = int(st.number_input('Enter output frame-rate:', value=self.framerate * 0.5))
-        playback_speed = float(self.out_fps) / float(self.framerate)
-        st.markdown('Your have selected to view these examples at **{} FPS**, '
-                    'which is equivalent to **{}X speed**.'.format(self.out_fps, playback_speed))
+        playback_speed = st.number_input('Enter playback speed:', value=0.75)
+        self.out_fps = int(float(playback_speed) * float(self.framerate))
+        st.markdown('Playback at **{} x speed** (rounded to {} FPS).'.format(playback_speed, self.out_fps))
 
     def frame_extraction(self):
         if st.button('Start frame extraction for {} frames '
                      'at {} frames per second'.format(self.num_frames, self.avg_frame_rate)):
+            st.info('Extracting frames from the video... ')
             try:
                 (ffmpeg.input(os.path.join(self.vid_dir, self.vid_file))
                  .filter('fps', fps=self.avg_frame_rate)
@@ -148,72 +157,17 @@ class creator:
             except ffmpeg.Error as e:
                 st.error('stdout:', e.stdout.decode('utf8'))
                 st.error('stderr:', e.stderr.decode('utf8'))
-
-    def compute(self):
-        funfacts = randfacts.getFact()
-        st.info(str.join('', ('Extracting... Here is a random fact: ', funfacts)))
-        window = np.int(np.round(0.05 / (1 / self.framerate)) * 2 - 1)
-        data_n_len = len(self.file_j_processed)
-        dxy_list = []
-        disp_list = []
-        for r in range(data_n_len):
-            if r < data_n_len - 1:
-                disp = []
-                for c in range(0, self.file_j_processed.shape[1], 2):
-                    disp.append(
-                        np.linalg.norm(self.file_j_processed[r + 1, c:c + 2] -
-                                       self.file_j_processed[r, c:c + 2]))
-                disp_list.append(disp)
-            dxy = []
-            for i, j in itertools.combinations(range(0, self.file_j_processed.shape[1], 2), 2):
-                dxy.append(self.file_j_processed[r, i:i + 2] -
-                           self.file_j_processed[r, j:j + 2])
-            dxy_list.append(dxy)
-        disp_r = np.array(disp_list)
-        dxy_r = np.array(dxy_list)
-        disp_boxcar = []
-        dxy_eu = np.zeros([data_n_len, dxy_r.shape[1]])
-        ang = np.zeros([data_n_len - 1, dxy_r.shape[1]])
-        dxy_boxcar = []
-        ang_boxcar = []
-        for l in range(disp_r.shape[1]):
-            disp_boxcar.append(boxcar_center(disp_r[:, l], window))
-        for k in range(dxy_r.shape[1]):
-            for kk in range(data_n_len):
-                dxy_eu[kk, k] = np.linalg.norm(dxy_r[kk, k, :])
-                if kk < data_n_len - 1:
-                    b_3d = np.hstack([dxy_r[kk + 1, k, :], 0])
-                    a_3d = np.hstack([dxy_r[kk, k, :], 0])
-                    c = np.cross(b_3d, a_3d)
-                    ang[kk, k] = np.dot(np.dot(np.sign(c[2]), 180) / np.pi,
-                                        math.atan2(np.linalg.norm(c),
-                                                   np.dot(dxy_r[kk, k, :], dxy_r[kk + 1, k, :])))
-            dxy_boxcar.append(boxcar_center(dxy_eu[:, k], window))
-            ang_boxcar.append(boxcar_center(ang[:, k], window))
-        disp_feat = np.array(disp_boxcar)
-        dxy_feat = np.array(dxy_boxcar)
-        ang_feat = np.array(ang_boxcar)
-        f = np.vstack((dxy_feat[:, 1:], ang_feat, disp_feat))
-        f_integrated = np.zeros(len(self.new_data))
-        for k in range(round(self.framerate / 10), len(f[0]), round(self.framerate / 10)):
-            if k > round(self.framerate / 10):
-                self.test_feats = np.concatenate(
-                    (f_integrated.reshape(f_integrated.shape[0], f_integrated.shape[1]),
-                     np.hstack((np.mean((f[0:dxy_feat.shape[0],
-                                         range(k - round(self.framerate / 10), k)]), axis=1),
-                                np.sum((f[dxy_feat.shape[0]:f.shape[0],
-                                        range(k - round(self.framerate / 10), k)]), axis=1)
-                                )).reshape(len(f[0]), 1)), axis=1
-                )
-            else:
-                self.test_feats = np.hstack(
-                    (np.mean((f[0:dxy_feat.shape[0], range(k - round(self.framerate / 10), k)]), axis=1),
-                     np.sum((f[dxy_feat.shape[0]:f.shape[0],
-                             range(k - round(self.framerate / 10), k)]), axis=1))).reshape(len(f[0]), 1)
+            st.info('Done extracting {} frames from {}'.format(self.num_frames, self.vid_file))
 
     def create_videos(self):
         radio = st.radio(label='Have you extracted frames?', options=["Yes", "No"])
         if radio == 'Yes':
+            if st.checkbox('Clear old videos? Uncheck after check to prevent from auto-clearing', False, key='vr'):
+                try:
+                    for file_name in glob.glob(self.shortvid_dir + "/*"):
+                        os.remove(file_name)
+                except:
+                    pass
             if st.button("Predict labels and create example videos"):
                 if self.filetype == 'csv' or self.filetype == 'json':
                     file_j_df = pd.read_csv(
@@ -234,6 +188,7 @@ class creator:
                 self.file_j_processed = [file_j_processed]
                 labels_fs = []
                 fs_labels = []
+                st.info('Predicting labels... ')
                 for i in range(0, len(self.file_j_processed)):
                     feats_new = bsoid_extract([self.file_j_processed[i]], self.framerate)
                     labels = bsoid_predict(feats_new, self.clf)
@@ -246,6 +201,7 @@ class creator:
                         if n > 0:
                             labels_pad[n][0:n] = labels_pad[n - 1][0:n]
                     labels_fs.append(labels_pad.astype(int))
+                st.info('Frameshifted arrangement of labels... ')
                 for k in range(0, len(labels_fs)):
                     labels_fs2 = []
                     for l in range(math.floor(self.framerate / 10)):
@@ -267,6 +223,7 @@ class creator:
         for file in os.listdir(self.shortvid_dir):
             files.append(file)
         sort_nicely(files)
+        st.info('Creating gifs from mp4s...')
         for file in files:
             if file.endswith('0.mp4'):
                 try:
@@ -310,13 +267,8 @@ class creator:
 
     def main(self):
         self.setup()
-        if st.checkbox('Clear old videos? Uncheck after check to prevent from auto-clearing', False, key='vr'):
-            try:
-                for file_name in glob.glob(self.shortvid_dir + "/*"):
-                    os.remove(file_name)
-            except:
-                pass
         self.create_videos()
         if st.checkbox("Show a collage of example group? "
                        "This could take some time for gifs conversions.".format(self.shortvid_dir), False, key='vs'):
             self.show_snippets()
+

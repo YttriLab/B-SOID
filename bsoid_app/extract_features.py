@@ -141,7 +141,6 @@ class extract:
         pca = PCA()
         pca.fit(self.scaled_features.T)
         num_dimensions = np.argwhere(np.cumsum(pca.explained_variance_ratio_) >= 0.7)[0][0] + 1
-        st.info('Randomly sampling **{} minutes**... '.format(self.train_size / 600))
         if self.train_size > input_feats.shape[0]:
             self.train_size = input_feats.shape[0]
         np.random.seed(0)
@@ -150,19 +149,26 @@ class extract:
         np.random.seed(0)
         self.sampled_features = features_transposed[np.random.choice(features_transposed.shape[0],
                                                                      self.train_size, replace=False)]
+        st.info('Randomly sampled **{} minutes**... '.format(self.train_size / 600))
         mem = virtual_memory()
         available_mb = mem.available >> 20
-        st.write('You have {} MB RAM available'.format(available_mb))
+        st.write('You have {} MB RAM 🐏 available'.format(available_mb))
         if available_mb > (sampled_input_feats.shape[0] * sampled_input_feats.shape[1] * 32 * 60) / 1024 ** 2 + 64:
-            st.write('RAM available is sufficient 🐁')
-            learned_embeddings = umap.UMAP(n_neighbors=60, n_components=num_dimensions,
-                                           **UMAP_PARAMS).fit(sampled_input_feats)
+            st.write('RAM 🐏 available is sufficient')
+            try:
+                learned_embeddings = umap.UMAP(n_neighbors=60, n_components=num_dimensions,
+                                               **UMAP_PARAMS).fit(sampled_input_feats)
+            except:
+                st.error('Failed on feature embedding. Try again by unchecking sidebar and rerunning extract features.')
         else:
             st.info(
                 'Detecting that you are running low on available memory for this computation, '
                 'setting low_memory so will take longer.')
-            learned_embeddings = umap.UMAP(n_neighbors=60, n_components=num_dimensions, low_memory=True,
-                                           **UMAP_PARAMS).fit(sampled_input_feats)
+            try:
+                learned_embeddings = umap.UMAP(n_neighbors=60, n_components=num_dimensions, low_memory=True,
+                                               **UMAP_PARAMS).fit(sampled_input_feats)
+            except:
+                st.error('Failed on feature embedding. Try again by unchecking sidebar and rerunning extract features.')
         self.sampled_embeddings = learned_embeddings.embedding_
         st.info(
             'Done non-linear embedding of {} instances from **{}** D into **{}** D.'.format(
