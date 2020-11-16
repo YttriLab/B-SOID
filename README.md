@@ -1,10 +1,8 @@
 ![B-SOiD flowchart](demo/appv2_files/bsoid_version2.png)
 
-
 ![](demo/appv2_files/bsoid_mouse_openfield1.gif)
 ![](demo/appv2_files/bsoid_mouse_openfield2.gif)
-![](demo/appv2_files/bsoid_exercise1.gif)
-![](demo/appv2_files/bsoid_exercise2.gif)
+![](demo/appv2_files/bsoid_exercise.gif)
 
 ### Why B-SOiD ("B-side")?
 [DeepLabCut](https://github.com/AlexEMG/DeepLabCut) <sup>1,2,3</sup>, 
