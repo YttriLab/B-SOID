@@ -1,0 +1,22 @@
+.highlight {
+  border-radius: 1px;
+  color: black;
+  padding: 1px;
+  margin-bottom: 1px;
+}
+.bold {
+  padding-left: 0.1rem;
+  font-weight: 400;
+}
+.h1{
+    font-size: 60px;
+    font-family: 'Optima';
+}
+.h2{
+    font-size: 40px;
+    font-family: 'Optima';
+}
+.lightpink {
+    background-size: 0.1rem;
+  background-color: #ffc2d3;
+}

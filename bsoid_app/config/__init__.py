@@ -1,1 +1,1 @@
-from bsoid_app.config.GLOBAL_CONFIG import *
+from bsoid_app.config.global_config import *
