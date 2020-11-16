@@ -141,7 +141,7 @@ class extract:
         pca = PCA()
         pca.fit(self.scaled_features.T)
         num_dimensions = np.argwhere(np.cumsum(pca.explained_variance_ratio_) >= 0.7)[0][0] + 1
-        st.info('Randomly sampling **{} minutes**, a subset of your data... '.format(self.train_size / 600))
+        st.info('Randomly sampling **{} minutes**... '.format(self.train_size / 600))
         if self.train_size > input_feats.shape[0]:
             self.train_size = input_feats.shape[0]
         np.random.seed(0)
@@ -151,7 +151,10 @@ class extract:
         self.sampled_features = features_transposed[np.random.choice(features_transposed.shape[0],
                                                                      self.train_size, replace=False)]
         mem = virtual_memory()
-        if mem.available > sampled_input_feats.shape[0] * sampled_input_feats.shape[1] * 32 * 60 + 256000000:
+        available_mb = mem.available >> 20
+        st.write('You have {} MB RAM available'.format(available_mb))
+        if available_mb > (sampled_input_feats.shape[0] * sampled_input_feats.shape[1] * 32 * 60) / 1024 ** 2 + 64:
+            st.write('RAM available is sufficient 🐁')
             learned_embeddings = umap.UMAP(n_neighbors=60, n_components=num_dimensions,
                                            **UMAP_PARAMS).fit(sampled_input_feats)
         else:
