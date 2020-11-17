@@ -49,12 +49,12 @@ class bsoid_video:
                                               min_value=0,
                                               max_value=int((len(self.new_data[f_index])) / (60 * self.framerate)),
                                               value=0))
-        self.mov_st_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=0.0)
+        self.mov_st_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=1.0)
         self.mov_sp_min = int(st.number_input('till minute:',
                                               min_value=0,
                                               max_value=int((len(self.new_data[f_index])) / (60 * self.framerate)),
                                               value=0))
-        self.mov_sp_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=1.0)
+        self.mov_sp_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=10.0)
         self.mov_start = np.sum([len(self.new_data[j]) for j in np.arange(0, f_index)]) + \
                          int((self.mov_st_min * 60 + self.mov_st_sec) * self.framerate) - 1
         self.mov_stop = np.sum([len(self.new_data[j]) for j in np.arange(0, f_index)]) + \

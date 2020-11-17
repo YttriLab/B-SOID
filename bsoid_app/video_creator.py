@@ -2,13 +2,12 @@ import base64
 
 import ffmpeg
 import h5py
-import randfacts
 import streamlit as st
 
+from bsoid_app.bsoid_utilities.bsoid_classification import *
 from bsoid_app.bsoid_utilities.likelihoodprocessing import *
 from bsoid_app.bsoid_utilities.load_json import *
 from bsoid_app.bsoid_utilities.videoprocessing import *
-from bsoid_app.bsoid_utilities.bsoid_classification import *
 
 
 @st.cache(allow_output_mutation=True)

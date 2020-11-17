@@ -60,12 +60,12 @@ class trajectory:
                                         min_value=0,
                                         max_value=int((len(self.new_data[self.animal_index])) /
                                                       (60 * self.framerate)), value=0))
-        start_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=0.0)
+        start_sec = st.number_input('and second:', min_value=0.0, max_value=59.9, value=1.0)
         stop_min = int(st.number_input('till minute:',
                                        min_value=0,
                                        max_value=int((len(self.new_data[self.animal_index])) /
                                                      (60 * self.framerate)), value=0))
-        stop_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=1.0)
+        stop_sec = st.number_input('till second:', min_value=0.0, max_value=59.9, value=11.0)
         start = int((start_min * 60 + start_sec) * self.framerate) - 1
         stop = int((stop_min * 60 + stop_sec) * self.framerate)
         self.time_range = [start, stop]
