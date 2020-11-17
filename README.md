@@ -38,7 +38,20 @@ git clone https://github.com/YttriLab/B-SOID.git
 #### Step 1: Setup, open an anaconda/python3 instance and install dependencies with the requirements file
 ```
 cd /path/to/B-SOID/
-conda env create -n bsoid_v2 -f requirements.yaml
+```
+
+For MacOS users
+```
+conda env create -n bsoid_v2 -f requirements.yaml (macOS)
+```
+
+or for Windows users
+
+```
+conda env create -n bsoid_v2 -f requirements_win.yaml (windows) 
+```
+
+```
 conda activate bsoid_v2
 ```
 
