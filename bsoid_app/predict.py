@@ -177,7 +177,7 @@ class prediction:
                 fs_labels_pad = np.pad(self.new_predictions[i], (0, len(self.all_df[i]) -
                                                                  len(self.new_predictions[i])), 'edge')
                 df2 = pd.DataFrame(fs_labels_pad, columns={'B-SOiD labels'})
-                frames = [df2, self.all_df[0]]
+                frames = [df2, self.all_df[i]]
                 xyfs_df = pd.concat(frames, axis=1)
                 runlen_df, dur_stats, tm_array, tm_df, tm_norm = statistics.main(self.new_predictions[i],
                                                                                  len(np.unique(self.predictions)))
