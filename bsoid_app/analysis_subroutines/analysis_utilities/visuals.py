@@ -250,7 +250,7 @@ def umap_scatter(embeds, assigns, mov_range, output_path, width, height):
     cmap = plt.cm.get_cmap("Spectral")(R)
     umap_x, umap_y = embeds[mov_range[0]:mov_range[1], 0], embeds[mov_range[0]:mov_range[1], 1]
     fig = figure(facecolor='k', edgecolor='w')
-    fig.set_size_inches(width / 100, height / 100)
+    fig.set_size_inches(width / 96, height / 96)
     ax = fig.add_subplot(111)
     ax.axes.axis([min(umap_x) - 0.2, max(umap_x) + 0.2, min(umap_y) - 0.2, max(umap_y) + 0.2])
     count = 0
@@ -269,7 +269,7 @@ def umap_scatter(embeds, assigns, mov_range, output_path, width, height):
         ax.set_facecolor('black')
         ax.tick_params(length=6, width=2, color='white')
         count += 1
-        plt.savefig(output_path + "/file%04d.png" % count)
+        plt.savefig(output_path + "/file%04d.png" % count, dpi=96)
         txt.set_visible(False)
 
     plt.close('all')
