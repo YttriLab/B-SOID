@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a9aa6f6e-d1a4-4971-9a43-4847aa4541e7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bsoid_app/analysis_subroutines/analysis_utilities/visuals.py" beforeDir="false" afterPath="$PROJECT_DIR$/bsoid_app/analysis_subroutines/analysis_utilities/visuals.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1nOqzgHrNzFupMgdzzRD2OHGmZO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/sign2speech_app" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a9aa6f6e-d1a4-4971-9a43-4847aa4541e7" name="Default Changelist" comment="" />
+      <created>1611271750230</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1611271750230</updated>
+      <workItem from="1611271751789" duration="102000" />
+      <workItem from="1611333055863" duration="1882000" />
+      <workItem from="1611772079805" duration="2655000" />
+      <workItem from="1611931580997" duration="2078000" />
+      <workItem from="1611950822977" duration="1975000" />
+      <workItem from="1612033499055" duration="2150000" />
+      <workItem from="1612036772713" duration="1198000" />
+      <workItem from="1612283710208" duration="4124000" />
+      <workItem from="1612369867143" duration="2207000" />
+    </task>
+    <task id="LOCAL-00001" summary="dlc-models for publication.">
+      <created>1612370293421</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612370293421</updated>
+    </task>
+    <task id="LOCAL-00002" summary="dlc-models for publication.">
+      <created>1612372250667</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1612372250667</updated>
+    </task>
+    <task id="LOCAL-00003" summary="dlc-models for publication.">
+      <created>1612372263776</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1612372263776</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="dlc-models for publication." />
+    <option name="LAST_COMMIT_MESSAGE" value="dlc-models for publication." />
+  </component>
+</project>

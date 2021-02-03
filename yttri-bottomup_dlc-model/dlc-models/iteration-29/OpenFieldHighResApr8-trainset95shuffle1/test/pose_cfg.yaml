@@ -1,0 +1,22 @@
+all_joints:
+- - 0
+- - 1
+- - 2
+- - 3
+- - 4
+- - 5
+all_joints_names:
+- Snout
+- Front Paw R
+- Front Paw L
+- Hind Paw R
+- Hind Paw L
+- Butt/Proximal Tail
+dataset: training-datasets/iteration-29/UnaugmentedDataSet_OpenFieldHighResApr8/OpenFieldHighRes_AlexHsu95shuffle1.mat
+global_scale: 0.8
+init_weights: /home/alex/anaconda3/envs/alex_dlc/lib/python3.6/site-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/resnet_v1_50.ckpt
+location_refinement: true
+locref_stdev: 7.2801
+net_type: resnet_50
+num_joints: 6
+scoremap_dir: test

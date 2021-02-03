@@ -62,6 +62,18 @@ You should now see (bsoid_v2) $yourusername@yourmachine ~ %
 streamlit run bsoid_app.py
 ```
 
+#### Resources
+We have provided our 6 body part [DeepLabCut model](yttri-bottomup_dlc-model/dlc-models/). 
+We also included two example 5 minute clips 
+([labeled_clip1](yttri-bottomup_dlc-model/examples/2019-04-22_12-00-37_5minclipDLC_resnet50_OpenFieldHighResApr8shuffle1_1030000_labeled.mp4),
+[labeled_clip2](yttri-bottomup_dlc-model/examples/2019-08-02_10-56-50_5minclipDLC_resnet50_OpenFieldHighResApr8shuffle1_1030000_labeled.mp4)) 
+as proxy for how well we trained our model.
+The raw video
+([raw_clip1](yttri-bottomup_dlc-model/examples/2019-04-22_12-00-37_5minclip.mp4),
+[raw_clip2](yttri-bottomup_dlc-model/examples/2019-08-02_10-56-50_5minclip.mp4)) 
+and the corresponding [h5/pickle/csv](yttri-bottomup_dlc-model/examples/) files are included as well.
+
+
 
 #### Archives 
 * [matlab](docs/matlab_tutorial.md)

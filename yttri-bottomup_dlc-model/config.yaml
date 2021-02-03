@@ -1,0 +1,210 @@
+# Project definitions (do not edit)
+Task: OpenFieldHighRes
+scorer: AlexHsu
+date: Apr8
+
+# Project path (change when moving around)
+project_path: D:\Projects\Openfield\yttri-bottomup_dlc-model
+
+# Annotation data set configuration (and individual video cropping parameters)
+video_sets:
+  /media/alex/Elements/deeplabcut_yttri/040819/WIN_20190408_13_19_12_Pro.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/040819/WIN_20190408_13_33_28_Pro.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041019/WIN_20190410_11_55_18_Pro.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041019/WIN_20190410_12_06_56_Pro.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041019/2019-04-10 17-23-07.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041019/2019-04-11 12-03-29.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041619/2019-04-16_07-42-00.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041519/2019-04-15_14-31-47.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041319/2019-04-13 14-05-38.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut10min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut1hr_1hr5min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut2hr_2hr5min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/042219/2019-04-22_11-46-47.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut2hr_2hr30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut1hr30min_2hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut7hr30min_8hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut3hr30min_4hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut30min_1hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut2hr30min_3hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut3hr_3hr30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut4hr_4hr30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041219/2019-04-12 14-35-56cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041219/2019-04-12 14-35-56cut30min_1hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041219/2019-04-12 14-35-56cut1hr_1hr30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041219/2019-04-12 14-35-56cut1hr30min_2hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut4hr30min_5hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut5hr_5hr30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041119/2019-04-11 12-13-49cut5hr30min_6hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/051019/2019-05-10_12-57-30cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/051019/2019-05-10_14-02-05cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041919/2019-04-19_09-34-36cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/Alan_061119/2019-06-11_17-05-49.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/Alan_061119/mouseC4Control/2019-06-12_19-12-46.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/Alan_061119/061319/2019-06-13_19-40-25.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/Alan_061119/061919/2019-06-19_17-10-57cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/Alan_061119/061919/2019-06-19_18-54-47cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/042219/2019-04-22_12-00-37cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/041919/2019-04-19_09-34-36cut30min_1hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/042219/2019-04-22_12-00-37cut30min_1hr.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080219/2019-08-02_10-56-50cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080219/2019-08-02_13-09-17cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080219/2019-08-02_14-15-14cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080219/2019-08-02_15-21-49cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080219/2019-08-02_16-26-11cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080319/2019-08-03_10-03-30baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080319/2019-08-03_12-31-25baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080319/2019-08-03_13-44-58baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080319/2019-08-03_14-59-10baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080419/2019-08-04_13-18-42baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080419/2019-08-04_14-32-11baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080419/2019-08-04_15-48-03baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080419/2019-08-04_17-01-45baseline.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080519/2019-08-05_10-41-51cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080519/2019-08-05_11-49-39cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/080519/2019-08-05_12-55-05cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090419/2019-09-04_12-44-23cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090419/2019-09-04_15-21-21cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090419/2019-09-04_16-29-53cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090419/2019-09-04_17-47-07cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/IT/090619/2019-09-06_10-47-19cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/IT/090619/2019-09-06_11-52-50cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090719/2019-09-07_13-34-05cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090719/2019-09-07_14-38-41cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090719/2019-09-07_15-47-18cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/090719/2019-09-07_16-58-04cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/102319/2019-10-23_13-51-51cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/102319/2019-10-23_15-00-54cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/102319/2019-10-23_16-18-26cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/A2A/102319/2019-10-23_17-37-55cut0_30min.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112119/Video/2019-11-21_16-29-37.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112319/Video/2019-11-23_21-02-49.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112519/Video/2019-11-25_14-10-36.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112719_L5/2019-11-27_11-19-24.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112819_L5/Video/2019-11-28_14-00-18.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/112919_dS/Video/2019-11-29_13-25-09.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/113019_L2/Video/2019-11-30_16-00-38.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/openephys/ChronicMs1/120119_L5/Video/2019-12-01_15-23-11.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/YMazeVid/ControlYMaze/2020-02-14_13-01-41.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/YMazeVid/ControlYMaze/EY1473_021420.mp4:
+    crop: 0, 1280, 0, 720
+  /media/alex/Elements/deeplabcut_yttri/YMazeVid/LeftSideStimYMaze/2020-02-14_13-40-40.mp4:
+    crop: 0, 1280, 0, 720
+bodyparts:
+- Snout
+- Front Paw R
+- Front Paw L
+- Hind Paw R
+- Hind Paw L
+- Butt/Proximal Tail
+start: 0.2
+stop: 0.4
+numframes2pick: 100
+
+# Plotting configuration
+skeleton: []
+skeleton_color: black
+pcutoff: 0.6
+dotsize: 5
+alphavalue: 0.4
+colormap: viridis
+
+# Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.95
+iteration: 29
+resnet: 50
+snapshotindex: -1
+batch_size: 4
+
+# Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+#if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+# Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
