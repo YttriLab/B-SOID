@@ -84,6 +84,10 @@ This also converts pixels to centimeters with a scale of 23.5126 pixels/cm
 
              
 ##### Any two pair distances bottom up camera
+##### Points 1 to 6 are: Snout; right forepaw; left forepaw; right hindpaw; left hindpaw; tail-base
+##### Each row is representing each behavior, ordered as above gifs, with the first row being the
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on. 
+
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['distance between points:', 1, 2]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['distance between points:', 1, 3]_histogram.png" width="300">
@@ -103,6 +107,9 @@ This also converts pixels to centimeters with a scale of 23.5126 pixels/cm
 </p>
 
 ##### Angular change in any two pair distances over time
+##### Points 1 to 6 are: Snout; right forepaw; left forepaw; right hindpaw; left hindpaw; tail-base
+##### Each row is representing each behavior, ordered as above gifs, with the first row being the
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on. 
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['angular change for points:', 1, 2]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['angular change for points:', 1, 3]_histogram.png" width="300">
@@ -122,6 +129,9 @@ This also converts pixels to centimeters with a scale of 23.5126 pixels/cm
 </p>
 
 ##### Displacement in single pose over time
+##### Points 1 to 6 are: Snout; right forepaw; left forepaw; right hindpaw; left hindpaw; tail-base
+##### Each row is representing each behavior, ordered as above gifs, with the first row being the
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on. 
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['displacement for point:', 1, 1]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships/['displacement for point:', 2, 2]_histogram.png" width="300">
@@ -140,6 +150,9 @@ This also converts pixels to centimeters with a scale of 14.7553 pixels/cm
                       -r, order, -m, fig_format, -o, outpath`
                       
 ##### Any two pair distances top down camera
+##### Points 1 to 6 are: Snout; right shoulder; left shoulder; right hip; left hip; tail-base
+##### Each row is representing each behavior, specified in manuscript, with the first row being the 
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on.  
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['distance between points:', 1, 2]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['distance between points:', 1, 3]_histogram.png" width="300">
@@ -159,6 +172,9 @@ This also converts pixels to centimeters with a scale of 14.7553 pixels/cm
 </p>
 
 ##### Angular change in any two pair distances over time
+##### Points 1 to 6 are: Snout; right shoulder; left shoulder; right hip; left hip; tail-base
+##### Each row is representing each behavior, specified in manuscript, with the first row being the 
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on.  
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['angular change for points:', 1, 2]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['angular change for points:', 1, 3]_histogram.png" width="300">
@@ -178,6 +194,9 @@ This also converts pixels to centimeters with a scale of 14.7553 pixels/cm
 </p>
 
 ##### Displacement in single pose over time
+##### Points 1 to 6 are: Snout; right shoulder; left shoulder; right hip; left hip; tail-base
+##### Each row is representing each behavior, specified in manuscript, with the first row being the 
+##### remaining non-clusterable noise data points that the random forest classifier was not trained on.  
 <p align="center">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['displacement for point:', 1, 1]_histogram.png" width="300">
   <img src="https://github.com/runninghsus/bsoid_figs/blob/main/examples/pose_relationships_topdown/openfield_60min_N1_['displacement for point:', 2, 2]_histogram.png" width="300">
