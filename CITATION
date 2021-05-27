@@ -1,0 +1,12 @@
+@article {Hsu770271,
+	author = {Hsu, Alexander I. and Yttri, Eric A.},
+	title = {B-SOiD: An Open Source Unsupervised Algorithm for Discovery of Spontaneous Behaviors},
+	elocation-id = {770271},
+	year = {2020},
+	doi = {10.1101/770271},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Capturing the performance of naturalistic behaviors remains a prohibitively difficult objective. Recent machine learning applications have enabled localization of limb position; however, position alone does not yield behavior. To provide a bridge from positions to actions and their kinematics, we developed Behavioral Segmentation of Open-field in DeepLabCut (B-SOiD). This unsupervised learning algorithm discovers natural patterns in position and extracts their inherent statistics. The cluster statistics are then used to train a machine learning algorithm to classify behaviors with greater speed and accuracy due to improved ability to generalize from subject to subject. Through the application of a novel fram-eshift paradigm, B-SOiD provides the fast temporal resolution required for comparison with neural activity. B-SOiD also provides high-resolution behavioral measures such as stride and grooming kinematics, that are difficult but critical to obtain, particularly in the study of pain, compulsion, and other neurological disorders. This open-source platform surpasses the current state of the field in its improved analytical accessibility, objectivity, and ease of use.},
+	URL = {https://www.biorxiv.org/content/early/2020/03/07/770271},
+	eprint = {https://www.biorxiv.org/content/early/2020/03/07/770271.full.pdf},
+	journal = {bioRxiv}
+}
