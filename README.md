@@ -1,5 +1,5 @@
 ![B-SOiD flowchart](demo/appv2_files/bsoid_version2.png)
-
+![](https://zenodo.org/badge/196603884.svg)
 ![](demo/appv2_files/bsoid_mouse_openfield1.gif)
 ![](demo/appv2_files/bsoid_mouse_openfield2.gif)
 ![](demo/appv2_files/bsoid_exercise.gif)
