@@ -14,7 +14,6 @@ dependencies:
   - gmp=6.2.1
   - gnutls=3.6.15
   - hdbscan=0.8.29
-  - icu=58.2
   - joblib=1.2.0
   - lame=3.100
   - libblas=3.9.0
@@ -31,7 +30,6 @@ dependencies:
   - libpng=1.6.37
   - libtasn1=4.16.0
   - libunistring=0.9.10
-  - libvpx=1.7.0
   - libxml2=2.9.14
   - llvm-openmp=15.0.7
   - ncurses=6.4
@@ -50,7 +48,6 @@ dependencies:
   - threadpoolctl=3.1.0
   - tk=8.6.12
   - wheel=0.37.1
-  - x264=1!157.20191217
   - xz=5.2.10
   - zlib=1.2.13
   - pip:
