@@ -57,7 +57,7 @@ class cluster:
         fig1, plt1 = visuals.plot_classes(self.sampled_embeddings[self.assignments >= 0],
                                           self.assignments[self.assignments >= 0])
         plt1.suptitle('HDBSCAN assignment')
-        col1, col2 = st.beta_columns([2, 2])
+        col1, col2 = st.columns([2, 2])
         col1.pyplot(fig1)
 
     def slider(self, min_=0.5, max_=1.0):

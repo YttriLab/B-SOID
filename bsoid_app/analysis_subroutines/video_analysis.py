@@ -28,7 +28,7 @@ class bsoid_video:
         self.ordered_embeds = self.sampled_embeddings[ordered_ind, :]
         self.ordered_assigns = self.soft_assignments[ordered_ind]
         fig, ax = plot_enhanced_umap(self.working_dir, self.prefix, fig_size=(5, 3), save=False)
-        col1, col2 = st.beta_columns([2, 2])
+        col1, col2 = st.columns([2, 2])
         col1.pyplot(fig)
         self.vid_path = st.text_input('Enter corresponding video directory (Absolute path):')
         try:

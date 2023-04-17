@@ -56,14 +56,14 @@ class protocol:
 
     def show_confusion_matrix(self):
         fig = visuals.plot_confusion(self.validate_clf, self.x_test, self.y_test)
-        col1, col2 = st.beta_columns([2, 2])
+        col1, col2 = st.columns([2, 2])
         col1.pyplot(fig[0])
         col2.pyplot(fig[1])
         st.write('To improve, either _increase_ minimum cluster size, or include _more data_')
 
     def show_crossval_score(self):
         fig, plt = visuals.plot_accuracy(self.validate_score)
-        col1, col2 = st.beta_columns([2, 2])
+        col1, col2 = st.columns([2, 2])
         col1.pyplot(fig)
         st.write('To improve, either _increase_ minimum cluster size, or include _more data_')
 

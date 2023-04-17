@@ -12,7 +12,7 @@ matplotlib_axes_logger.setLevel('ERROR')
 def plot_bar(sub_threshold):
     st.write('If the below __% noise__ (y-axis) is unreasonable, consider refining pose-estimation software.')
     sub_threshold_df = pd.DataFrame(sub_threshold)
-    col1, col2 = st.beta_columns([3, 2])
+    col1, col2 = st.columns([3, 2])
     col1.line_chart(sub_threshold_df)
     col2.write(sub_threshold_df)
 
