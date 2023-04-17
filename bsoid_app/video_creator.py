@@ -237,7 +237,7 @@ class creator:
                 video_bytes.append(data_url)
                 grp_names.append('{}'.format(file.partition('.')[0]))
         col = [None] * 3
-        col[0], col[1], col[2] = st.beta_columns([1, 1, 1])
+        col[0], col[1], col[2] = st.columns([1, 1, 1])
         for i in range(0, len(video_bytes) + 3, 3):
             try:
                 col[0].markdown(

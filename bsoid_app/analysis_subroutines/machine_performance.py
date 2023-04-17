@@ -40,7 +40,7 @@ class performance:
         fig.suptitle('{}-fold group accuracy'.format(self.k))
         ax.set_xlabel('Accuracy')
         ax.set_ylabel('Group number')
-        col1, col2 = st.beta_columns([2, 2])
+        col1, col2 = st.columns([2, 2])
         radio = st.radio(label='Change colors?', options=["Yes", "No"], index=1)
         if radio == 'No':
             col1.pyplot(fig)
