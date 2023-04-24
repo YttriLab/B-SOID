@@ -2,7 +2,7 @@ seaborn==0.11.0
 imageio==2.9.0
 tqdm==4.50.2
 randfacts==0.2.4
-joblib==0.17.0
+joblib==1.2.0
 ffmpeg_python==0.2.0
 networkx==2.5
 scipy==1.5.2
